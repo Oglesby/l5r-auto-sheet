@@ -1,0 +1,25 @@
+<div class="row">
+    <dl class="dl-horizontal col-lg-6">
+        <dt>Name</dt>
+        <dd>{{family}} {{name}}</dd>
+        <dt>Clan</dt>
+        <dd>{{clan}}</dd>
+        <dt>School</dt>
+        <dd><span ng-repeat="school in schools">{{school.name}} {{school.rank}} {{$last ? "" : " / "}}</span></dd>
+    </dl>
+
+    <dl class="dl-horizontal col-lg-6">
+        <dt>Rank</dt>
+        <dd>{{rank}}</dd>
+        <dt>XP</dt>
+        <dd>{{xp}}</dd>
+        <dt>Insight</dt>
+        <dd>{{insight}}</dd>
+    </dl>
+</div>
+
+<div class="row">
+    <div class="ring-block col-lg-3 row"
+         ng-repeat="ring in [rings.earth, rings.water, rings.fire, rings.air, rings.void]"
+         ng-include="'views/ring.block.html'"/>
+</div>
