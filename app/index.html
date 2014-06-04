@@ -16,18 +16,26 @@
         <!-- endbuild -->
     </head>
     <body ng-app="l5rAutoSheetApp">
-        <div class="container" ng-include="'views/main.html'" ng-controller="MainCtrl"></div>
+        <div class="container" ng-include="'views/main.html'" ng-controller="l5rCharacterData"></div>
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
         <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
+        <script src="bower_components/lodash/dist/lodash.compat.js"></script>
         <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
         <!-- endbower -->
         <!-- endbuild -->
 
         <!-- build:js({.tmp,app}) scripts/scripts.js -->
         <script src="scripts/app.js"></script>
+        <script src="scripts/data/families.js"></script>
+        <script src="scripts/data/schools.js"></script>
+        <script src="scripts/data/traits.js"></script>
+        <script src="scripts/data/skills.js"></script>
+        <script src="scripts/data/advantages.js"></script>
+        <script src="scripts/data/disadvantages.js"></script>
+        <script src="scripts/data/katas.js"></script>
         <script src="scripts/controllers/main.js"></script>
         <!-- endbuild -->
     </body>

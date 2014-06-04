@@ -1,0 +1,234 @@
+[
+    {
+        "type": "CREATION",
+        "initialXp": 125,
+        "family": "hida",
+        "school": "hida.bushi",
+        "creationTimestamp": "2014-05-24 11:51:30"
+    },
+    {
+        "type": "CHARACTER_INFO",
+        "name": "Juzo",
+        "creationTimestamp": "2014-05-24 11:51:30"
+    },
+    {
+        "type": "XP_EXPENDITURE",
+        "title": "Character Building - Traits",
+        "expenditures": [
+            {
+                "type": "TRAIT",
+                "id": "agility"
+            },
+            {
+                "type": "TRAIT",
+                "id": "willpower"
+            },
+            {
+                "type": "TRAIT",
+                "id": "stamina"
+            },
+            {
+                "type": "TRAIT",
+                "id": "willpower"
+            },
+            {
+                "type": "TRAIT",
+                "id": "void"
+            }
+        ],
+        "creationTimestamp": "2014-05-24 11:51:30"
+    },
+    {
+        "type": "XP_EXPENDITURE",
+        "title": "Character Building - Advantages",
+        "expenditures": [
+            {
+                "type": "ADVANTAGE",
+                "id": "great.potential",
+                "options": {
+                    "choosing": "Heavy Weapons"
+                }
+            },
+            {
+                "type": "ADVANTAGE",
+                "id": "large"
+            },
+            {
+                "type": "ADVANTAGE",
+                "id": "bishamons.blessing"
+            },
+            {
+                "type": "ADVANTAGE",
+                "id": "strength.of.earth"
+            },
+            {
+                "type": "ADVANTAGE",
+                "id": "crab.hands"
+            }
+        ],
+        "creationTimestamp": "2014-05-24 11:51:30"
+    },
+    {
+        "type": "XP_EXPENDITURE",
+        "title": "Character Building - Disadvantages",
+        "expenditures": [
+            {
+                "type": "DISADVANTAGE",
+                "id": "brash"
+            },
+            {
+                "type": "DISADVANTAGE",
+                "id": "compulsion",
+                "options": {
+                    "choosing": "Sweets",
+                    "rank": 1
+                }
+            },
+            {
+                "type": "DISADVANTAGE",
+                "id": "gullible"
+            }
+        ],
+        "creationTimestamp": "2014-05-24 11:51:30"
+    },
+    {
+        "type": "XP_EXPENDITURE",
+        "title": "Character Building - Kata",
+        "expenditures": [
+            {
+                "type": "KATA",
+                "id": "indomitable.warrior.style"
+            }
+        ],
+        "creationTimestamp": "2014-05-24 11:51:30"
+    },
+    {
+        "type": "XP_EXPENDITURE",
+        "title": "Character Building - Skills",
+        "expenditures": [
+            {
+                "type": "SKILL",
+                "id": "heavy.weapons"
+            },
+            {
+                "type": "SKILL",
+                "id": "heavy.weapons"
+            },
+            {
+                "type": "SKILL",
+                "id": "heavy.weapons"
+            },
+            {
+                "type": "SKILL",
+                "id": "heavy.weapons"
+            },
+            {
+                "type": "SKILL",
+                "id": "lore",
+                "options": {
+                    "choosing": "Shadowlands"
+                }
+            },
+            {
+                "type": "SKILL",
+                "id": "lore",
+                "options": {
+                    "choosing": "Shadowlands"
+                }
+            },
+            {
+                "type": "SKILL",
+                "id": "etiquette"
+            },
+            {
+                "type": "SKILL",
+                "id": "knives"
+            },
+            {
+                "type": "SKILL",
+                "id": "knives"
+            },
+            {
+                "type": "SKILL",
+                "id": "horsemanship"
+            },
+            {
+                "type": "SKILL",
+                "id": "investigation"
+            },
+            {
+                "type": "SKILL",
+                "id": "lore",
+                "cost": 0,
+                "options": {
+                    "choosing": "Nezumi"
+                },
+                "comment": "Free mod skill"
+            },
+            {
+                "type": "SKILL",
+                "id": "battle",
+                "cost": 0,
+                "comment": "Free mod skill"
+            },
+            {
+                "type": "SKILL",
+                "id": "battle"
+            },
+            {
+                "type": "SKILL",
+                "id": "lore",
+                "options": {
+                    "choosing": "Crab"
+                }
+            },
+            {
+                "type": "SKILL",
+                "id": "hunting"
+            },
+            {
+                "type": "SKILL",
+                "id": "kenjutsu"
+            },
+            {
+                "type": "SKILL",
+                "id": "kenjutsu"
+            },
+            {
+                "type": "SKILL",
+                "id": "jiujutsu"
+            },
+            {
+                "type": "SKILL",
+                "id": "jiujutsu"
+            },
+            {
+                "type": "SKILL",
+                "id": "jiujutsu"
+            }
+        ],
+        "creationTimestamp": "2014-05-24 11:51:30"
+    },
+    {
+        "type": "MODULE_COMPLETION",
+        "name": "A Foreign Legacy",
+        "xpReward": 5,
+        "creationTimestamp": "2014-05-24 11:51:30"
+    },
+    {
+        "type": "MODULE_COMPLETION",
+        "name": "A Chance Encounter",
+        "xpReward": 4,
+        "gains": [
+            {
+                "type": "ADVANTAGE",
+                "id": "favor",
+                "cost": 0,
+                "options": {
+                    "choosing": "Kitsune",
+                    "rank": 1
+                }
+            }
+        ]
+    }
+]

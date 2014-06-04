@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 angular
-    .module('l5rAutoSheetApp', []);
+    .module("l5rAutoSheetApp", []);

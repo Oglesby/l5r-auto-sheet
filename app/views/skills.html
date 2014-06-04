@@ -1,0 +1,9 @@
+<legend>Skills</legend>
+<dl class="dl-horizontal">
+    <dt ng-repeat-start="skill in skills">{{skill.type.name}}{{skill.choosing ? ': ' + skill.choosing : ''}}</dt>
+    <dd ng-repeat-end>
+        {{skill.rank}}{{skill.schoolSkill ? '*' : ''}}{{skill.emphases.length > 0 ? ' (' : ''}}
+        <span ng-repeat="emphasis in skill.emphases">{{emphasis}}</span>
+        {{skill.emphases.length > 0 ? ')' : ''}}
+    </dd>
+</dl>

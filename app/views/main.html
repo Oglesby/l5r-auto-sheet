@@ -1,25 +1,46 @@
 <div class="row">
     <dl class="dl-horizontal col-lg-6">
         <dt>Name</dt>
-        <dd>{{family}} {{name}}</dd>
+        <dd>{{characterInfo.family.name}} {{characterInfo.name}}</dd>
         <dt>Clan</dt>
-        <dd>{{clan}}</dd>
+        <dd>{{characterInfo.clan}}</dd>
         <dt>School</dt>
-        <dd><span ng-repeat="school in schools">{{school.name}} {{school.rank}} {{$last ? "" : " / "}}</span></dd>
+        <dd><span ng-repeat="school in schools">{{school.type.name}} {{school.rank}} {{$last ? "" : " / "}}</span></dd>
     </dl>
 
     <dl class="dl-horizontal col-lg-6">
         <dt>Rank</dt>
-        <dd>{{rank}}</dd>
+        <dd>{{characterInfo.insightRank}}</dd>
         <dt>XP</dt>
-        <dd>{{xp}}</dd>
+        <dd>{{characterInfo.xp}}</dd>
         <dt>Insight</dt>
-        <dd>{{insight}}</dd>
+        <dd>{{characterInfo.insight}}</dd>
     </dl>
 </div>
 
 <div class="row">
-    <div class="ring-block col-lg-3 row"
-         ng-repeat="ring in [rings.earth, rings.water, rings.fire, rings.air, rings.void]"
-         ng-include="'views/ring.block.html'"/>
+    <l5r-ring-block class="ring-block col-lg-3 row"
+                    ring-name="Earth" ring-rank="rings.earth" ring-icon="images/earth_by_exahyl-d3is114.png"
+                    spiritual-trait-name="Willpower" spiritual-trait-rank="traits.willpower"
+                    physical-trait-name="Stamina" physical-trait-rank="traits.stamina"></l5r-ring-block>
+    <l5r-ring-block class="ring-block col-lg-3 row"
+                    ring-name="Water" ring-rank="rings.water" ring-icon="images/water_ring_by_exahyl-d3is12g.png"
+                    spiritual-trait-name="Perception" spiritual-trait-rank="traits.perception"
+                    physical-trait-name="Strength" physical-trait-rank="traits.strength"></l5r-ring-block>
+    <l5r-ring-block class="ring-block col-lg-3 row"
+                    ring-name="Fire" ring-rank="rings.fire" ring-icon="images/fire_ring_by_exahyl-d3is13z.png"
+                    spiritual-trait-name="Intelligence" spiritual-trait-rank="traits.intelligence"
+                    physical-trait-name="Agility" physical-trait-rank="traits.agility"></l5r-ring-block>
+    <l5r-ring-block class="ring-block col-lg-3 row"
+                    ring-name="Air" ring-rank="rings.air" ring-icon="images/air_ring_by_exahyl-d3is15c.png"
+                    spiritual-trait-name="Awareness" spiritual-trait-rank="traits.awareness"
+                    physical-trait-name="Reflexes" physical-trait-rank="traits.reflexes"></l5r-ring-block>
+    <l5r-ring-block class="ring-block col-lg-3 row"
+                    ring-name="Void" ring-rank="rings.void"
+                    ring-icon="images/void_by_exahyl-d3is16h.png"></l5r-ring-block>
 </div>
+<l5r-skills></l5r-skills>
+<l5r-advantages></l5r-advantages>
+<l5r-disadvantages></l5r-disadvantages>
+<l5r-katas></l5r-katas>
+<l5r-log></l5r-log>

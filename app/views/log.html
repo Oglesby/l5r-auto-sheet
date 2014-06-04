@@ -1,0 +1,9 @@
+<legend>Log</legend>
+<div ng-repeat="logEntry in log">
+    {{logEntry.title}}<br>
+    {{logEntry.creationTimestamp}}
+    <div ng-repeat="logItem in logEntry.logItems">
+        {{logItem}}
+    </div>
+    <hr>
+</div>

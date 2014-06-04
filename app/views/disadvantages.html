@@ -1,0 +1,7 @@
+<legend>Disadvantages</legend>
+<dl>
+    <dt ng-repeat-start="disadvantage in disadvantages">{{disadvantage.type.name}}{{disadvantage.choosing ? ': ' +
+        disadvantage.choosing : ''}}{{disadvantage.rank ? ' (Rank ' + disadvantage.rank + ')' : ''}}
+    </dt>
+    <dd ng-repeat-end>{{disadvantage.type.description}}</dd>
+</dl>
