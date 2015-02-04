@@ -54,11 +54,11 @@ angular.module("l5rAutoSheetApp")
 
         function processCreationEntry(logEntry) {
             var family = window.l5rFamilies[logEntry.family],
-                school = window.l5rSchools[logEntry.school];
+                school = window.l5rSchools[logEntry.school.id];
 
             $scope.characterInfo.xp = logEntry.initialXp;
             family.visit($scope);
-            school.visit($scope);
+            school.visit($scope, logEntry.school.options);
 
             var logEntryModel = {
                 title: logEntry.title,

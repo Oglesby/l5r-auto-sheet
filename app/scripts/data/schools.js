@@ -7,7 +7,7 @@
             name: "Hida Bushi",
             bonusTrait: "Stamina",
             description: "",
-            visit: function (model/*, options */) {
+            visit: function (model, options) {
                 model.schools = [
                     {
                         "type": this,
@@ -27,7 +27,10 @@
                     schoolSkill: true,
                     choosing: "Shadowlands"
                 });
-                // TODO Plus one of your choice
+                _.each(options.chosenSkills, function(skill) {
+                    var options = _.extend({schoolSkill: true}, skill.options);
+                    window.l5rSkills[skill.id].purchase(model, options);
+                });
 
                 // Set honor
                 model.characterInfo.honor = 35;

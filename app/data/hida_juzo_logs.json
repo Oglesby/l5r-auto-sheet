@@ -3,7 +3,14 @@
         "type": "CREATION",
         "initialXp": 125,
         "family": "hida",
-        "school": "hida.bushi",
+        "school": {
+            "id": "hida.bushi",
+            "options": {
+                "chosenSkills": [{
+                    "id": "battle"
+                }]
+            }
+        },
         "creationTimestamp": "2014-05-24 11:51:30"
     },
     {
