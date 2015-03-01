@@ -29,7 +29,10 @@ var baseModel = {
 
 angular.module("l5rAutoSheetApp")
     .constant("_", window._)
-    .controller("l5rCharacterData", ["$scope", "$http", "$q", "_", function ($scope, $http, $q, _) {
+    .controller("l5rCharacterData", ["$scope", "$http", "$q", "_", "advantageService", "disadvantageService", "traitService",
+        "familyService", "schoolService", "skillService", "kataService",
+        function ($scope, $http, $q, _, advantageService, disadvantageService, traitService, familyService, schoolService, skillService,
+                  kataService) {
         _.merge($scope, baseModel);
         $scope.log = [];
 
@@ -53,8 +56,8 @@ angular.module("l5rAutoSheetApp")
             });
 
         function processCreationEntry(logEntry) {
-            var family = window.l5rFamilies[logEntry.family],
-                school = window.l5rSchools[logEntry.school.id];
+            var family = familyService[logEntry.family],
+                school = schoolService[logEntry.school.id];
 
             $scope.characterInfo.xp = logEntry.initialXp;
             family.visit($scope);
@@ -93,22 +96,22 @@ angular.module("l5rAutoSheetApp")
             _.forEach(logEntry.expenditures, function (expenditure) {
                 switch (expenditure.type) {
                     case "TRAIT":
-                        window.l5rTraits[expenditure.id].purchase($scope);
+                        traitService[expenditure.id].purchase($scope);
                         break;
                     case "SKILL":
-                        window.l5rSkills[expenditure.id].purchase($scope, expenditure.options);
+                        skillService[expenditure.id].purchase($scope, expenditure.options);
                         break;
                     case "EMPHASIS":
-                        window.l5rSkills[expenditure.skillId].addEmphasis($scope, expenditure.emphasis, expenditure.options);
+                        skillService[expenditure.skillId].addEmphasis($scope, expenditure.emphasis, expenditure.options);
                         break;
                     case "ADVANTAGE":
-                        window.l5rAdvantages[expenditure.id].purchase($scope, expenditure.options);
+                        advantageService[expenditure.id].purchase($scope, expenditure.options);
                         break;
                     case "DISADVANTAGE":
-                        window.l5rDisadvantages[expenditure.id].purchase($scope, expenditure.options);
+                        disadvantageService[expenditure.id].purchase($scope, expenditure.options);
                         break;
                     case "KATA":
-                        window.l5rKatas[expenditure.id].purchase($scope, expenditure.options);
+                        kataService[expenditure.id].purchase($scope, expenditure.options);
                         break;
                 }
             });
