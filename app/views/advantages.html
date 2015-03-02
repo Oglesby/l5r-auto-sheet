@@ -1,6 +1,6 @@
 <legend>Advantages</legend>
 <dl>
-    <dt ng-repeat-start="advantage in advantages">{{advantage.type.name}}{{advantage.choosing ? ': ' +
+    <dt ng-repeat-start="advantage in model.advantages">{{advantage.type.name}}{{advantage.choosing ? ': ' +
         advantage.choosing : ''}}{{advantage.rank ? ' (Rank ' + advantage.rank + ')' : ''}}
     </dt>
     <dd ng-repeat-end>{{advantage.type.description}}</dd>

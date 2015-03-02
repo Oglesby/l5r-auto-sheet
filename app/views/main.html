@@ -1,42 +1,42 @@
 <div class="row">
     <dl class="dl-horizontal col-lg-6">
         <dt>Name</dt>
-        <dd>{{characterInfo.family.name}} {{characterInfo.name}}</dd>
+        <dd>{{model.characterInfo.family.name}} {{model.characterInfo.name}}</dd>
         <dt>Clan</dt>
-        <dd>{{characterInfo.clan}}</dd>
+        <dd>{{model.characterInfo.clan}}</dd>
         <dt>School</dt>
-        <dd><span ng-repeat="school in schools">{{school.type.name}} {{school.rank}} {{$last ? "" : " / "}}</span></dd>
+        <dd><span ng-repeat="school in model.schools">{{school.type.name}} {{school.rank}} {{$last ? "" : " / "}}</span></dd>
     </dl>
 
     <dl class="dl-horizontal col-lg-6">
         <dt>Rank</dt>
-        <dd>{{characterInfo.insightRank}}</dd>
+        <dd>{{model.characterInfo.insightRank}}</dd>
         <dt>XP</dt>
-        <dd>{{characterInfo.xp}}</dd>
+        <dd>{{model.characterInfo.xp}}</dd>
         <dt>Insight</dt>
-        <dd>{{characterInfo.insight}}</dd>
+        <dd>{{model.characterInfo.insight}}</dd>
     </dl>
 </div>
 
 <div class="row">
     <l5r-ring-block class="ring-block col-lg-3 row"
                     ring-name="Earth" ring-rank="rings.earth" ring-icon="images/earth_by_exahyl-d3is114.png"
-                    spiritual-trait-name="Willpower" spiritual-trait-rank="traits.willpower"
-                    physical-trait-name="Stamina" physical-trait-rank="traits.stamina"></l5r-ring-block>
+                    spiritual-trait-name="Willpower" spiritual-trait-rank="model.traits.willpower"
+                    physical-trait-name="Stamina" physical-trait-rank="model.traits.stamina"></l5r-ring-block>
     <l5r-ring-block class="ring-block col-lg-3 row"
                     ring-name="Water" ring-rank="rings.water" ring-icon="images/water_ring_by_exahyl-d3is12g.png"
-                    spiritual-trait-name="Perception" spiritual-trait-rank="traits.perception"
-                    physical-trait-name="Strength" physical-trait-rank="traits.strength"></l5r-ring-block>
+                    spiritual-trait-name="Perception" spiritual-trait-rank="model.traits.perception"
+                    physical-trait-name="Strength" physical-trait-rank="model.traits.strength"></l5r-ring-block>
     <l5r-ring-block class="ring-block col-lg-3 row"
                     ring-name="Fire" ring-rank="rings.fire" ring-icon="images/fire_ring_by_exahyl-d3is13z.png"
-                    spiritual-trait-name="Intelligence" spiritual-trait-rank="traits.intelligence"
-                    physical-trait-name="Agility" physical-trait-rank="traits.agility"></l5r-ring-block>
+                    spiritual-trait-name="Intelligence" spiritual-trait-rank="model.traits.intelligence"
+                    physical-trait-name="Agility" physical-trait-rank="model.traits.agility"></l5r-ring-block>
     <l5r-ring-block class="ring-block col-lg-3 row"
                     ring-name="Air" ring-rank="rings.air" ring-icon="images/air_ring_by_exahyl-d3is15c.png"
-                    spiritual-trait-name="Awareness" spiritual-trait-rank="traits.awareness"
-                    physical-trait-name="Reflexes" physical-trait-rank="traits.reflexes"></l5r-ring-block>
+                    spiritual-trait-name="Awareness" spiritual-trait-rank="model.traits.awareness"
+                    physical-trait-name="Reflexes" physical-trait-rank="model.traits.reflexes"></l5r-ring-block>
     <l5r-ring-block class="ring-block col-lg-3 row"
-                    ring-name="Void" ring-rank="rings.void"
+                    ring-name="Void" ring-rank="model.rings.void"
                     ring-icon="images/void_by_exahyl-d3is16h.png"></l5r-ring-block>
 </div>
 <l5r-skills></l5r-skills>

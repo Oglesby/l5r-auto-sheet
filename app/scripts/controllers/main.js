@@ -33,7 +33,7 @@ angular.module("l5rAutoSheetApp")
         "familyService", "schoolService", "skillService", "kataService",
         function ($scope, $http, $q, _, advantageService, disadvantageService, traitService, familyService, schoolService, skillService,
                   kataService) {
-        _.merge($scope, baseModel);
+        $scope.model = _.cloneDeep(baseModel);
         $scope.log = [];
 
         $q.all($http.get("data/hida_juzo_logs.json"))
@@ -52,16 +52,16 @@ angular.module("l5rAutoSheetApp")
                     }
                 });
 
-                console.log($scope);
+                console.log($scope.model);
             });
 
         function processCreationEntry(logEntry) {
             var family = familyService[logEntry.family],
                 school = schoolService[logEntry.school.id];
 
-            $scope.characterInfo.xp = logEntry.initialXp;
-            family.visit($scope);
-            school.visit($scope, logEntry.school.options);
+            $scope.model.characterInfo.xp = logEntry.initialXp;
+            family.visit($scope.model);
+            school.visit($scope.model, logEntry.school.options);
 
             var logEntryModel = {
                 title: logEntry.title,
@@ -78,7 +78,7 @@ angular.module("l5rAutoSheetApp")
         }
 
         function processCharacterInfoEntry(logEntry) {
-            $scope.characterInfo.name = logEntry.name;
+            $scope.model.characterInfo.name = logEntry.name;
 
             var logEntryModel = {
                 title: logEntry.title,
@@ -96,22 +96,22 @@ angular.module("l5rAutoSheetApp")
             _.forEach(logEntry.expenditures, function (expenditure) {
                 switch (expenditure.type) {
                     case "TRAIT":
-                        traitService[expenditure.id].purchase($scope);
+                        traitService[expenditure.id].purchase($scope.model);
                         break;
                     case "SKILL":
-                        skillService[expenditure.id].purchase($scope, expenditure.options);
+                        skillService[expenditure.id].purchase($scope.model, expenditure.options);
                         break;
                     case "EMPHASIS":
-                        skillService[expenditure.skillId].addEmphasis($scope, expenditure.emphasis, expenditure.options);
+                        skillService[expenditure.skillId].addEmphasis($scope.model, expenditure.emphasis, expenditure.options);
                         break;
                     case "ADVANTAGE":
-                        advantageService[expenditure.id].purchase($scope, expenditure.options);
+                        advantageService[expenditure.id].purchase($scope.model, expenditure.options);
                         break;
                     case "DISADVANTAGE":
-                        disadvantageService[expenditure.id].purchase($scope, expenditure.options);
+                        disadvantageService[expenditure.id].purchase($scope.model, expenditure.options);
                         break;
                     case "KATA":
-                        kataService[expenditure.id].purchase($scope, expenditure.options);
+                        kataService[expenditure.id].purchase($scope.model, expenditure.options);
                         break;
                 }
             });
