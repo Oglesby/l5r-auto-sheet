@@ -29,14 +29,14 @@ var baseModel = {
 
 angular.module("l5rAutoSheetApp")
     .constant("_", window._)
-    .controller("l5rCharacterData", ["$scope", "$http", "$q", "_", "advantageService", "disadvantageService", "traitService",
+    .controller("L5rCharacterData", ["$scope", "$http", "$q", "_", "advantageService", "disadvantageService", "traitService",
         "familyService", "schoolService", "skillService", "kataService",
         function ($scope, $http, $q, _, advantageService, disadvantageService, traitService, familyService, schoolService, skillService,
                   kataService) {
         $scope.model = _.cloneDeep(baseModel);
         $scope.log = [];
 
-        $q.all($http.get("data/hida_juzo_logs.json"))
+        $http.get("data/hida_juzo_logs.json")
             .then(function (logEntries) {
                 _.forEach(logEntries.data, function (logEntry) {
                     switch (logEntry.type) {

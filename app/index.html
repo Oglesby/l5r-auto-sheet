@@ -12,11 +12,11 @@
         <!-- endbower -->
         <!-- endbuild -->
         <!-- build:css({.tmp,app}) styles/main.css -->
-        <link rel="stylesheet" href="styles/main.css">
+        <link rel="stylesheet" href="css/main.css">
         <!-- endbuild -->
     </head>
     <body ng-app="l5rAutoSheetApp">
-        <div class="container" ng-include="'views/main.html'" ng-controller="l5rCharacterData"></div>
+        <div class="container" ng-include="'views/main.html'" ng-controller="L5rCharacterData"></div>
 
         <!-- build:js scripts/vendor.js -->
         <!-- bower:js -->
@@ -27,16 +27,6 @@
         <!-- endbower -->
         <!-- endbuild -->
 
-        <!-- build:js({.tmp,app}) scripts/scripts.js -->
-        <script src="scripts/app.js"></script>
-        <script src="scripts/data/families.js"></script>
-        <script src="scripts/data/schools.js"></script>
-        <script src="scripts/data/traits.js"></script>
-        <script src="scripts/data/skills.js"></script>
-        <script src="scripts/data/advantages.js"></script>
-        <script src="scripts/data/disadvantages.js"></script>
-        <script src="scripts/data/katas.js"></script>
-        <script src="scripts/controllers/main.js"></script>
-        <!-- endbuild -->
+        <script src="bundle.js"></script>
     </body>
 </html>
