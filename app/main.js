@@ -140,36 +140,36 @@ angular.module("l5rAutoSheetApp")
                 physicalTraitName: "@",
                 physicalTraitRank: "="
             },
-            templateUrl: "views/ring.block.html"
+            templateUrl: "ring.block.html"
         };
     })
     .directive("l5rSkills", function () {
         return {
             restrict: "E",
-            templateUrl: "views/skills.html"
+            templateUrl: "skills.html"
         };
     })
     .directive("l5rAdvantages", function () {
         return {
             restrict: "E",
-            templateUrl: "views/advantages.html"
+            templateUrl: "advantages.html"
         };
     })
     .directive("l5rDisadvantages", function () {
         return {
             restrict: "E",
-            templateUrl: "views/disadvantages.html"
+            templateUrl: "disadvantages.html"
         };
     })
     .directive("l5rKatas", function () {
         return {
             restrict: "E",
-            templateUrl: "views/katas.html"
+            templateUrl: "katas.html"
         };
     })
     .directive("l5rLog", function () {
         return {
             restrict: "E",
-            templateUrl: "views/log.html"
+            templateUrl: "log.html"
         };
     });

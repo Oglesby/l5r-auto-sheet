@@ -3,11 +3,11 @@
 angular
     .module("l5rAutoSheetApp", []);
 
-require("./scripts/controllers/main");
-require("./scripts/data/advantages");
-require("./scripts/data/disadvantages");
-require("./scripts/data/families");
-require("./scripts/data/katas");
-require("./scripts/data/schools");
-require("./scripts/data/skills");
-require("./scripts/data/traits");
+require("./main");
+require("./data/advantages");
+require("./data/disadvantages");
+require("./data/families");
+require("./data/katas");
+require("./data/schools");
+require("./data/skills");
+require("./data/traits");
