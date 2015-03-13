@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").directive("l5rSkills", function () {
+angular.module("pocketIkoma").directive("piSkills", function () {
     return {
         restrict: "E",
         templateUrl: "skills/skills.html"

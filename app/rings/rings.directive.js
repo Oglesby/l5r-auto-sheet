@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").directive("l5rRingBlock", function () {
+angular.module("pocketIkoma").directive("piRingBlock", function () {
     return {
         restrict: "E",
         scope: {

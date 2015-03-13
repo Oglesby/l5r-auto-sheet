@@ -1,7 +1,7 @@
 "use strict";
 
 angular
-    .module("l5rAutoSheetApp", []);
+    .module("pocketIkoma", []);
 
 require("./main");
 require("./advantages/bootstrap");

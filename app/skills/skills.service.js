@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").service("skillService", function(_) {
+angular.module("pocketIkoma").service("skillService", function(_) {
     var Skill = function (id, name, description, availableEmphases) {
         this.id = id;
         this.name = name;

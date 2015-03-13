@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").service("traitService", function() {
+angular.module("pocketIkoma").service("traitService", function() {
     var Trait = function (id, name, description) {
         this.id = id;
         this.name = name;

@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").service("schoolService", function(traitService, skillService, _) {
+angular.module("pocketIkoma").service("schoolService", function(traitService, skillService, _) {
     return {
         "hida.bushi": {
             name: "Hida Bushi",

@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").directive("l5rDisadvantages", function () {
+angular.module("pocketIkoma").directive("piDisadvantages", function () {
     return {
         restrict: "E",
         templateUrl: "disadvantages/disadvantages.html"

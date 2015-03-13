@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").service("disadvantageService", function() {
+angular.module("pocketIkoma").service("disadvantageService", function() {
     var Disadvantage = function (id, name, description) {
         this.id = id;
         this.name = name;

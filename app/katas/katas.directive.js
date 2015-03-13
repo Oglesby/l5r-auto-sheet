@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").directive("l5rKatas", function () {
+angular.module("pocketIkoma").directive("piKatas", function () {
     return {
         restrict: "E",
         templateUrl: "katas/katas.html"

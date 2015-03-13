@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").service("logService",
+angular.module("pocketIkoma").service("logService",
     function($http, _, advantageService, disadvantageService, traitService, familyService,
              schoolService, skillService, kataService) {
 

@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp").service("kataService", function() {
+angular.module("pocketIkoma").service("kataService", function() {
     var Kata = function (id, name, description) {
         this.id = id;
         this.name = name;

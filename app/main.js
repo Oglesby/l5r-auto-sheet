@@ -1,8 +1,8 @@
 "use strict";
 
-angular.module("l5rAutoSheetApp")
+angular.module("pocketIkoma")
     .constant("_", window._)
-    .controller("L5rCharacterData", function ($scope, logService) {
+    .controller("piCharacterData", function ($scope, logService) {
         $scope.model = logService.getBaseModel();
         $scope.log = [];
 
