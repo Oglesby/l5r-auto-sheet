@@ -4,10 +4,10 @@ angular
     .module("l5rAutoSheetApp", []);
 
 require("./main");
-require("./data/advantages");
-require("./data/disadvantages");
-require("./data/families");
-require("./data/katas");
-require("./data/schools");
-require("./data/skills");
-require("./data/traits");
+require("./data/advantages.service");
+require("./data/disadvantages.service");
+require("./data/families.service");
+require("./data/katas.service");
+require("./data/schools.service");
+require("./data/skills.service");
+require("./data/traits.service");
