@@ -6,4 +6,4 @@ app/bower_components
 .idea/
 *.iml
 app/bundle.js
-app/styles/*.css
+assets/css/
