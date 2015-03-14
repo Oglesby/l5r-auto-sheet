@@ -1,13 +1,14 @@
 "use strict";
 
-angular.module("pocketIkoma").service("advantageService", function() {
-    var Advantage = function (id, name, description, xpCost) {
+angular.module("pocketIkoma").service("advantageService", function(_) {
+    var Advantage = function (id, name, description, xpFetcher) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.xpCost = xpCost;
+        this.xpFetcher = xpFetcher;
+
     };
-    Advantage.prototype.purchase = function (model, options) {
+    Advantage.prototype.gain = function (model, options) {
         options = options || {};
         model.advantages = model.advantages || [];
 
@@ -24,13 +25,50 @@ angular.module("pocketIkoma").service("advantageService", function() {
         }
 
         model.advantages.push(advantage);
+        return advantage;
     };
+    Advantage.prototype.purchase = function (model, options) {
+        var advantage = this.gain(model, options);
+        var xpCost = this.xpFetcher(model, options);
 
+        if (xpCost > model.characterInfo.xp) {
+            // TODO: File a warning and/or flag this log as somehow invalid?
+        }
+
+        model.characterInfo.xp = model.characterInfo.xp - xpCost;
+        var description = advantage.type.name;
+        if (options && options.choosing) {
+            description += ": " + options.choosing;
+        }
+        return {cost: xpCost, name: description};
+    };
     return {
-        "bishamons.blessing": new Advantage("bishamons.blessing", "Bishamon's Blessing", ""),
-        "crab.hands": new Advantage("crab.hands", "Crab Hands", ""),
-        "great.potential": new Advantage("great.potential", "Great Potential", ""),
-        "large": new Advantage("large", "Large", ""),
-        "strength.of.earth": new Advantage("strength.of.earth", "Strength of Earth", "")
+        "seven.fortunes.blessing": new Advantage("seven.fortunes.blessing", "Seven Fortune's Blessing", "",
+            function(model, options) {
+                if (options.choosing === "Bishamon's Blessing") {
+                    return (model.characterInfo.clan === "Lion" || model.characterInfo.clan === "Crab") ? 4 : 5;
+                } else {
+                    return 4;
+                }
+            }),
+        "crab.hands": new Advantage("crab.hands", "Crab Hands", "",
+            function(model, options) {
+                var isBushi = _.any(model.schools, function (school) {
+                    return school.isBushi;
+                });
+
+                return (isBushi || model.characterInfo.clan === "Crab") ? 2 : 3;
+            }),
+        "great.potential": new Advantage("great.potential", "Great Potential", "", function () { return 5; }),
+        "large": new Advantage("large", "Large", "",function(model, options) {
+            return model.characterInfo.clan === "Crab" ? 3 : 4;
+        }),
+        "strength.of.earth": new Advantage("strength.of.earth", "Strength of Earth", "",function(model, options) {
+            var isBushi = _.any(model.schools, function (school) {
+                return school.isBushi;
+            });
+
+            return isBushi ? 2 : 3;
+        })
     };
 });

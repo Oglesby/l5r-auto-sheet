@@ -115,10 +115,10 @@ angular.module("pocketIkoma").service("logService",
                     });
                     break;
                 case "ADVANTAGE":
-                    advantageService[expenditure.id].purchase(model, expenditure.options);
+                    result = advantageService[expenditure.id].purchase(model, expenditure.options);
                     logItems.push({
                         id: n++,
-                        displayText: "Spent " + cost + " XP to gain " + expenditure.id
+                        displayText: "Spent " + result.cost + " XP to gain " + result.name
                     });
                     break;
                 case "DISADVANTAGE":

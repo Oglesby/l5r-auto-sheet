@@ -62,7 +62,10 @@
             },
             {
                 "type": "ADVANTAGE",
-                "id": "bishamons.blessing"
+                "id": "seven.fortunes.blessing",
+                "options": {
+                  "choosing": "Bishamon's Blessing"
+                }
             },
             {
                 "type": "ADVANTAGE",

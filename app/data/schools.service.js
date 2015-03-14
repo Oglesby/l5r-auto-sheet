@@ -9,8 +9,9 @@ angular.module("pocketIkoma").service("schoolService", function(ringService, ski
             visit: function (model, options) {
                 model.schools = [
                     {
-                        "type": this,
-                        "rank": 1
+                        type: this,
+                        rank: 1,
+                        isBushi: true
                     }
                 ];
                 ringService.earth.increaseTrait(model, "stamina");
