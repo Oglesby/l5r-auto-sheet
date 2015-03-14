@@ -107,10 +107,10 @@ angular.module("pocketIkoma").service("logService",
                     });
                     break;
                 case "EMPHASIS":
-                    skillService[expenditure.skillId].addEmphasis(model, expenditure.emphasis, expenditure.options);
+                    result = skillService[expenditure.skillId].addEmphasis(model, expenditure.emphasis, expenditure.options);
                     logItems.push({
                         id: n++,
-                        displayText: "Spent " + "???" + " XP to gain " + expenditure.id
+                        displayText: "Spent " + result.cost + " XP to gain " + result.name + " emphasis for the " + result.skillName + " skill"
                     });
                     break;
                 case "ADVANTAGE":

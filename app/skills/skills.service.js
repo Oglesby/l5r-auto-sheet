@@ -65,6 +65,23 @@ angular.module("pocketIkoma").service("skillService", function(_) {
         } else {
             skill.emphases.push(emphasis);
         }
+
+        return skill;
+    };
+    Skill.prototype.purchaseEmphasis = function (model, emphasis, options) {
+        var skill = this.addEmphasis(model, emphasis, options);
+        var xpCost = 2;
+
+        if (xpCost > model.characterInfo.xp) {
+            // TODO: File a warning and/or flag this log as somehow invalid?
+        }
+
+        model.characterInfo.xp = model.characterInfo.xp - xpCost;
+        var skillName = skill.type.name;
+        if (options && options.choosing) {
+            skillName += ": " + options.choosing;
+        }
+        return {cost: xpCost, name: emphasis, skill: skillName};
     };
 
     return {
