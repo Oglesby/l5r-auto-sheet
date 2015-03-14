@@ -1,10 +1,11 @@
 "use strict";
 
 angular.module("pocketIkoma").service("advantageService", function() {
-    var Advantage = function (id, name, description) {
+    var Advantage = function (id, name, description, xpCost) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.xpCost = xpCost;
     };
     Advantage.prototype.purchase = function (model, options) {
         options = options || {};

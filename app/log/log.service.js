@@ -101,10 +101,10 @@ angular.module("pocketIkoma").service("logService",
                     });
                     break;
                 case "SKILL":
-                    skillService[expenditure.id].purchase(model, expenditure.options);
+                    result = skillService[expenditure.id].purchase(model, expenditure.options);
                     logItems.push({
                         id: n++,
-                        displayText: "Spent " + cost + " XP to raise skill " + expenditure.id + " to ???"
+                        displayText: "Spent " + result.cost + " XP to raise skill " + expenditure.id + " to " + result.newValue
                     });
                     break;
                 case "EMPHASIS":

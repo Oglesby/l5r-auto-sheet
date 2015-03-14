@@ -6,8 +6,10 @@ angular.module("pocketIkoma").service("skillService", function(_) {
         this.name = name;
         this.description = description;
         this.availableEmphases = availableEmphases;
+        this.xpMult = 1;
+        this.xpMod = 0;
     };
-    Skill.prototype.purchase = function (model, options) {
+    Skill.prototype.increase = function (model, options) {
         options = options || {};
         model.skills = model.skills || [];
 
@@ -33,6 +35,18 @@ angular.module("pocketIkoma").service("skillService", function(_) {
         } else {
             skill.rank++;
         }
+        return skill;
+    };
+    Skill.prototype.purchase = function (model, options) {
+        var skill = this.increase(model, options);
+        var xpCost = skill.rank;
+
+        if (xpCost > model.characterInfo.xp) {
+            // TODO: File a warning and/or flag this log as somehow invalid?
+        }
+
+        model.characterInfo.xp = model.characterInfo.xp - xpCost;
+        return {cost: xpCost, newValue: skill.rank};
     };
     Skill.prototype.addEmphasis = function (model, emphasis, options) {
         options = options || {};
