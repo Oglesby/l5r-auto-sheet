@@ -46,7 +46,11 @@ angular.module("pocketIkoma").service("skillService", function(_) {
         }
 
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
-        return {cost: xpCost, newValue: skill.rank};
+        var description = skill.type.name;
+        if (options && options.choosing) {
+            description += ": " + options.choosing;
+        }
+        return {cost: xpCost, newValue: skill.rank, name: description};
     };
     Skill.prototype.addEmphasis = function (model, emphasis, options) {
         options = options || {};

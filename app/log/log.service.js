@@ -97,14 +97,14 @@ angular.module("pocketIkoma").service("logService",
                     var result = ringService.findRingForTrait(expenditure.id).purchase(model, expenditure.id);
                     logItems.push({
                         id: n++,
-                        displayText: "Spent " + result.cost + " XP to raise trait " + expenditure.id + " to " + result.newValue
+                        displayText: "Spent " + result.cost + " XP to raise trait " + result.name + " to " + result.newValue
                     });
                     break;
                 case "SKILL":
                     result = skillService[expenditure.id].purchase(model, expenditure.options);
                     logItems.push({
                         id: n++,
-                        displayText: "Spent " + result.cost + " XP to raise skill " + expenditure.id + " to " + result.newValue
+                        displayText: "Spent " + result.cost + " XP to raise skill " + result.name + " to " + result.newValue
                     });
                     break;
                 case "EMPHASIS":

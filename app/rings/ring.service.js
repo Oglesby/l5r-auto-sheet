@@ -54,7 +54,7 @@ angular.module("pocketIkoma").service("ringService", function() {
         }
 
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
-        return {cost: xpCost, newValue: trait.value};
+        return {cost: xpCost, newValue: trait.value, name: trait.name};
     };
 
     var earth = new Ring("earth", "Earth", "images/earth_by_exahyl-d3is114.png", 4,
