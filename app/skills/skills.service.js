@@ -37,9 +37,9 @@ angular.module("pocketIkoma").service("skillService", function(_) {
         }
         return skill;
     };
-    Skill.prototype.purchase = function (model, options) {
+    Skill.prototype.purchase = function (model, options, costOverride) {
         var skill = this.increase(model, options);
-        var xpCost = skill.rank;
+        var xpCost = _.isUndefined(costOverride) ? skill.rank : costOverride;
 
         if (xpCost > model.characterInfo.xp) {
             // TODO: File a warning and/or flag this log as somehow invalid?

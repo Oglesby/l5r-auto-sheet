@@ -89,52 +89,42 @@ angular.module("pocketIkoma").service("logService",
 
     function processXpExpenditureEntry(logEntry, model) {
         var logItems = [];
+        var n = 0;
         _.forEach(logEntry.expenditures, function (expenditure) {
-            var n = 0;
+            var displayText = "";
             switch (expenditure.type) {
                 case "TRAIT":
                     var result = ringService.findRingForTrait(expenditure.id).purchase(model, expenditure.id);
-                    logItems.push({
-                        id: n++,
-                        displayText: "Spent " + result.cost + " XP to raise trait " + result.name + " to " + result.newValue
-                    });
+                    displayText = "Spent " + result.cost + " XP to raise trait " + result.name + " to " + result.newValue;
                     break;
                 case "SKILL":
-                    result = skillService[expenditure.id].purchase(model, expenditure.options);
-                    logItems.push({
-                        id: n++,
-                        displayText: "Spent " + result.cost + " XP to raise skill " + result.name + " to " + result.newValue
-                    });
+                    result = skillService[expenditure.id].purchase(model, expenditure.options, expenditure.cost);
+                    displayText = "Spent " + result.cost + " XP to raise skill " + result.name + " to " + result.newValue;
                     break;
                 case "EMPHASIS":
                     result = skillService[expenditure.skillId].addEmphasis(model, expenditure.emphasis, expenditure.options);
-                    logItems.push({
-                        id: n++,
-                        displayText: "Spent " + result.cost + " XP to gain " + result.name + " emphasis for the " + result.skillName + " skill"
-                    });
+                    displayText = "Spent " + result.cost + " XP to gain " + result.name + " emphasis for the " + result.skillName + " skill";
                     break;
                 case "ADVANTAGE":
                     result = advantageService[expenditure.id].purchase(model, expenditure.options);
-                    logItems.push({
-                        id: n++,
-                        displayText: "Spent " + result.cost + " XP to gain " + result.name
-                    });
+                    displayText = "Spent " + result.cost + " XP to gain " + result.name;
                     break;
                 case "DISADVANTAGE":
                     result = disadvantageService[expenditure.id].purchase(model, expenditure.options);
-                    logItems.push({
-                        id: n++,
-                        displayText: "Gained " + result.cost + " XP from " + result.name
-                    });
+                    displayText ="Gained " + result.cost + " XP from " + result.name;
                     break;
                 case "KATA":
                     result = kataService[expenditure.id].purchase(model, expenditure.options);
-                    logItems.push({
-                        id: n++,
-                        displayText: "Spent " + result.cost + " XP to gain " + result.name
-                    });
-                    break;
+                    displayText = "Spent " + result.cost + " XP to gain " + result.name;
             }
+
+            if (expenditure.comment) {
+                displayText += " (" + expenditure.comment + ")";
+            }
+            logItems.push({
+                id: n++,
+                displayText:displayText
+            });
         });
 
         return {
