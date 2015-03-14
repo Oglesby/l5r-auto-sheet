@@ -37,8 +37,12 @@ angular.module("pocketIkoma").service("disadvantageService", function() {
 
         model.characterInfo.xp = model.characterInfo.xp + xpGain;
         var description = disadvantage.type.name;
-        if (options && options.choosing) {
-            description += ": " + options.choosing;
+        if (options) {
+            if (options.choosing) {
+                description += ": " + options.choosing;
+            } else if (options.rank) {
+                description += " (Rank " + options.rank + ")";
+            }
         }
         return {cost: xpGain, name: description};
     };
