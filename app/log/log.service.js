@@ -1,26 +1,16 @@
 "use strict";
 
 angular.module("pocketIkoma").service("logService",
-    function($http, _, advantageService, disadvantageService, traitService, familyService,
+    function($http, _, advantageService, disadvantageService, ringService, familyService,
              schoolService, skillService, kataService) {
 
     var baseModel = {
         "rings": {
-            "earth": 2,
-            "water": 2,
-            "fire": 2,
-            "air": 2,
-            "void": 2
-        },
-        "traits": {
-            "stamina": 2,
-            "willpower": 2,
-            "strength": 2,
-            "perception": 2,
-            "agility": 2,
-            "intelligence": 2,
-            "reflexes": 2,
-            "awareness": 2
+            "earth": ringService.earth,
+            "water": ringService.water,
+            "fire": ringService.fire,
+            "air": ringService.air,
+            "void": ringService.void
         },
         "characterInfo": {
             "glory": 10,
@@ -102,7 +92,7 @@ angular.module("pocketIkoma").service("logService",
             var n = 0;
             switch (expenditure.type) {
                 case "TRAIT":
-                    traitService[expenditure.id].purchase(model);
+                    ringService.findRingForTrait([expenditure.id]).purchase(model);
                     logItems.push({
                         id: n++,
                         displayText: "Spent " + cost + " XP to raise trait " + expenditure.id + " to ???"

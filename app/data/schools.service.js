@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module("pocketIkoma").service("schoolService", function(traitService, skillService, _) {
+angular.module("pocketIkoma").service("schoolService", function(ringService, skillService, _) {
     return {
         "hida.bushi": {
             name: "Hida Bushi",
@@ -13,7 +13,7 @@ angular.module("pocketIkoma").service("schoolService", function(traitService, sk
                         "rank": 1
                     }
                 ];
-                traitService.stamina.purchase(model);
+                ringService.earth.purchase(model, "stamina");
 
                 // Add school skills
                 skillService.athletics.purchase(model, {schoolSkill: true});

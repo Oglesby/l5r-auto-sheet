@@ -1,2 +1,2 @@
-require("./rings.directive");
-require("./traits.service");
+require("./ring.block.directive.js");
+require("./ring.service.js");
