@@ -48,25 +48,27 @@ angular.module("pocketIkoma").service("logService",
         var family = familyService[logEntry.family],
             school = schoolService[logEntry.school.id];
 
+        var logItems = [
+            {
+                displayText: "Set initial xp to " + logEntry.initialXp
+            },
+            {
+                displayText: "Set family to " + family.name
+            },
+            {
+                displayText: "Set school to " + school.name
+            }
+        ];
+
         model.characterInfo.xp = logEntry.initialXp;
-        family.visit(model);
-        school.visit(model, logEntry.school.options);
+        logItems = logItems.concat(family.visit(model));
+        logItems = logItems.concat(school.visit(model, logEntry.school.options));
 
         return {
             title: "Character Building - School and Family",
             comment: logEntry.comment,
             creationTimestamp: logEntry.creationTimestamp,
-            logItems: [
-                {
-                    displayText: "Set initial xp to " + logEntry.initialXp
-                },
-                {
-                    displayText: "Set family to " + family.name
-                },
-                {
-                    displayText: "Set school to " + school.name
-                }
-            ]
+            logItems: logItems
         };
     }
 
@@ -92,10 +94,10 @@ angular.module("pocketIkoma").service("logService",
             var n = 0;
             switch (expenditure.type) {
                 case "TRAIT":
-                    ringService.findRingForTrait([expenditure.id]).purchase(model);
+                    var result = ringService.findRingForTrait(expenditure.id).purchase(model, expenditure.id);
                     logItems.push({
                         id: n++,
-                        displayText: "Spent " + cost + " XP to raise trait " + expenditure.id + " to ???"
+                        displayText: "Spent " + result.cost + " XP to raise trait " + expenditure.id + " to " + result.newValue
                     });
                     break;
                 case "SKILL":

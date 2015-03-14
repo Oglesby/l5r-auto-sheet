@@ -7,9 +7,11 @@ angular.module("pocketIkoma").service("familyService", function(ringService) {
             bonusTrait: "Strength",
             description: "",
             visit: function (model) {
-                ringService.water.purchase(model, "strength");
+                ringService.water.increaseTrait(model, "strength");
                 model.characterInfo.family = this;
                 model.characterInfo.clan = "Crab";
+
+                return [{displayText: "Spent 0 XP to increase Strength to " + ringService.water.physicalTrait.value}];
             }
         }
     };

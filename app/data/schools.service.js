@@ -13,7 +13,7 @@ angular.module("pocketIkoma").service("schoolService", function(ringService, ski
                         "rank": 1
                     }
                 ];
-                ringService.earth.purchase(model, "stamina");
+                ringService.earth.increaseTrait(model, "stamina");
 
                 // Add school skills
                 skillService.athletics.purchase(model, {schoolSkill: true});
@@ -35,6 +35,8 @@ angular.module("pocketIkoma").service("schoolService", function(ringService, ski
                 model.characterInfo.honor = 35;
 
                 // TODO Add outfit
+
+                return [{displayText: "Spent 0 XP to increase Stamina to " + ringService.earth.physicalTrait.value}];
             }
         }
     };
