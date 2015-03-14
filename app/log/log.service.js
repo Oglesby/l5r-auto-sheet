@@ -2,7 +2,7 @@
 
 angular.module("pocketIkoma").service("logService",
     function($http, _, advantageService, disadvantageService, ringService, familyService,
-             schoolService, skillService, kataService) {
+             schoolService, skillService, kataService, insightService) {
 
     var baseModel = {
         "rings": {
@@ -37,6 +37,8 @@ angular.module("pocketIkoma").service("logService",
                             break;
                     }
                 });
+
+                insightService.calculate(model, false);
             });
     };
 
