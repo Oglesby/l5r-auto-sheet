@@ -6,7 +6,6 @@ angular.module("pocketIkoma").service("advantageService", function(_) {
         this.name = name;
         this.description = description;
         this.xpFetcher = xpFetcher;
-
     };
     Advantage.prototype.gain = function (model, options) {
         options = options || {};

@@ -122,10 +122,10 @@ angular.module("pocketIkoma").service("logService",
                     });
                     break;
                 case "DISADVANTAGE":
-                    disadvantageService[expenditure.id].purchase(model, expenditure.options);
+                    result = disadvantageService[expenditure.id].purchase(model, expenditure.options);
                     logItems.push({
                         id: n++,
-                        displayText: "Gained " + cost + " XP from " + expenditure.id
+                        displayText: "Gained " + result.cost + " XP from " + result.name
                     });
                     break;
                 case "KATA":

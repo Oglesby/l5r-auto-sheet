@@ -1,12 +1,14 @@
 "use strict";
 
 angular.module("pocketIkoma").service("disadvantageService", function() {
-    var Disadvantage = function (id, name, description) {
+    var Disadvantage = function (id, name, description, xpFetcher) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.xpFetcher = xpFetcher;
     };
-    Disadvantage.prototype.purchase = function (model, options) {
+
+    Disadvantage.prototype.gain = function (model, options) {
         options = options || {};
         model.disadvantages = model.disadvantages || [];
 
@@ -23,11 +25,32 @@ angular.module("pocketIkoma").service("disadvantageService", function() {
         }
 
         model.disadvantages.push(disadvantage);
+        return disadvantage;
     };
+    Disadvantage.prototype.purchase = function (model, options) {
+        var disadvantage = this.gain(model, options);
+        var xpGain =  this.xpFetcher(model, options);
 
+        if (xpGain > model.characterInfo.xp) {
+            // TODO: File a warning and/or flag this log as somehow invalid?
+        }
+
+        model.characterInfo.xp = model.characterInfo.xp + xpGain;
+        var description = disadvantage.type.name;
+        if (options && options.choosing) {
+            description += ": " + options.choosing;
+        }
+        return {cost: xpGain, name: description};
+    };
     return {
-        "brash": new Disadvantage("brash", "Brash", ""),
-        "compulsion": new Disadvantage("compulsion", "Compulsion", ""),
-        "gullible": new Disadvantage("gullible", "Gullible", "")
+        "brash": new Disadvantage("brash", "Brash", "",
+            function(model, options) {
+                return model.characterInfo.clan === "Lion" ? 4 : 3;
+            }),
+        "compulsion": new Disadvantage("compulsion", "Compulsion", "",
+            function(model, options) {
+                return 1 + options.rank;
+            }),
+        "gullible": new Disadvantage("gullible", "Gullible", "", function () { return 4; })
     };
 });
