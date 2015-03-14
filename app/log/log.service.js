@@ -90,7 +90,6 @@ angular.module("pocketIkoma").service("logService",
     function processXpExpenditureEntry(logEntry, model) {
         var logItems = [];
         _.forEach(logEntry.expenditures, function (expenditure) {
-            var cost = "???";
             var n = 0;
             switch (expenditure.type) {
                 case "TRAIT":
@@ -111,7 +110,7 @@ angular.module("pocketIkoma").service("logService",
                     skillService[expenditure.skillId].addEmphasis(model, expenditure.emphasis, expenditure.options);
                     logItems.push({
                         id: n++,
-                        displayText: "Spent " + cost + " XP to gain " + expenditure.id
+                        displayText: "Spent " + "???" + " XP to gain " + expenditure.id
                     });
                     break;
                 case "ADVANTAGE":
@@ -129,10 +128,10 @@ angular.module("pocketIkoma").service("logService",
                     });
                     break;
                 case "KATA":
-                    kataService[expenditure.id].purchase(model, expenditure.options);
+                    result = kataService[expenditure.id].purchase(model, expenditure.options);
                     logItems.push({
                         id: n++,
-                        displayText: "Spent " + cost + " XP to gain " + expenditure.id
+                        displayText: "Spent " + result.cost + " XP to gain " + result.name
                     });
                     break;
             }
