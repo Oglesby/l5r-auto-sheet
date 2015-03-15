@@ -59,15 +59,16 @@ angular.module("pocketIkoma").service("advantageService", function(_) {
                 return (isBushi || model.characterInfo.clan === "Crab") ? 2 : 3;
             }),
         "great.potential": new Advantage("great.potential", "Great Potential", "", function () { return 5; }),
-        "large": new Advantage("large", "Large", "",function(model, options) {
+        large: new Advantage("large", "Large", "",function(model, options) {
             return model.characterInfo.clan === "Crab" ? 3 : 4;
         }),
-        "strength.of.earth": new Advantage("strength.of.earth", "Strength of Earth", "",function(model, options) {
+        "strength.of.earth": new Advantage("strength.of.earth", "Strength of Earth", "", function(model, options) {
             var isBushi = _.any(model.schools, function (school) {
                 return school.isBushi;
             });
 
             return isBushi ? 2 : 3;
-        })
+        }),
+        favor: new Advantage("favor", "Favor", "", function(model, options) { return 0; })
     };
 });

@@ -223,6 +223,7 @@
         "type": "MODULE_COMPLETION",
         "name": "A Foreign Legacy",
         "xpReward": 5,
+        "gloryReward": 1,
         "creationTimestamp": "2014-05-24 11:51:30"
     },
     {
@@ -240,5 +241,54 @@
                 }
             }
         ]
+    },
+    {
+      "type": "MODULE_COMPLETION",
+      "name": "Lies, Lies, Lies",
+      "xpReward": 5,
+      "creationTimestamp": "2014-05-24 11:51:30",
+      "gains": [
+        {
+          "type": "ADVANTAGE",
+          "id": "favor",
+          "cost": 0,
+          "options": {
+            "choosing": "Crane",
+            "rank": 1
+          }
+        },
+        {
+          "type": "CERT",
+          "id": "asahina.tortoiseshell.fetish",
+          "name": "Asahina Tortoiseshell Fetish",
+          "cost": 0,
+          "text": "OOOOOOH PURTY"
+        }
+      ]
+    },
+    {
+      "type": "MODULE_COMPLETION",
+      "name": "Fury of the Elements",
+      "xpReward": 5,
+      "gloryReward": 1,
+      "honorReward": 2,
+      "creationTimestamp": "2014-05-24 11:51:30",
+      "gains": [
+        {
+          "type": "CERT",
+          "id": "secret.monk.training",
+          "name": "Secret Monk Training",
+          "cost": 5,
+          "text": "Woohah, you get doublecrab hands and striking as earth kata."
+        },
+        {
+          "type": "KATA",
+          "id": "indomitable.warrior.style"
+        },
+        {
+          "type": "ADVANTAGE",
+          "id": "crab.hands"
+        }
+      ]
     }
 ]

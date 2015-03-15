@@ -17,6 +17,7 @@ angular.module("pocketIkoma").service("logService",
             "honor": 10,
             "status": 10,
             "taint": 0,
+            "infamy": 0,
             "shadowRank": 0
         }
     };
@@ -35,6 +36,8 @@ angular.module("pocketIkoma").service("logService",
                         case "XP_EXPENDITURE":
                             log.push(processXpExpenditureEntry(logEntry, model));
                             break;
+                        case "MODULE_COMPLETION":
+                            log.push(processModuleCompletionEntry(logEntry, model));
                     }
                 });
 
@@ -104,7 +107,7 @@ angular.module("pocketIkoma").service("logService",
                     displayText = "Spent " + result.cost + " XP to raise skill " + result.name + " to " + result.newValue;
                     break;
                 case "EMPHASIS":
-                    result = skillService[expenditure.skillId].addEmphasis(model, expenditure.emphasis, expenditure.options);
+                    result = skillService[expenditure.skillId].purchaseEmphasis(model, expenditure.emphasis, expenditure.options);
                     displayText = "Spent " + result.cost + " XP to gain " + result.name + " emphasis for the " + result.skillName + " skill";
                     break;
                 case "ADVANTAGE":
@@ -135,6 +138,77 @@ angular.module("pocketIkoma").service("logService",
             creationTimestamp: logEntry.creationTimestamp,
             logItems: logItems
         };
+    }
+
+    function processModuleCompletionEntry(logEntry, model) {
+        var logItems = [];
+        var n = 0;
+
+        handleCharInfoType("xp", logEntry, logItems, model, 1);
+        handleCharInfoType("status", logEntry, logItems, model, 0.1);
+        handleCharInfoType("glory", logEntry, logItems, model, 0.1);
+        handleCharInfoType("honor", logEntry, logItems, model, 0.1);
+        handleCharInfoType("taint", logEntry, logItems, model, 0.1);
+        handleCharInfoType("infamy", logEntry, logItems, model, 0.1);
+
+        _.forEach(logEntry.gains, function (expenditure) {
+            var displayText = "";
+            switch (expenditure.type) {
+                case "TRAIT":
+                    var trait = ringService.findRingForTrait(expenditure.id).increaseTrait(model, expenditure.id);
+                    displayText = "Spent 0 XP to raise trait " + trait.name + " to " + trait.value;
+                    break;
+                case "SKILL":
+                    var skill = skillService[expenditure.id].increase(model, expenditure.options);
+                    displayText = "Spent 0 XP to raise skill " + skill.type.name + " to " + skill.rank;
+                    break;
+                case "EMPHASIS":
+                    skill = skillService[expenditure.skillId].addEmphasis(model, expenditure.emphasis, expenditure.options);
+                    displayText = "Spent 0 XP to gain " + expenditure.emphasis + " emphasis for the " + skill.name + " skill";
+                    break;
+                case "ADVANTAGE":
+                    var options = expenditure.options;
+                    var advantage = advantageService[expenditure.id].gain(model, options);
+                    displayText = "Spent 0 XP to gain " + advantage.type.name;
+                    displayText = (options && options.choosing) ? displayText + ": " + options.choosing : displayText;
+                    break;
+                case "DISADVANTAGE":
+                    options = expenditure.options;
+                    var disadvantage = disadvantageService[expenditure.id].gain(model, options);
+                    displayText ="Gained 0 XP from " + disadvantage.type.name;
+                    displayText = (options && options.choosing) ? displayText + ": " + options.choosing : displayText;
+                    break;
+                case "KATA":
+                    var kata = kataService[expenditure.id].purchase(model, expenditure.options);
+                    displayText = "Spent 0 XP to gain " + kata.name;
+            }
+
+            if (expenditure.comment) {
+                displayText += " (" + expenditure.comment + ")";
+            }
+            logItems.push({
+                id: n++,
+                displayText:displayText
+            });
+        });
+
+        return {
+            title: "Completed Module: " + logEntry.name,
+            comment: logEntry.comment,
+            creationTimestamp: logEntry.creationTimestamp,
+            logItems: logItems
+        };
+    }
+
+    function handleCharInfoType(type, logEntry, logItems, model, displayMult) {
+        var reward = logEntry[type + "Reward"] || 0;
+        model.characterInfo[type] += reward;
+
+        if (reward > 0) {
+            logItems.push({displayText: "Gained " + reward * displayMult + " " + type});
+        } else if (reward < 0) {
+            logItems.push({displayText: "Lost " + reward * displayMult + " " + type});
+        }
     }
 
     return {

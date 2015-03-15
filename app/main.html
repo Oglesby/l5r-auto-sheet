@@ -6,6 +6,12 @@
         <dd>{{model.characterInfo.clan}}</dd>
         <dt>School</dt>
         <dd><span ng-repeat="school in model.schools">{{school.type.name}} {{school.rank}} {{$last ? "" : " / "}}</span></dd>
+        <dt>Honor</dt>
+        <dd>{{model.characterInfo.honor / 10}}</dd>
+        <dt>Glory</dt>
+        <dd>{{model.characterInfo.glory / 10}}</dd>
+        <dt>Status</dt>
+        <dd>{{model.characterInfo.status / 10}}</dd>
     </dl>
 
     <dl class="dl-horizontal col-lg-6">
@@ -15,6 +21,10 @@
         <dd>{{model.characterInfo.xp}}</dd>
         <dt>Insight</dt>
         <dd>{{model.characterInfo.insight}}</dd>
+        <dt>Infamy</dt>
+        <dd>{{model.characterInfo.infamy / 10}}</dd>
+        <dt>Taint</dt>
+        <dd>{{model.characterInfo.taint / 10}}</dd>
     </dl>
 </div>
 
