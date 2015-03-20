@@ -9,6 +9,7 @@ var debug = require('gulp-debug');
 var karma = require('karma').server;
 var browserify = require('gulp-browserify');
 var concat = require('gulp-concat');
+var stylish = require('jshint-stylish');
 
 // Default task
 gulp.task('default', ['serve', 'watch']);
@@ -23,8 +24,7 @@ gulp.task('watch', function() {
 gulp.task('lint', function() {
     return gulp.src(['./app/**/*.js', '!./app/bower_components/**', '!./app/bundle.js'])
         .pipe(jshint())
-        .pipe(jshint.reporter('default'))
-        .pipe(jshint.reporter('fail'));
+        .pipe(jshint.reporter(stylish))
 });
 
 gulp.task('less', function() {
