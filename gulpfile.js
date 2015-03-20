@@ -11,27 +11,24 @@ var browserify = require('gulp-browserify');
 var concat = require('gulp-concat');
 
 // Default task
-gulp.task('default', ['serve']);
+gulp.task('default', ['serve', 'watch']);
 
 // Developer tasks
-gulp.task('watch', ['serve'], function() {
-    // TODO: Fix this somehow.
-    //gulp.watch(['app/*.js', 'app/**/*.js', 'assets/**/*.less'], function() {
-    //    connect.reload();
-    //});
-});
-
 gulp.task('serve', ['less', 'lint', 'browserify', 'test', 'connect']);
 
+gulp.task('watch', function() {
+    gulp.watch(['./app/*.js', './app/**/*.js', './app/*.html', './app/**/*.html', './assets/**/*.less'], ['re-serve']);
+});
+
 gulp.task('lint', function() {
-    gulp.src(['./app/**/*.js', '!./app/bower_components/**', '!./app/bundle.js'])
+    return gulp.src(['./app/**/*.js', '!./app/bower_components/**', '!./app/bundle.js'])
         .pipe(jshint())
         .pipe(jshint.reporter('default'))
         .pipe(jshint.reporter('fail'));
 });
 
 gulp.task('less', function() {
-    gulp.src(['./assets/styles/*.less', './assets/styles/**/*.less'])
+    return gulp.src(['./assets/styles/*.less', './assets/styles/**/*.less'])
         .pipe(less({
             paths: ['.']
         }))
@@ -46,32 +43,42 @@ gulp.task('test', function (done) {
     //}, done);
 });
 
+gulp.task('re-serve', ['less', 'lint', 'browserify', 'test', 'reload']);
 
 // Connection tasks
 gulp.task('connect', function() {
-    connect.server({
+    return connect.server({
         root: ['app', 'assets'],
+        livereload: true,
         port: 9000
     });
 });
 
 gulp.task('connect-dist', function() {
-    connect.server({
+    return connect.server({
         root: 'dist',
         port: 9001
     });
 });
 
+gulp.task('reload', function() {
+    return gulp.src('./app/*.html')
+        .pipe(connect.reload());
+});
+
+
 // Basic tasks
 gulp.task('clean', function() {
-    gulp.src('./app/bundle.js')
+    return gulp.src('./app/bundle.js')
         .pipe(clean({force: true}));
 });
 
 gulp.task('clean-dist', ['clean'], function() {
-    gulp.src('./dist/*')
+    return gulp.src('./dist/*')
         .pipe(clean({force: true}));
 });
+
+
 
 // Distribution tasks
 gulp.task('build',
@@ -80,13 +87,13 @@ gulp.task('build',
 
 gulp.task('minify-css', function() {
     var opts = {comments:true,spare:true};
-    gulp.src(['./assets/**/*.css', '!./app/bower_components/**'])
+    return gulp.src(['./assets/**/*.css', '!./app/bower_components/**'])
         .pipe(minifyCSS(opts))
         .pipe(gulp.dest('dist/'))
 });
 
 gulp.task('minify-js', function() {
-    gulp.src(['./app/**/*.js', '!./app/bower_components/**'])
+    return gulp.src(['./app/**/*.js', '!./app/bower_components/**'])
         .pipe(uglify({
             // inSourceMap:
             // outSourceMap: "app.js.map"
@@ -95,35 +102,35 @@ gulp.task('minify-js', function() {
 });
 
 gulp.task('copy-bower-components', function() {
-    gulp.src('./app/bower_components/**')
+    return gulp.src('./app/bower_components/**')
         .pipe(gulp.dest('dist/bower_components'));
 });
 
 gulp.task('copy-html-files', function() {
-    gulp.src('./app/**/*.html')
+    return gulp.src('./app/**/*.html')
         .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('copy-js', function() {
-    gulp.src(['./app/bundle.js', '!./app/bower_components/**'])
+    return gulp.src(['./app/bundle.js', '!./app/bower_components/**'])
         .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('copy-css', function() {
-    gulp.src(['./assets/**/*.css', '!./app/bower_components/**'])
+    return gulp.src(['./assets/**/*.css', '!./app/bower_components/**'])
         .pipe(gulp.dest('dist/'));
 });
 
 gulp.task('copy-assets', function() {
     // Don't copy the styles, they're migrated on their own.
-    gulp.src(['./assets/**/*.*', '!./assets/styles/*'])
+    return gulp.src(['./assets/**/*.*', '!./assets/styles/*'])
         .pipe(gulp.dest('dist/'));
 });
 
 // Browserify task
 gulp.task('browserify', function() {
     // Single point of entry (make sure not to src ALL your files, browserify will figure it out for you)
-    gulp.src(['app/app.js'])
+    return gulp.src(['app/app.js'])
         .pipe(browserify({
             insertGlobals: true,
             debug: true
@@ -131,12 +138,3 @@ gulp.task('browserify', function() {
         .pipe(concat('bundle.js'))
         .pipe(gulp.dest('app/'))
 });
-
-//gulp.task('watch', ['lint'], function() {
-//    // Watch our scripts
-//    gulp.watch(['app/*.js', 'app/**/*.js'],[
-//        'lint',
-//        'browserify'
-//    ]);
-//});
-
