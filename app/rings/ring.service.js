@@ -30,7 +30,7 @@ angular.module("pocketIkoma").service("ringService", function() {
         if (this.voidTrait) {
             voidVal = this.voidTrait.value;
         }
-        return Math.max(physical, spiritual, voidVal);
+        return Math.max(Math.min(physical, spiritual), voidVal);
     };
     Ring.prototype.increaseTrait = function (model, traitId) {
         var trait;
