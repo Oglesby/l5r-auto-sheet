@@ -13,6 +13,7 @@ sudo npm update -g npm
 # Install gulp and bower via NPM
 sudo npm install -g gulp bower
 
-# Open port 9000 on the VM
+# Open ports 9000 and 35729 on the VM
 sudo iptables -I INPUT 1 -p tcp --dport 9000 -j ACCEPT
+sudo iptables -I INPUT 1 -p tcp --dport 35729 -j ACCEPT
 sudo service iptables save
