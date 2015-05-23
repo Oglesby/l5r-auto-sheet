@@ -64,7 +64,7 @@ angular.module("pocketIkoma").service("ringService", function() {
     var fire = new Ring("fire", "Fire", "images/fire_ring_by_exahyl-d3is13z.png", 4,
             new Trait("agility", "Agility", "", 2), new Trait("intelligence", "Intelligence", "", 2));
     var air = new Ring("air", "Air", "images/air_ring_by_exahyl-d3is15c.png", 4,
-            new Trait("agility", "Agility", "", 2), new Trait("intelligence", "Intelligence", "", 2));
+            new Trait("reflexes", "Reflexes", "", 2), new Trait("awareness", "Awareness", "", 2));
     var voidRing = new Ring("void", "Void", "images/void_by_exahyl-d3is16h.png", 6, null, null, new Trait("void", "Void", "", 2));
 
     var ringMap = {
