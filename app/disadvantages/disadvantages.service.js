@@ -55,6 +55,17 @@ angular.module("pocketIkoma").service("disadvantageService", function() {
             function(model, options) {
                 return 1 + options.rank;
             }),
-        "gullible": new Disadvantage("gullible", "Gullible", "", function () { return 4; })
+        "gullible": new Disadvantage("gullible", "Gullible", "", function () { return 4; }),
+        "disturbing.countenance": new Disadvantage("disturbing.countenance", "Disturbing Countenance", "",
+            function(model, options) {
+                return model.characterInfo.clan === "Spider" ? 4 : 3;
+            }),
+        "jealous": new Disadvantage("jealous", "Jealous", "", function () { return 3; }),
+        "phobia": new Disadvantage("phobia", "Phobia", "",
+            function(model, options) {
+                return options.rank;
+            }),
+        "seven.fortunes.curse": new Disadvantage("seven.fortunes.curse", "Seven Fortune's Curse", "", function () { return 3; }),
+
     };
 });

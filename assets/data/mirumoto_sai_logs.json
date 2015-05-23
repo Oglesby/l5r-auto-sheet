@@ -1,0 +1,132 @@
+[
+  {
+    "type": "CREATION",
+    "initialXp": 45,
+    "family": "mirumoto",
+    "school": {
+      "id": "mirumoto.bushi",
+      "options": {
+        "chosenSkills": [{
+          "id": "athletics"
+        }]
+      }
+    },
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "CHARACTER_INFO",
+    "name": "Sai",
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Traits",
+    "expenditures": [
+      {
+        "type": "TRAIT",
+        "id": "reflexes"
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Advantages",
+    "expenditures": [
+      {
+        "type": "ADVANTAGE",
+        "id": "great.potential",
+        "options": {
+          "choosing": "Kenjutsu"
+        }
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "prodigy"
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "luck",
+        "options": {
+          "rank": 2
+        }
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "enlightened"
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "elemental.blessing",
+        "options": {
+          "choosing": "Air"
+        }
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "tactician"
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Disadvantages",
+    "expenditures": [
+      {
+        "type": "DISADVANTAGE",
+        "id": "disturbing.countenance"
+      },
+      {
+        "type": "DISADVANTAGE",
+        "id": "seven.fortunes.curse",
+        "options": {
+          "choosing": "Benten's"
+        }
+      },
+      {
+        "type": "DISADVANTAGE",
+        "id": "jealous"
+      },
+      {
+        "type": "DISADVANTAGE",
+        "id": "phobia",
+        "options": {
+          "choosing": "Uncontrolled Fires",
+          "rank": 1
+        }
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Skills",
+    "expenditures": [
+      {
+        "type": "SKILL",
+        "id": "kenjutsu"
+      },
+      {
+        "type": "SKILL",
+        "id": "iaijutsu"
+      },
+      {
+        "type": "SKILL",
+        "id": "battle"
+      },
+      {
+        "type": "SKILL",
+        "id": "etiquette"
+      },
+      {
+        "type": "SKILL",
+        "id": "games",
+        "options": {
+          "choosing": "Sadane"
+        }
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  }
+]
