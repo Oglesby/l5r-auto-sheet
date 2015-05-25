@@ -89,7 +89,7 @@ angular.module('pocketIkoma').service('skillService', function(_) {
         battle: new Skill('battle', 'Battle', '', []),
         defense: new Skill('defense', 'Defense', '', []),
         etiquette: new Skill('etiquette', 'Etiquette', '', []),
-        'heavy.weapons': new Skill('heavy.weapons', 'Heavy Weapons', '', []),
+        heavyWeapons: new Skill('heavyWeapons', 'Heavy Weapons', '', []),
         hunting: new Skill('hunting', 'Hunting', '', []),
         intimidation: new Skill('intimidation', 'Intimidation', '', []),
         jiujutsu: new Skill('jiujutsu', 'Jiujutsu', '', []),

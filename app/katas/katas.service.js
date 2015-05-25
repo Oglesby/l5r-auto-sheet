@@ -30,6 +30,6 @@ angular.module('pocketIkoma').service('kataService', function() {
     };
 
     return {
-        'indomitable.warrior.style': new Kata('indomitable.warrior.style', 'Indomitable Warrior Style', '')
+        indomitableWarriorStyle: new Kata('indomitableWarriorStyle', 'Indomitable Warrior Style', '')
     };
 });

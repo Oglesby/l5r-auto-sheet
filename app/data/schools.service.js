@@ -2,7 +2,7 @@
 
 angular.module('pocketIkoma').service('schoolService', function(ringService, skillService, _) {
     return {
-        'hida.bushi': {
+        hidaBushi: {
             name: 'Hida Bushi',
             bonusTrait: 'Stamina',
             description: '',
@@ -19,8 +19,8 @@ angular.module('pocketIkoma').service('schoolService', function(ringService, ski
                 // Add school skills
                 skillService.athletics.increase(model, {schoolSkill: true});
                 skillService.defense.increase(model, {schoolSkill: true});
-                skillService['heavy.weapons'].increase(model, {schoolSkill: true});
-                skillService['heavy.weapons'].addEmphasis(model, 'Tetsubo');
+                skillService.heavyWeapons.increase(model, {schoolSkill: true});
+                skillService.heavyWeapons.addEmphasis(model, 'Tetsubo');
                 skillService.intimidation.increase(model, {schoolSkill: true});
                 skillService.kenjutsu.increase(model, {schoolSkill: true});
                 skillService.lore.increase(model, {
@@ -51,7 +51,7 @@ angular.module('pocketIkoma').service('schoolService', function(ringService, ski
                 ];
             }
         },
-        'mirumoto.bushi': {
+        mirumotoBushi: {
             name: 'Mirumoto Bushi',
             bonusTrait: 'Stamina',
             description: '',

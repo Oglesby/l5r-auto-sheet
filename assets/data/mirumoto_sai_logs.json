@@ -4,7 +4,7 @@
     "initialXp": 45,
     "family": "mirumoto",
     "school": {
-      "id": "mirumoto.bushi",
+      "id": "mirumotoBushi",
       "options": {
         "chosenSkills": [{
           "id": "athletics"
@@ -35,7 +35,7 @@
     "expenditures": [
       {
         "type": "ADVANTAGE",
-        "id": "great.potential",
+        "id": "greatPotential",
         "options": {
           "choosing": "Kenjutsu"
         }
@@ -57,7 +57,7 @@
       },
       {
         "type": "ADVANTAGE",
-        "id": "elemental.blessing",
+        "id": "elementalBlessing",
         "options": {
           "choosing": "Air"
         }
@@ -75,11 +75,11 @@
     "expenditures": [
       {
         "type": "DISADVANTAGE",
-        "id": "disturbing.countenance"
+        "id": "disturbingCountenance"
       },
       {
         "type": "DISADVANTAGE",
-        "id": "seven.fortunes.curse",
+        "id": "sevenFortunesCurse",
         "options": {
           "choosing": "Benten's"
         }

@@ -4,7 +4,7 @@
         "initialXp": 125,
         "family": "hida",
         "school": {
-            "id": "hida.bushi",
+            "id": "hidaBushi",
             "options": {
                 "chosenSkills": [{
                     "id": "battle"
@@ -51,7 +51,7 @@
         "expenditures": [
             {
                 "type": "ADVANTAGE",
-                "id": "great.potential",
+                "id": "greatPotential",
                 "options": {
                     "choosing": "Heavy Weapons"
                 }
@@ -62,18 +62,18 @@
             },
             {
                 "type": "ADVANTAGE",
-                "id": "seven.fortunes.blessing",
+                "id": "sevenFortunesBlessing",
                 "options": {
                   "choosing": "Bishamon's Blessing"
                 }
             },
             {
                 "type": "ADVANTAGE",
-                "id": "strength.of.earth"
+                "id": "strengthOfEarth"
             },
             {
                 "type": "ADVANTAGE",
-                "id": "crab.hands"
+                "id": "crabHands"
             }
         ],
         "creationTimestamp": "2014-05-24 11:51:30"
@@ -107,7 +107,7 @@
         "expenditures": [
             {
                 "type": "KATA",
-                "id": "indomitable.warrior.style"
+                "id": "indomitableWarriorStyle"
             }
         ],
         "creationTimestamp": "2014-05-24 11:51:30"
@@ -118,19 +118,19 @@
         "expenditures": [
             {
                 "type": "SKILL",
-                "id": "heavy.weapons"
+                "id": "heavyWeapons"
             },
             {
                 "type": "SKILL",
-                "id": "heavy.weapons"
+                "id": "heavyWeapons"
             },
             {
                 "type": "SKILL",
-                "id": "heavy.weapons"
+                "id": "heavyWeapons"
             },
             {
                 "type": "SKILL",
-                "id": "heavy.weapons"
+                "id": "heavyWeapons"
             },
             {
                 "type": "SKILL",
@@ -259,7 +259,7 @@
         },
         {
           "type": "CERT",
-          "id": "asahina.tortoiseshell.fetish",
+          "id": "asahinaTortoiseshellFetish",
           "name": "Asahina Tortoiseshell Fetish",
           "cost": 0,
           "text": "OOOOOOH PURTY"
@@ -276,18 +276,18 @@
       "gains": [
         {
           "type": "CERT",
-          "id": "secret.monk.training",
+          "id": "secretMonkTraining",
           "name": "Secret Monk Training",
           "cost": 5,
           "text": "Woohah, you get doublecrab hands and striking as earth kata."
         },
         {
           "type": "KATA",
-          "id": "indomitable.warrior.style"
+          "id": "indomitableWarriorStyle"
         },
         {
           "type": "ADVANTAGE",
-          "id": "crab.hands"
+          "id": "crabHands"
         }
       ]
     }

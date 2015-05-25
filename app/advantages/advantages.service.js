@@ -42,7 +42,7 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
         return {cost: xpCost, name: description};
     };
     return {
-        'seven.fortunes.blessing': new Advantage('seven.fortunes.blessing', 'Seven Fortune\'s Blessing', '',
+        sevenFortunesBlessing: new Advantage('sevenFortunesBlessing', 'Seven Fortune\'s Blessing', '',
             function(model, options) {
                 if (options.choosing === 'Bishamon\'s Blessing') {
                     return (model.characterInfo.clan === 'Lion' || model.characterInfo.clan === 'Crab') ? 4 : 5;
@@ -50,7 +50,7 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
                     return 4;
                 }
             }),
-        'crab.hands': new Advantage('crab.hands', 'Crab Hands', '',
+        crabHands: new Advantage('crabHands', 'Crab Hands', '',
             function(model, options) {
                 var isBushi = _.any(model.schools, function (school) {
                     return school.isBushi;
@@ -58,11 +58,11 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
 
                 return (isBushi || model.characterInfo.clan === 'Crab') ? 2 : 3;
             }),
-        'great.potential': new Advantage('great.potential', 'Great Potential', '', function () { return 5; }),
+        greatPotential: new Advantage('greatPotential', 'Great Potential', '', function () { return 5; }),
         large: new Advantage('large', 'Large', '',function(model, options) {
             return model.characterInfo.clan === 'Crab' ? 3 : 4;
         }),
-        'strength.of.earth': new Advantage('strength.of.earth', 'Strength of Earth', '', function(model, options) {
+        strengthOfEarth: new Advantage('strengthOfEarth', 'Strength of Earth', '', function(model, options) {
             var isBushi = _.any(model.schools, function (school) {
                 return school.isBushi;
             });
@@ -71,7 +71,7 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
         }),
         favor: new Advantage('favor', 'Favor', '', function(model, options) { return 0; }),
         tactician: new Advantage('tactician', 'Tactician', '', function(model, options) { return 3; }),
-        'elemental.blessing': new Advantage('elemental.blessing', 'Elemental Blessing', '', function(model, options) {
+        elementalBlessing: new Advantage('elementalBlessing', 'Elemental Blessing', '', function(model, options) {
             return (model.characterInfo.clan === 'Phoenix') ? 3 : 4;
         }),
         enlightened: new Advantage('enlightened', 'Enlightened', '', function(model, options) {

@@ -56,7 +56,7 @@ angular.module('pocketIkoma').service('disadvantageService', function() {
                 return 1 + options.rank;
             }),
         gullible: new Disadvantage('gullible', 'Gullible', '', function () { return 4; }),
-        'disturbing.countenance': new Disadvantage('disturbing.countenance', 'Disturbing Countenance', '',
+        disturbingCountenance: new Disadvantage('disturbingCountenance', 'Disturbing Countenance', '',
             function(model, options) {
                 return model.characterInfo.clan === 'Spider' ? 4 : 3;
             }),
@@ -65,6 +65,6 @@ angular.module('pocketIkoma').service('disadvantageService', function() {
             function(model, options) {
                 return options.rank;
             }),
-        'seven.fortunes.curse': new Disadvantage('seven.fortunes.curse', 'Seven Fortune\'s Curse', '', function () { return 3; }),
+        sevenFortunesCurse: new Disadvantage('sevenFortunesCurse', 'Seven Fortune\'s Curse', '', function () { return 3; }),
     };
 });
