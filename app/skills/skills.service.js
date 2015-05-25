@@ -85,22 +85,22 @@ angular.module('pocketIkoma').service('skillService', function(_) {
     };
 
     return {
-        'athletics': new Skill('athletics', 'Athletics', '', []),
-        'battle': new Skill('battle', 'Battle', '', []),
-        'defense': new Skill('defense', 'Defense', '', []),
-        'etiquette': new Skill('etiquette', 'Etiquette', '', []),
+        athletics: new Skill('athletics', 'Athletics', '', []),
+        battle: new Skill('battle', 'Battle', '', []),
+        defense: new Skill('defense', 'Defense', '', []),
+        etiquette: new Skill('etiquette', 'Etiquette', '', []),
         'heavy.weapons': new Skill('heavy.weapons', 'Heavy Weapons', '', []),
-        'hunting': new Skill('hunting', 'Hunting', '', []),
-        'intimidation': new Skill('intimidation', 'Intimidation', '', []),
-        'jiujutsu': new Skill('jiujutsu', 'Jiujutsu', '', []),
-        'kenjutsu': new Skill('kenjutsu', 'Kenjutsu', '', []),
-        'knives': new Skill('knives', 'Knives', '', []),
-        'horsemanship': new Skill('horsemanship', 'Horsemanship', '', []),
-        'investigation': new Skill('investigation', 'Investigation', '', []),
-        'lore': new Skill('lore', 'Lore', '', []),
-        'iaijutsu': new Skill('iaijutsu', 'Iaijutsu', '', ['Katana']),
-        'theology': new Skill('theology', 'Theology', '', []),
-        'meditation': new Skill('meditation', 'Meditation', '', []),
-        'games': new Skill('games', 'Games', '', [])
+        hunting: new Skill('hunting', 'Hunting', '', []),
+        intimidation: new Skill('intimidation', 'Intimidation', '', []),
+        jiujutsu: new Skill('jiujutsu', 'Jiujutsu', '', []),
+        kenjutsu: new Skill('kenjutsu', 'Kenjutsu', '', []),
+        knives: new Skill('knives', 'Knives', '', []),
+        horsemanship: new Skill('horsemanship', 'Horsemanship', '', []),
+        investigation: new Skill('investigation', 'Investigation', '', []),
+        lore: new Skill('lore', 'Lore', '', []),
+        iaijutsu: new Skill('iaijutsu', 'Iaijutsu', '', ['Katana']),
+        theology: new Skill('theology', 'Theology', '', []),
+        meditation: new Skill('meditation', 'Meditation', '', []),
+        games: new Skill('games', 'Games', '', [])
     };
 });

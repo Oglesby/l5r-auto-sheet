@@ -5,20 +5,20 @@ angular.module('pocketIkoma').service('logService',
              schoolService, skillService, kataService, insightService) {
 
     var baseModel = {
-        'rings': {
-            'earth': ringService.earth,
-            'water': ringService.water,
-            'fire': ringService.fire,
-            'air': ringService.air,
-            'void': ringService.void
+        rings: {
+            earth: ringService.earth,
+            water: ringService.water,
+            fire: ringService.fire,
+            air: ringService.air,
+            void: ringService.void
         },
-        'characterInfo': {
-            'glory': 10,
-            'honor': 10,
-            'status': 10,
-            'taint': 0,
-            'infamy': 0,
-            'shadowRank': 0
+        characterInfo: {
+            glory: 10,
+            honor: 10,
+            status: 10,
+            taint: 0,
+            infamy: 0,
+            shadowRank: 0
         }
     };
 

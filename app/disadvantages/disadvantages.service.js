@@ -47,21 +47,21 @@ angular.module('pocketIkoma').service('disadvantageService', function() {
         return {cost: xpGain, name: description};
     };
     return {
-        'brash': new Disadvantage('brash', 'Brash', '',
+        brash: new Disadvantage('brash', 'Brash', '',
             function(model, options) {
                 return model.characterInfo.clan === 'Lion' ? 4 : 3;
             }),
-        'compulsion': new Disadvantage('compulsion', 'Compulsion', '',
+        compulsion: new Disadvantage('compulsion', 'Compulsion', '',
             function(model, options) {
                 return 1 + options.rank;
             }),
-        'gullible': new Disadvantage('gullible', 'Gullible', '', function () { return 4; }),
+        gullible: new Disadvantage('gullible', 'Gullible', '', function () { return 4; }),
         'disturbing.countenance': new Disadvantage('disturbing.countenance', 'Disturbing Countenance', '',
             function(model, options) {
                 return model.characterInfo.clan === 'Spider' ? 4 : 3;
             }),
-        'jealous': new Disadvantage('jealous', 'Jealous', '', function () { return 3; }),
-        'phobia': new Disadvantage('phobia', 'Phobia', '',
+        jealous: new Disadvantage('jealous', 'Jealous', '', function () { return 3; }),
+        phobia: new Disadvantage('phobia', 'Phobia', '',
             function(model, options) {
                 return options.rank;
             }),
