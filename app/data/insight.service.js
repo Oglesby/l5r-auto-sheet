@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma").service("insightService", function(_) {
+angular.module('pocketIkoma').service('insightService', function(_) {
     var calculate = function(model, countRankOneSkills) {
         var insight = 0;
 
@@ -20,11 +20,11 @@ angular.module("pocketIkoma").service("insightService", function(_) {
         });
 
         // Masteries
-        if (_.find(model.skills, {id: "etiquette", rank: 3})) {
+        if (_.find(model.skills, {id: 'etiquette', rank: 3})) {
             insight += 3;
         }
 
-        if (_.find(model.skills, {id: "courtier", rank: 3})) {
+        if (_.find(model.skills, {id: 'courtier', rank: 3})) {
             insight += 3;
         }
 

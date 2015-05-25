@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma")
-    .constant("_", window._)
-    .controller("piCharacterData", function ($scope, logService) {
+angular.module('pocketIkoma')
+    .constant('_', window._)
+    .controller('piCharacterData', function ($scope, logService) {
         $scope.model = logService.getBaseModel();
         $scope.log = [];
 

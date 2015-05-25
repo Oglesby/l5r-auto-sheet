@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma").service("ringService", function() {
+angular.module('pocketIkoma').service('ringService', function() {
     var Trait = function (id, name, description, value) {
         this.id = id;
         this.name = name;
@@ -57,15 +57,15 @@ angular.module("pocketIkoma").service("ringService", function() {
         return {cost: xpCost, newValue: trait.value, name: trait.name};
     };
 
-    var earth = new Ring("earth", "Earth", "images/earth_by_exahyl-d3is114.png", 4,
-        new Trait("stamina", "Stamina", "", 2), new Trait("willpower", "Willpower", "", 2));
-    var water = new Ring("water", "Water", "images/water_ring_by_exahyl-d3is12g.png", 4,
-            new Trait("strength", "Strength", "", 2), new Trait("perception", "Perception", "", 2));
-    var fire = new Ring("fire", "Fire", "images/fire_ring_by_exahyl-d3is13z.png", 4,
-            new Trait("agility", "Agility", "", 2), new Trait("intelligence", "Intelligence", "", 2));
-    var air = new Ring("air", "Air", "images/air_ring_by_exahyl-d3is15c.png", 4,
-            new Trait("reflexes", "Reflexes", "", 2), new Trait("awareness", "Awareness", "", 2));
-    var voidRing = new Ring("void", "Void", "images/void_by_exahyl-d3is16h.png", 6, null, null, new Trait("void", "Void", "", 2));
+    var earth = new Ring('earth', 'Earth', 'images/earth_by_exahyl-d3is114.png', 4,
+        new Trait('stamina', 'Stamina', '', 2), new Trait('willpower', 'Willpower', '', 2));
+    var water = new Ring('water', 'Water', 'images/water_ring_by_exahyl-d3is12g.png', 4,
+            new Trait('strength', 'Strength', '', 2), new Trait('perception', 'Perception', '', 2));
+    var fire = new Ring('fire', 'Fire', 'images/fire_ring_by_exahyl-d3is13z.png', 4,
+            new Trait('agility', 'Agility', '', 2), new Trait('intelligence', 'Intelligence', '', 2));
+    var air = new Ring('air', 'Air', 'images/air_ring_by_exahyl-d3is15c.png', 4,
+            new Trait('reflexes', 'Reflexes', '', 2), new Trait('awareness', 'Awareness', '', 2));
+    var voidRing = new Ring('void', 'Void', 'images/void_by_exahyl-d3is16h.png', 6, null, null, new Trait('void', 'Void', '', 2));
 
     var ringMap = {
         stamina: earth,

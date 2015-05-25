@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma").directive("piSkills", function () {
+angular.module('pocketIkoma').directive('piSkills', function () {
     return {
-        restrict: "E",
-        templateUrl: "skills/skills.html"
+        restrict: 'E',
+        templateUrl: 'skills/skills.html'
     };
 });

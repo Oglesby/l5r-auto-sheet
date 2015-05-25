@@ -1,2 +1,2 @@
-require("./disadvantages.directive");
-require("./disadvantages.service");
+require('./disadvantages.directive');
+require('./disadvantages.service');

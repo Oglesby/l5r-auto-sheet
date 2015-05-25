@@ -1,15 +1,15 @@
-"use strict";
+'use strict';
 
 angular
-    .module("pocketIkoma", []);
+    .module('pocketIkoma', []);
 
-require("./main");
-require("./advantages/bootstrap");
-require("./disadvantages/bootstrap");
-require("./data/families.service");
-require("./katas/bootstrap");
-require("./data/schools.service");
-require("./data/insight.service");
-require("./skills/bootstrap");
-require("./rings/bootstrap");
-require("./log/bootstrap");
+require('./main');
+require('./advantages/bootstrap');
+require('./disadvantages/bootstrap');
+require('./data/families.service');
+require('./katas/bootstrap');
+require('./data/schools.service');
+require('./data/insight.service');
+require('./skills/bootstrap');
+require('./rings/bootstrap');
+require('./log/bootstrap');

@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma").service("kataService", function() {
+angular.module('pocketIkoma').service('kataService', function() {
     var Kata = function (id, name, description) {
         this.id = id;
         this.name = name;
@@ -30,6 +30,6 @@ angular.module("pocketIkoma").service("kataService", function() {
     };
 
     return {
-        "indomitable.warrior.style": new Kata("indomitable.warrior.style", "Indomitable Warrior Style", "")
+        'indomitable.warrior.style': new Kata('indomitable.warrior.style', 'Indomitable Warrior Style', '')
     };
 });

@@ -1,2 +1,2 @@
-require("./advantages.directive");
-require("./advantages.service");
+require('./advantages.directive');
+require('./advantages.service');

@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma").service("skillService", function(_) {
+angular.module('pocketIkoma').service('skillService', function(_) {
     var Skill = function (id, name, description, availableEmphases) {
         this.id = id;
         this.name = name;
@@ -20,11 +20,11 @@ angular.module("pocketIkoma").service("skillService", function(_) {
 
         if (!skill) {
             skill = {
-                "type": this,
-                "rank": 1,
-                "emphases": [],
-                "masteryAbilities": [],
-                "schoolSkill": !!options.schoolSkill
+                'type': this,
+                'rank': 1,
+                'emphases': [],
+                'masteryAbilities': [],
+                'schoolSkill': !!options.schoolSkill
             };
 
             if (options.choosing) {
@@ -48,7 +48,7 @@ angular.module("pocketIkoma").service("skillService", function(_) {
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
         var description = skill.type.name;
         if (options && options.choosing) {
-            description += ": " + options.choosing;
+            description += ': ' + options.choosing;
         }
         return {cost: xpCost, newValue: skill.rank, name: description};
     };
@@ -61,7 +61,7 @@ angular.module("pocketIkoma").service("skillService", function(_) {
 
         if (!skill) {
             // TODO Throw error
-            console.log("couldn't find skill with ID " + id + " for requested emphasis");
+            console.log('couldn\'t find skill with ID ' + id + ' for requested emphasis');
         } else {
             skill.emphases.push(emphasis);
         }
@@ -79,28 +79,28 @@ angular.module("pocketIkoma").service("skillService", function(_) {
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
         var skillName = skill.type.name;
         if (options && options.choosing) {
-            skillName += ": " + options.choosing;
+            skillName += ': ' + options.choosing;
         }
         return {cost: xpCost, name: emphasis, skill: skillName};
     };
 
     return {
-        "athletics": new Skill("athletics", "Athletics", "", []),
-        "battle": new Skill("battle", "Battle", "", []),
-        "defense": new Skill("defense", "Defense", "", []),
-        "etiquette": new Skill("etiquette", "Etiquette", "", []),
-        "heavy.weapons": new Skill("heavy.weapons", "Heavy Weapons", "", []),
-        "hunting": new Skill("hunting", "Hunting", "", []),
-        "intimidation": new Skill("intimidation", "Intimidation", "", []),
-        "jiujutsu": new Skill("jiujutsu", "Jiujutsu", "", []),
-        "kenjutsu": new Skill("kenjutsu", "Kenjutsu", "", []),
-        "knives": new Skill("knives", "Knives", "", []),
-        "horsemanship": new Skill("horsemanship", "Horsemanship", "", []),
-        "investigation": new Skill("investigation", "Investigation", "", []),
-        "lore": new Skill("lore", "Lore", "", []),
-        "iaijutsu": new Skill("iaijutsu", "Iaijutsu", "", ["Katana"]),
-        "theology": new Skill("theology", "Theology", "", []),
-        "meditation": new Skill("meditation", "Meditation", "", []),
-        "games": new Skill("games", "Games", "", [])
+        'athletics': new Skill('athletics', 'Athletics', '', []),
+        'battle': new Skill('battle', 'Battle', '', []),
+        'defense': new Skill('defense', 'Defense', '', []),
+        'etiquette': new Skill('etiquette', 'Etiquette', '', []),
+        'heavy.weapons': new Skill('heavy.weapons', 'Heavy Weapons', '', []),
+        'hunting': new Skill('hunting', 'Hunting', '', []),
+        'intimidation': new Skill('intimidation', 'Intimidation', '', []),
+        'jiujutsu': new Skill('jiujutsu', 'Jiujutsu', '', []),
+        'kenjutsu': new Skill('kenjutsu', 'Kenjutsu', '', []),
+        'knives': new Skill('knives', 'Knives', '', []),
+        'horsemanship': new Skill('horsemanship', 'Horsemanship', '', []),
+        'investigation': new Skill('investigation', 'Investigation', '', []),
+        'lore': new Skill('lore', 'Lore', '', []),
+        'iaijutsu': new Skill('iaijutsu', 'Iaijutsu', '', ['Katana']),
+        'theology': new Skill('theology', 'Theology', '', []),
+        'meditation': new Skill('meditation', 'Meditation', '', []),
+        'games': new Skill('games', 'Games', '', [])
     };
 });

@@ -1,11 +1,11 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma").directive("piRingBlock", function () {
+angular.module('pocketIkoma').directive('piRingBlock', function () {
     return {
-        restrict: "E",
+        restrict: 'E',
         scope: {
-            ring: "="
+            ring: '='
         },
-        templateUrl: "rings/ring.block.html"
+        templateUrl: 'rings/ring.block.html'
     };
 });

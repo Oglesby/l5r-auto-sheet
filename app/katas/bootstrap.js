@@ -1,2 +1,2 @@
-require("./katas.directive");
-require("./katas.service");
+require('./katas.directive');
+require('./katas.service');

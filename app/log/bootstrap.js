@@ -1,2 +1,2 @@
-require("./log.directive");
-require("./log.service");
+require('./log.directive');
+require('./log.service');

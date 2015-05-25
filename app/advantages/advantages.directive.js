@@ -1,8 +1,8 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma").directive("piAdvantages", function () {
+angular.module('pocketIkoma').directive('piAdvantages', function () {
     return {
-        restrict: "E",
-        templateUrl: "advantages/advantages.html"
+        restrict: 'E',
+        templateUrl: 'advantages/advantages.html'
     };
 });

@@ -1,6 +1,6 @@
-"use strict";
+'use strict';
 
-angular.module("pocketIkoma").service("disadvantageService", function() {
+angular.module('pocketIkoma').service('disadvantageService', function() {
     var Disadvantage = function (id, name, description, xpFetcher) {
         this.id = id;
         this.name = name;
@@ -39,33 +39,32 @@ angular.module("pocketIkoma").service("disadvantageService", function() {
         var description = disadvantage.type.name;
         if (options) {
             if (options.choosing) {
-                description += ": " + options.choosing;
+                description += ': ' + options.choosing;
             } else if (options.rank) {
-                description += " (Rank " + options.rank + ")";
+                description += ' (Rank ' + options.rank + ')';
             }
         }
         return {cost: xpGain, name: description};
     };
     return {
-        "brash": new Disadvantage("brash", "Brash", "",
+        'brash': new Disadvantage('brash', 'Brash', '',
             function(model, options) {
-                return model.characterInfo.clan === "Lion" ? 4 : 3;
+                return model.characterInfo.clan === 'Lion' ? 4 : 3;
             }),
-        "compulsion": new Disadvantage("compulsion", "Compulsion", "",
+        'compulsion': new Disadvantage('compulsion', 'Compulsion', '',
             function(model, options) {
                 return 1 + options.rank;
             }),
-        "gullible": new Disadvantage("gullible", "Gullible", "", function () { return 4; }),
-        "disturbing.countenance": new Disadvantage("disturbing.countenance", "Disturbing Countenance", "",
+        'gullible': new Disadvantage('gullible', 'Gullible', '', function () { return 4; }),
+        'disturbing.countenance': new Disadvantage('disturbing.countenance', 'Disturbing Countenance', '',
             function(model, options) {
-                return model.characterInfo.clan === "Spider" ? 4 : 3;
+                return model.characterInfo.clan === 'Spider' ? 4 : 3;
             }),
-        "jealous": new Disadvantage("jealous", "Jealous", "", function () { return 3; }),
-        "phobia": new Disadvantage("phobia", "Phobia", "",
+        'jealous': new Disadvantage('jealous', 'Jealous', '', function () { return 3; }),
+        'phobia': new Disadvantage('phobia', 'Phobia', '',
             function(model, options) {
                 return options.rank;
             }),
-        "seven.fortunes.curse": new Disadvantage("seven.fortunes.curse", "Seven Fortune's Curse", "", function () { return 3; }),
-
+        'seven.fortunes.curse': new Disadvantage('seven.fortunes.curse', 'Seven Fortune\'s Curse', '', function () { return 3; }),
     };
 });

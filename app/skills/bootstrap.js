@@ -1,2 +1,2 @@
-require("./skills.directive");
-require("./skills.service");
+require('./skills.directive');
+require('./skills.service');
