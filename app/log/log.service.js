@@ -2,7 +2,7 @@
 
 angular.module('pocketIkoma').service('logService',
     function($http, _, advantageService, disadvantageService, ringService, familyService,
-             schoolService, skillService, kataService, insightService) {
+             schoolService, skillService, kataService, insightService, secondaryStatsService) {
 
     var baseModel = {
         rings: {
@@ -19,11 +19,18 @@ angular.module('pocketIkoma').service('logService',
             taint: 0,
             infamy: 0,
             shadowRank: 0
+        },
+        secondaryStats: {
+            bonusTN: 0,
+            bonusInitiative: 0,
+            bonusMovement: 0,
+            bonusWoundsPerRank: 0,
+            woundPenalties: [0, 3, 5, 10, 15, 20, 40, null]
         }
     };
 
     var getLogs = function(model, log) {
-        return $http.get('data/hida_juzo_logs.json')
+        return $http.get('data/mirumoto_sai_logs.json')
             .then(function (logEntries) {
                 _.forEach(logEntries.data, function (logEntry) {
                     switch (logEntry.type) {
@@ -42,6 +49,7 @@ angular.module('pocketIkoma').service('logService',
                 });
 
                 insightService.calculate(model, false);
+                secondaryStatsService.calculate(model);
             });
     };
 

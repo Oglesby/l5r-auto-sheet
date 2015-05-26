@@ -6,10 +6,9 @@ angular
 require('./main');
 require('./advantages/bootstrap');
 require('./disadvantages/bootstrap');
-require('./data/families.service');
+require('./data/bootstrap');
 require('./katas/bootstrap');
-require('./data/schools.service');
-require('./data/insight.service');
 require('./skills/bootstrap');
 require('./rings/bootstrap');
 require('./log/bootstrap');
+require('./secondaryStats/bootstrap');

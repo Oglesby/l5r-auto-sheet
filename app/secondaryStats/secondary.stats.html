@@ -1,0 +1,25 @@
+<legend>Secondary Stats</legend>
+<dl>
+    <dt>TN</dt>
+    <dd>{{model.secondaryStats.tn}}</dd>
+    <dt>Initiative</dt>
+    <dd>{{model.secondaryStats.initiative}}</dd>
+    <dt>Movement</dt>
+    <dd>{{model.secondaryStats.movement}}</dd>
+</dl>
+<legend>Wound Track</legend>
+<table>
+    <thead>
+        <tr>
+            <td>Wound Level</td>
+            <td>Total</td>
+            <td>Current</td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="woundRank in model.secondaryStats.woundRanks">
+            <td>{{woundRank.name}} (+{{woundRank.penalty}})</td>
+            <td>{{woundRank.totalWounds}}</td>
+        </tr>
+    </tbody>
+</table>
