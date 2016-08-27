@@ -1,0 +1,14 @@
+{
+  "characters": [
+    {
+      "name": "Hida Juzo",
+      "id": 1,
+      "data_file": "hida_juzo_logs.json"
+    },
+    {
+      "name": "Mirumoto Sai",
+      "id": 2,
+      "data_file": "mirumoto_sai_logs.json"
+    }
+  ]
+}

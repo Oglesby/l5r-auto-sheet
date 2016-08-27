@@ -1,36 +1,13 @@
 'use strict';
 
 angular.module('pocketIkoma').service('logService',
-    function($http, _, advantageService, disadvantageService, ringService, familyService,
+    function($http, _, characterService, advantageService, disadvantageService, ringService, familyService,
              schoolService, skillService, kataService, insightService, secondaryStatsService) {
 
-    var baseModel = {
-        rings: {
-            earth: ringService.earth,
-            water: ringService.water,
-            fire: ringService.fire,
-            air: ringService.air,
-            void: ringService.void
-        },
-        characterInfo: {
-            glory: 10,
-            honor: 10,
-            status: 10,
-            taint: 0,
-            infamy: 0,
-            shadowRank: 0
-        },
-        secondaryStats: {
-            bonusTN: 0,
-            bonusInitiative: 0,
-            bonusMovement: 0,
-            bonusWoundsPerRank: 0,
-            woundPenalties: [0, 3, 5, 10, 15, 20, 40, null]
-        }
-    };
-
-    var getLogs = function(model, log) {
-        return $http.get('data/mirumoto_sai_logs.json')
+    var getLogs = function(characterId) {
+        var model = createBaseModel();
+        var log = [];
+        return characterService.getLogs(characterId)
             .then(function (logEntries) {
                 _.forEach(logEntries.data, function (logEntry) {
                     switch (logEntry.type) {
@@ -48,12 +25,43 @@ angular.module('pocketIkoma').service('logService',
                     }
                 });
 
-                insightService.calculate(model, false);
+                insightService.calculate(model);
                 secondaryStatsService.calculate(model);
+
+                return {
+                    model: model,
+                    log: log
+                };
             });
     };
 
-    var getBaseModel = function() {
+    var createBaseModel = function() {
+        var baseModel = {
+            rings: {
+                earth: ringService.createEarthRing(),
+                water: ringService.createWaterRing(),
+                fire: ringService.createFireRing(),
+                air: ringService.createAirRing(),
+                void: ringService.createVoidRing()
+            },
+            characterInfo: {
+                glory: 10,
+                honor: 10,
+                status: 10,
+                taint: 0,
+                infamy: 0,
+                shadowRank: 0
+            },
+            secondaryStats: {
+                bonusTN: 0,
+                bonusInitiative: 0,
+                bonusMovement: 0,
+                bonusWoundsPerRank: 0,
+                woundPenalties: [0, 3, 5, 10, 15, 20, 40, null]
+            },
+            skills: []
+        };
+
         return baseModel;
     };
 
@@ -74,6 +82,7 @@ angular.module('pocketIkoma').service('logService',
         ];
 
         model.characterInfo.xp = logEntry.initialXp;
+        model.characterInfo.gainedXp = logEntry.initialXp;
         logItems = logItems.concat(family.visit(model));
         logItems = logItems.concat(school.visit(model, logEntry.school.options));
 
@@ -107,7 +116,7 @@ angular.module('pocketIkoma').service('logService',
             var displayText = '';
             switch (expenditure.type) {
                 case 'TRAIT':
-                    var result = ringService.findRingForTrait(expenditure.id).purchase(model, expenditure.id);
+                    var result = ringService.findRingForTrait(expenditure.id, model).purchase(model, expenditure.id);
                     displayText = 'Spent ' + result.cost + ' XP to raise trait ' + result.name + ' to ' + result.newValue;
                     break;
                 case 'SKILL':
@@ -163,7 +172,7 @@ angular.module('pocketIkoma').service('logService',
             var displayText = '';
             switch (expenditure.type) {
                 case 'TRAIT':
-                    var trait = ringService.findRingForTrait(expenditure.id).increaseTrait(model, expenditure.id);
+                    var trait = ringService.findRingForTrait(expenditure.id, model).increaseTrait(model, expenditure.id);
                     displayText = 'Spent 0 XP to raise trait ' + trait.name + ' to ' + trait.value;
                     break;
                 case 'SKILL':
@@ -212,6 +221,10 @@ angular.module('pocketIkoma').service('logService',
         var reward = logEntry[type + 'Reward'] || 0;
         model.characterInfo[type] += reward;
 
+        if (type === 'xp') {
+            model.characterInfo.gainedXp += reward;
+        }
+
         if (reward > 0) {
             logItems.push({displayText: 'Gained ' + reward * displayMult + ' ' + type});
         } else if (reward < 0) {
@@ -220,7 +233,6 @@ angular.module('pocketIkoma').service('logService',
     }
 
     return {
-        getLogs: getLogs,
-        getBaseModel: getBaseModel
+        getLogs: getLogs
     };
 });

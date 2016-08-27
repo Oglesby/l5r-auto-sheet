@@ -12,13 +12,14 @@ require('./skills/bootstrap');
 require('./rings/bootstrap');
 require('./log/bootstrap');
 require('./secondaryStats/bootstrap');
+require('./characters/bootstrap');
 
 pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/default');
 
     $stateProvider
         .state('default', {
-            url: '/default',
+            url: '/{characterId}/default',
             templateUrl: 'formatViews/default.html',
             controller: 'DefaultController'
         });

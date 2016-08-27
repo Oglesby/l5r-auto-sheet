@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('pocketIkoma').service('insightService', function(_) {
-    var calculate = function(model, countRankOneSkills) {
+    var calculate = function(model) {
         var insight = 0;
 
         // Traits
@@ -11,12 +11,7 @@ angular.module('pocketIkoma').service('insightService', function(_) {
 
         // Skills
         _.forEach(model.skills, function (skill) {
-            var tmpVal = skill.rank;
-            if (skill.rank === 1 && !countRankOneSkills) {
-                tmpVal = 0;
-            }
-
-            insight += tmpVal;
+            insight += skill.rank;
         });
 
         // Masteries

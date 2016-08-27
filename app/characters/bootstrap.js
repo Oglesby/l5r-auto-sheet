@@ -1,0 +1,1 @@
+require('./characters.directive');

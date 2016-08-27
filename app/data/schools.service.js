@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('pocketIkoma').service('schoolService', function(ringService, skillService, _) {
+angular.module('pocketIkoma').service('schoolService', function(skillService, _) {
     return {
         hidaBushi: {
             name: 'Hida Bushi',
@@ -14,7 +14,7 @@ angular.module('pocketIkoma').service('schoolService', function(ringService, ski
                         isBushi: true
                     }
                 ];
-                ringService.earth.increaseTrait(model, 'stamina');
+                model.rings.earth.increaseTrait(model, 'stamina');
 
                 // Add school skills
                 skillService.athletics.increase(model, {schoolSkill: true});
@@ -38,7 +38,7 @@ angular.module('pocketIkoma').service('schoolService', function(ringService, ski
                 // TODO Add outfit
 
                 return [
-                    {displayText: 'Spent 0 XP to increase Stamina to ' + ringService.earth.physicalTrait.value},
+                    {displayText: 'Spent 0 XP to increase Stamina to ' + model.rings.earth.physicalTrait.value},
                     // TODO: Fix this to be dynamic
                     {displayText: 'Spent 0 XP to increase Athletics to 1'},
                     {displayText: 'Spent 0 XP to increase Defense to 1'},
@@ -63,7 +63,7 @@ angular.module('pocketIkoma').service('schoolService', function(ringService, ski
                         isBushi: true
                     }
                 ];
-                ringService.earth.increaseTrait(model, 'stamina');
+                model.rings.earth.increaseTrait(model, 'stamina');
 
                 // Add school skills
                 skillService.athletics.increase(model, {schoolSkill: true});
@@ -88,7 +88,7 @@ angular.module('pocketIkoma').service('schoolService', function(ringService, ski
                 // TODO Add outfit
 
                 return [
-                    {displayText: 'Spent 0 XP to increase Stamina to ' + ringService.earth.physicalTrait.value},
+                    {displayText: 'Spent 0 XP to increase Stamina to ' + model.rings.earth.physicalTrait.value},
                     // TODO: Fix this to be dynamic
                     {displayText: 'Spent 0 XP to increase Theology to 1'},
                     {displayText: 'Spent 0 XP to increase Defense to 1'},
