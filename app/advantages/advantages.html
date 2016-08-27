@@ -1,7 +1,10 @@
-<legend>Advantages</legend>
-<dl>
-    <dt ng-repeat-start="advantage in model.advantages">{{advantage.type.name}}{{advantage.choosing ? ': ' +
+<br/>
+<h2 class="ui header">Advantages</h2>
+<div class="ui segment list">
+    <div class="item" ng-repeat="advantage in model.advantages">
+        {{advantage.type.name}}{{advantage.choosing ? ': ' +
         advantage.choosing : ''}}{{advantage.rank ? ' (Rank ' + advantage.rank + ')' : ''}}
-    </dt>
-    <dd ng-repeat-end>{{advantage.type.description}}</dd>
-</dl>
+        <br/>
+        {{advantage.type.description}}
+    </div>
+</div>

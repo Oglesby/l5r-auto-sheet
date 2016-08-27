@@ -1,7 +1,10 @@
-<legend>Disadvantages</legend>
-<dl>
-    <dt ng-repeat-start="disadvantage in model.disadvantages">{{disadvantage.type.name}}{{disadvantage.choosing ? ': ' +
+<br/>
+<h2 class="ui header">Disadvantages</h2>
+<div class="ui segment list">
+    <div class="item" ng-repeat="advantage in model.disadvantages">
+        {{disadvantage.type.name}}{{disadvantage.choosing ? ': ' +
         disadvantage.choosing : ''}}{{disadvantage.rank ? ' (Rank ' + disadvantage.rank + ')' : ''}}
-    </dt>
-    <dd ng-repeat-end>{{disadvantage.type.description}}</dd>
-</dl>
+        <br/>
+        {{disadvantage.type.description}}
+    </div>
+</div>

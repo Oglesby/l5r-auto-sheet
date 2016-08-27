@@ -1,21 +1,46 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" lang="en">
     <head>
         <meta charset="utf-8">
-        <title></title>
+        <title>Pocket Ikoma</title>
         <meta name="description" content="">
-        <meta name="viewport" content="width=device-width">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-        <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="bower_components/semantic/dist/semantic.css" />
+        <link rel="stylesheet" href="css/main.css" />
+
     </head>
     <body ng-app="pocketIkoma">
-        <div class="container" ng-include="'main.html'" ng-controller="piCharacterData"></div>
+        <div class="ui fixed menu">
+                <a ui-sref="default" class="header item">
+                    <!--<img class="logo" src="assets/images/logo.png">-->
+                    <i class="bar icon"></i>
+                    Pocket Ikoma
+                </a>
+                <div class="ui simple dropdown item">
+                    Views <i class="dropdown icon"></i>
+                    <div class="menu">
+                        <a class="item" ui-sref="default">Default</a>
+                        <a class="item" href="#">Print</a>
+                        <a class="item" href="#">Detailed</a>
+                    </div>
+                </div>
+                <a class="item" href="#">Record a Mod</a>
+                <a class="item" href="#">Spend XP</a>
+                <div class="right menu">
+                    <a class="item" href="#">
+                        Login
+                    </a>
+                </div>
+        </div>
+        <!-- TODO: Mobile menu.-->
+        <div class="ui main container" ui-view></div>
 
-        <script src="bower_components/jquery/dist/jquery.js"></script>
         <script src="bower_components/angular/angular.js"></script>
-        <script src="bower_components/lodash/lodash.js"></script>
-        <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+        <script src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script src="bower_components/lodash/lodash.min.js"></script>
+        <script src="bower_components/semantic/dist/semantic.js"></script>
 
         <script src="bundle.js"></script>
     </body>

@@ -1,0 +1,86 @@
+<h2 class="header">Basic Info</h2>
+<div class="ui segment grid">
+    <div class="row">
+        <div class="four wide column">
+            <div class="data-label">Name</div>
+            <span>{{model.characterInfo.family.name}} {{model.characterInfo.name}}</span>
+        </div>
+        <div class="four wide column">
+            <div class="data-label">Family</div>
+            <span>{{model.characterInfo.family.name}}</span>
+        </div>
+        <div class="four wide column">
+            <div class="data-label">Clan</div>
+            <span>{{model.characterInfo.clan}}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="four wide column">
+            <div class="data-label">XP</div>
+            <span>{{model.characterInfo.xp}}</span>
+        </div>
+        <div class="four wide column">
+            <div class="data-label">Insight Rank</div>
+            <span>{{model.characterInfo.insightRank}}</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="four wide column" ng-repeat="school in model.schools">
+            <div class="data-label">School</div>
+            <span>{{school.type.name}} {{school.rank}} {{$last ? "" : " / "}}</span>
+        </div>
+
+    </div>
+</div>
+<div class="ui segment grid">
+    <div class="row">
+        <div class="one wide column">
+            <span class="data-label">Honor</span>
+        </div>
+        <div class="one wide column">
+            <span>{{model.characterInfo.honor / 10}}</span>
+        </div>
+        <div class="one wide column">
+            <span class="data-label">Glory</span>
+        </div>
+        <div class="one wide column">
+            <span>{{model.characterInfo.glory / 10}}</span>
+        </div>
+        <div class="one wide column">
+            <span class="data-label">Status</span>
+        </div>
+        <div class="one wide column">
+            <span>{{model.characterInfo.status / 10}}</span>
+        </div>
+        <div class="one wide column">
+            <span class="data-label">Infamy</span>
+        </div>
+        <div class="one wide column">
+            <div>{{model.characterInfo.infamy / 10}}</div>
+        </div>
+        <div class="one wide column">
+            <span class="data-label">Taint</span>
+        </div>
+        <div class="one wide column">
+            <div>{{model.characterInfo.taint / 10}}</div>
+        </div>
+    </div>
+</div>
+
+<h2 class="header">Rings</h2>
+<div class="ui segment grid">
+    <div class="row">
+        <pi-ring-block class="ring-block three wide column" ring="model.rings.earth"></pi-ring-block>
+        <pi-ring-block class="ring-block three wide column" ring="model.rings.water"></pi-ring-block>
+        <pi-ring-block class="ring-block three wide column" ring="model.rings.fire"></pi-ring-block>
+        <pi-ring-block class="ring-block three wide column" ring="model.rings.air"></pi-ring-block>
+        <pi-ring-block class="ring-block three wide column" ring="model.rings.void"></pi-ring-block>
+    </div>
+</div>
+
+<pi-secondary-stats></pi-secondary-stats>
+<pi-skills></pi-skills>
+<pi-advantages></pi-advantages>
+<pi-disadvantages></pi-disadvantages>
+<pi-katas></pi-katas>
+<pi-log></pi-log>
