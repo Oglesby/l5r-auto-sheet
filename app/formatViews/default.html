@@ -2,31 +2,31 @@
 <div class="ui segment grid">
     <div class="row">
         <div class="four wide column">
-            <div class="data-label">Name</div>
+            <div class="ui sub header">Name</div>
             <span>{{model.characterInfo.family.name}} {{model.characterInfo.name}}</span>
         </div>
         <div class="four wide column">
-            <div class="data-label">Family</div>
+            <div class="ui sub header">Family</div>
             <span>{{model.characterInfo.family.name}}</span>
         </div>
         <div class="four wide column">
-            <div class="data-label">Clan</div>
+            <div class="ui sub header">Clan</div>
             <span>{{model.characterInfo.clan}}</span>
         </div>
     </div>
     <div class="row">
         <div class="four wide column">
-            <div class="data-label">XP</div>
+            <div class="ui sub header">XP</div>
             <span>{{model.characterInfo.xp}}</span>
         </div>
         <div class="four wide column">
-            <div class="data-label">Insight Rank</div>
+            <div class="ui sub header">Insight Rank</div>
             <span>{{model.characterInfo.insightRank}}</span>
         </div>
     </div>
     <div class="row">
         <div class="four wide column" ng-repeat="school in model.schools">
-            <div class="data-label">School</div>
+            <div class="ui sub header">School</div>
             <span>{{school.type.name}} {{school.rank}} {{$last ? "" : " / "}}</span>
         </div>
 
@@ -35,33 +35,23 @@
 <div class="ui segment grid">
     <div class="row">
         <div class="one wide column">
-            <span class="data-label">Honor</span>
-        </div>
-        <div class="one wide column">
+            <span class="ui sub header">Honor</span>
             <span>{{model.characterInfo.honor / 10}}</span>
         </div>
         <div class="one wide column">
-            <span class="data-label">Glory</span>
-        </div>
-        <div class="one wide column">
+            <span class="ui sub header">Glory</span>
             <span>{{model.characterInfo.glory / 10}}</span>
         </div>
         <div class="one wide column">
-            <span class="data-label">Status</span>
-        </div>
-        <div class="one wide column">
+            <span class="ui sub header">Status</span>
             <span>{{model.characterInfo.status / 10}}</span>
         </div>
         <div class="one wide column">
-            <span class="data-label">Infamy</span>
-        </div>
-        <div class="one wide column">
+            <span class="ui sub header">Infamy</span>
             <div>{{model.characterInfo.infamy / 10}}</div>
         </div>
         <div class="one wide column">
-            <span class="data-label">Taint</span>
-        </div>
-        <div class="one wide column">
+            <span class="ui sub header">Taint</span>
             <div>{{model.characterInfo.taint / 10}}</div>
         </div>
     </div>
