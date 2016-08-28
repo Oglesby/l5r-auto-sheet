@@ -1,0 +1,113 @@
+[
+  {
+    "type": "CREATION",
+    "initialXp": 45,
+    "family": "doji",
+    "school": {
+      "id": "asahinaShugenja",
+      "options": {
+        "chosenSkills": [{
+          "id": "artisan",
+          "options": {
+            "choosing": "Woodworking"
+          }
+        }]
+      }
+    },
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "CHARACTER_INFO",
+    "name": "Programmerbard",
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Traits",
+    "expenditures": [
+      {
+        "type": "TRAIT",
+        "id": "reflexes"
+      },
+      {
+        "type": "TRAIT",
+        "id": "reflexes"
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Advantages",
+    "expenditures": [
+      {
+        "type": "ADVANTAGE",
+        "id": "elementalBlessing",
+        "options": {
+          "choosing": "Air"
+        }
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "friendOfTheElements",
+        "options": {
+          "choosing": "Air"
+        }
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "luck",
+        "options": {
+          "rank": 2
+        }
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Disadvantages",
+    "expenditures": [
+      {
+        "type": "DISADVANTAGE",
+        "id": "softHearted"
+      },
+      {
+        "type": "DISADVANTAGE",
+        "id": "idealistic"
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Spells",
+    "expenditures": [
+      {
+        "type": "SPELL",
+        "id": "tempestOfAir"
+      },
+      {
+        "type": "SPELL",
+        "id": "bentensTouch"
+      },
+      {
+        "type": "SPELL",
+        "id": "kamisWhisper"
+      },
+      {
+        "type": "SPELL",
+        "id": "pathToInnerPeace"
+      },
+      {
+        "type": "SPELL",
+        "id": "reversalOfFortunes"
+      },
+      {
+        "type": "SPELL",
+        "id": "jadeStrike"
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  }
+]

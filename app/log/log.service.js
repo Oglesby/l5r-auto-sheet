@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('pocketIkoma').service('logService',
-    function($http, _, characterService, advantageService, disadvantageService, ringService, familyService,
+    function($http, _, characterService, advantageService, disadvantageService, ringService, familyService, spellService,
              schoolService, skillService, kataService, kihoService, insightService, secondaryStatsService) {
 
     var getLogs = function(characterId) {
@@ -142,6 +142,10 @@ angular.module('pocketIkoma').service('logService',
                 case 'KIHO':
                     result = kihoService[expenditure.id].purchase(model, expenditure.options);
                     displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
+                    break;
+                case 'SPELL':
+                    result = spellService[expenditure.id].purchase(model, expenditure.options);
+                    displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
             }
 
             if (expenditure.comment) {
@@ -206,6 +210,10 @@ angular.module('pocketIkoma').service('logService',
                 case 'KIHO':
                     var kiho = kihoService[expenditure.id].purchase(model, expenditure.options);
                     displayText = 'Spent 0 XP to gain ' + kiho.name;
+                    break;
+                case 'SPELL':
+                    var spell = spellService[expenditure.id].purchase(model, expenditure.options);
+                    displayText = 'Spent 0 XP to gain ' + spell.name;
             }
 
             if (expenditure.comment) {

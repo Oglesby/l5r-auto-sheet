@@ -140,10 +140,6 @@ angular.module('pocketIkoma').service('schoolService', function(skillService, _)
                     schoolSkill: true,
                     choosing: 'Maori'
                 });
-                _.each(options.chosenSkills, function (skill) {
-                    var options = _.extend({schoolSkill: true}, skill.options);
-                    skillService[skill.id].increase(model, options);
-                });
 
                 // Set honor
                 model.characterInfo.honor = 45;
@@ -152,6 +148,67 @@ angular.module('pocketIkoma').service('schoolService', function(skillService, _)
 
                 return [
                     {displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.earth.physicalTrait.value},
+                    // TODO: Fix this to be dynamic
+                    {displayText: 'Spent 0 XP to increase Theology to 1'},
+                    {displayText: 'Spent 0 XP to increase Defense to 1'},
+                    {displayText: 'Spent 0 XP to increase Meditation to 1'},
+                    {displayText: 'Spent 0 XP to increase Iaijutsu to 1'},
+                    {displayText: 'Spent 0 XP to increase Kenjutsu to 1'},
+                    {displayText: 'Spent 0 XP to gain Katana emphasis for the Kenjutsu skill'},
+                    {displayText: 'Spent 0 XP to increase Lore: Shugenja to 1'},
+                    {displayText: 'Spent 0 XP to increase Athletics to 1 (Chosen Skill)'}
+                ];
+            }
+        },
+        asahinaShugenja: {
+            name: 'Asahina Shugenja',
+            bonusTrait: 'Awareness',
+            description: '',
+            visit: function (model, options) {
+                model.schools = [
+                    {
+                        type: this,
+                        rank: 1,
+                        isBushi: false,
+                        isShugenja: true,
+                        isMonk: false,
+                        affinity: 'air',
+                        deficiency: 'fire',
+                        getAffinityDeficiencyModifier: function(spell) {
+                            if (this.affinity === spell.ring) {
+                                return 1;
+                            } else if (this.deficiency === spell.ring) {
+                                return -1;
+                            } else {
+                                return 0;
+                            }
+                        }
+                    }
+                ];
+                model.rings.air.increaseTrait(model, 'awareness');
+
+                // Add school skills
+                skillService.calligraphy.increase(model, {schoolSkill: true});
+                skillService.calligraphy.addEmphasis(model, 'Cypher');
+                skillService.etiquette.increase(model, {schoolSkill: true});
+                skillService.courtier.increase(model, {schoolSkill: true});
+                skillService.lore.increase(model, {
+                    schoolSkill: true,
+                    choosing: 'Theology'
+                });
+                skillService.spellcraft.increase(model, {schoolSkill: true});
+                _.each(options.chosenSkills, function (skill) {
+                    var options = _.extend({schoolSkill: true}, skill.options);
+                    skillService[skill.id].increase(model, options);
+                });
+
+                // Set honor
+                model.characterInfo.honor = 65;
+
+                // TODO Add outfit
+
+                return [
+                    {displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.air.physicalTrait.value},
                     // TODO: Fix this to be dynamic
                     {displayText: 'Spent 0 XP to increase Theology to 1'},
                     {displayText: 'Spent 0 XP to increase Defense to 1'},

@@ -89,6 +89,7 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
         voice: new Advantage('voice', 'Voice', '', function(model, options) { return 3; }),
         friendOfTheBrotherhood: new Advantage('friendOfTheBrotherhood', 'Friend of the Brotherhood', '', function(model, options) { return 5; }),
         differentSchool: new Advantage('differentSchool', 'Different School', '', function(model, options) { return 5; }),
-        handsOfStone: new Advantage('handsOfStone', 'Hands of Stone', '', function(model, options) { return 5; })
+        handsOfStone: new Advantage('handsOfStone', 'Hands of Stone', '', function(model, options) { return 5; }),
+        friendOfTheElements: new Advantage('friendOfTheElements', 'Friend of the Elements', '', function(model, options) { return 3; })
     };
 });

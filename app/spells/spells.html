@@ -1,0 +1,9 @@
+<br/>
+<h2 class="ui header">Spells</h2>
+<div class="ui segment list">
+    <div class="item" ng-repeat="spell in model.spells">
+        {{spell.type.name}}
+        <br/>
+        {{spell.type.description}}
+    </div>
+</div>

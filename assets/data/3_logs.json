@@ -5,11 +5,7 @@
     "family": "hoshi",
     "school": {
       "id": "togashiMonk",
-      "options": {
-        "chosenSkills": [{
-          "id": "athletics"
-        }]
-      }
+      "options": {}
     },
     "creationTimestamp": "2014-05-24 11:51:30"
   },
