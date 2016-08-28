@@ -2,13 +2,15 @@
   "characters": [
     {
       "name": "Hida Juzo",
-      "id": 1,
-      "data_file": "hida_juzo_logs.json"
+      "id": 1
     },
     {
       "name": "Mirumoto Sai",
-      "id": 2,
-      "data_file": "mirumoto_sai_logs.json"
+      "id": 2
+    },
+    {
+      "name": "Maori Moana",
+      "id": 3
     }
   ]
 }

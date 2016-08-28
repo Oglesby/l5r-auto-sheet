@@ -1,0 +1,137 @@
+[
+  {
+    "type": "CREATION",
+    "initialXp": 80,
+    "family": "hoshi",
+    "school": {
+      "id": "togashiMonk",
+      "options": {
+        "chosenSkills": [{
+          "id": "athletics"
+        }]
+      }
+    },
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "CHARACTER_INFO",
+    "name": "Moana",
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Traits",
+    "expenditures": [
+      {
+        "type": "TRAIT",
+        "id": "agility"
+      },
+      {
+        "type": "TRAIT",
+        "id": "strength"
+      },
+      {
+        "type": "TRAIT",
+        "id": "willpower"
+      },
+      {
+        "type": "TRAIT",
+        "id": "stamina"
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Advantages",
+    "expenditures": [
+      {
+        "type": "ADVANTAGE",
+        "id": "friendOfTheBrotherhood"
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "differentSchool"
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "handsOfStone"
+      },
+      {
+        "type": "ADVANTAGE",
+        "id": "voice"
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Disadvantages",
+    "expenditures": [
+      {
+        "type": "DISADVANTAGE",
+        "id": "gaijinName"
+      },
+      {
+        "type": "DISADVANTAGE",
+        "id": "sevenFortunesCurse",
+        "options": {
+          "choosing": "Daikoku's"
+        }
+      },
+      {
+        "type": "DISADVANTAGE",
+        "id": "lechery"
+      },
+      {
+        "type": "DISADVANTAGE",
+        "id": "doubt",
+        "options": {
+          "choosing": "Craft: Tattoo"
+        }
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Kiho",
+    "expenditures": [
+      {
+        "type": "KIHO",
+        "id": "touchTheVoidDragon"
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  },
+  {
+    "type": "XP_EXPENDITURE",
+    "title": "Character Building - Skills",
+    "expenditures": [
+      {
+        "type": "SKILL",
+        "id": "kenjutsu"
+      },
+      {
+        "type": "SKILL",
+        "id": "iaijutsu"
+      },
+      {
+        "type": "SKILL",
+        "id": "battle"
+      },
+      {
+        "type": "SKILL",
+        "id": "etiquette"
+      },
+      {
+        "type": "SKILL",
+        "id": "games",
+        "options": {
+          "choosing": "Sadane"
+        }
+      }
+    ],
+    "creationTimestamp": "2014-05-24 11:51:30"
+  }
+]

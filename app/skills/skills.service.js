@@ -101,6 +101,8 @@ angular.module('pocketIkoma').service('skillService', function(_) {
         iaijutsu: new Skill('iaijutsu', 'Iaijutsu', '', ['Katana']),
         theology: new Skill('theology', 'Theology', '', []),
         meditation: new Skill('meditation', 'Meditation', '', []),
-        games: new Skill('games', 'Games', '', [])
+        games: new Skill('games', 'Games', '', []),
+        artisan: new Skill('artisan', 'Artisan', '', []),
+        perform: new Skill('perform', 'Artisan', '', [])
     };
 });

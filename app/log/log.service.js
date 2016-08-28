@@ -2,7 +2,7 @@
 
 angular.module('pocketIkoma').service('logService',
     function($http, _, characterService, advantageService, disadvantageService, ringService, familyService,
-             schoolService, skillService, kataService, insightService, secondaryStatsService) {
+             schoolService, skillService, kataService, kihoService, insightService, secondaryStatsService) {
 
     var getLogs = function(characterId) {
         var model = createBaseModel();
@@ -138,6 +138,10 @@ angular.module('pocketIkoma').service('logService',
                 case 'KATA':
                     result = kataService[expenditure.id].purchase(model, expenditure.options);
                     displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
+                    break;
+                case 'KIHO':
+                    result = kihoService[expenditure.id].purchase(model, expenditure.options);
+                    displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
             }
 
             if (expenditure.comment) {
@@ -198,6 +202,10 @@ angular.module('pocketIkoma').service('logService',
                 case 'KATA':
                     var kata = kataService[expenditure.id].purchase(model, expenditure.options);
                     displayText = 'Spent 0 XP to gain ' + kata.name;
+                    break;
+                case 'KIHO':
+                    var kiho = kihoService[expenditure.id].purchase(model, expenditure.options);
+                    displayText = 'Spent 0 XP to gain ' + kiho.name;
             }
 
             if (expenditure.comment) {

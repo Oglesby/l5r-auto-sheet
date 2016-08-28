@@ -25,6 +25,18 @@ angular.module('pocketIkoma').service('familyService', function() {
 
                 return [{displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.fire.physicalTrait.value}];
             }
+        },
+        'hoshi': {
+            name: 'Hoshi',
+            bonusTrait: 'Void',
+            description: '',
+            visit: function (model) {
+                model.rings.void.increaseTrait(model, 'void');
+                model.characterInfo.family = this;
+                model.characterInfo.clan = 'Dragon';
+
+                return [{displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.fire.physicalTrait.value}];
+            }
         }
     };
 });

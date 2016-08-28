@@ -13,6 +13,7 @@ require('./rings/bootstrap');
 require('./log/bootstrap');
 require('./secondaryStats/bootstrap');
 require('./characters/bootstrap');
+require('./kiho/bootstrap');
 
 pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/default');

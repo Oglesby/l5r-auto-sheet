@@ -61,10 +61,13 @@ angular.module('pocketIkoma').service('disadvantageService', function() {
                 return model.characterInfo.clan === 'Spider' ? 4 : 3;
             }),
         jealous: new Disadvantage('jealous', 'Jealous', '', function () { return 3; }),
+        lechery: new Disadvantage('lechery', 'Lechery', '', function () { return 2; }),
+        gaijinName: new Disadvantage('gaijinName', 'Gaijin Name', '', function () { return 1; }),
         phobia: new Disadvantage('phobia', 'Phobia', '',
             function(model, options) {
                 return options.rank;
             }),
+        doubt: new Disadvantage('doubt', 'Doubt', '', function(model, options) { return 4; }),
         sevenFortunesCurse: new Disadvantage('sevenFortunesCurse', 'Seven Fortune\'s Curse', '', function () { return 3; }),
     };
 });

@@ -42,6 +42,7 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
         return {cost: xpCost, name: description};
     };
     return {
+        // TODO: add a function that gets excuted on purchase
         sevenFortunesBlessing: new Advantage('sevenFortunesBlessing', 'Seven Fortune\'s Blessing', '',
             function(model, options) {
                 if (options.choosing === 'Bishamon\'s Blessing') {
@@ -84,6 +85,10 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
         luck: new Advantage('luck', 'Luck', '', function(model, options) {
             return options.rank * 3;
         }),
-        prodigy: new Advantage('prodigy', 'Prodigy', '', function(model, options) { return 12; })
+        prodigy: new Advantage('prodigy', 'Prodigy', '', function(model, options) { return 12; }),
+        voice: new Advantage('voice', 'Voice', '', function(model, options) { return 3; }),
+        friendOfTheBrotherhood: new Advantage('friendOfTheBrotherhood', 'Friend of the Brotherhood', '', function(model, options) { return 5; }),
+        differentSchool: new Advantage('differentSchool', 'Different School', '', function(model, options) { return 5; }),
+        handsOfStone: new Advantage('handsOfStone', 'Hands of Stone', '', function(model, options) { return 5; })
     };
 });
