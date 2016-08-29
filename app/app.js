@@ -4,6 +4,7 @@ var pocketIkomaModule = angular.module('pocketIkoma', ['ui.router']);
 pocketIkomaModule.constant('_', window._);
 
 require('./formatViews/default');
+require('./basicInfo/bootstrap');
 require('./advantages/bootstrap');
 require('./disadvantages/bootstrap');
 require('./data/bootstrap');
