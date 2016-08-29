@@ -147,7 +147,7 @@ angular.module('pocketIkoma').service('schoolService', function(skillService, _)
                 // TODO Add outfit
 
                 return [
-                    {displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.earth.physicalTrait.value},
+                    {displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.void.voidTrait.value},
                     // TODO: Fix this to be dynamic
                     {displayText: 'Spent 0 XP to increase Theology to 1'},
                     {displayText: 'Spent 0 XP to increase Defense to 1'},
