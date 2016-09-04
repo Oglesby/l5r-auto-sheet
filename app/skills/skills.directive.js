@@ -6,3 +6,10 @@ angular.module('pocketIkoma').directive('piSkills', function () {
         templateUrl: 'skills/skills.html'
     };
 });
+
+angular.module('pocketIkoma').directive('piSkillsTable', function () {
+    return {
+        restrict: 'E',
+        templateUrl: 'skills/skillsTable.html'
+    };
+});

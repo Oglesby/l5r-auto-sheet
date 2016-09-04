@@ -1,22 +1,3 @@
 <br/>
 <h2 class="ui header">Skills</h2>
-<table class="ui celled table">
-    <thead>
-    <tr>
-        <th>Skill</th>
-        <th>Attribute</th>
-        <th>Rank</th>
-        <th>Emphases</th>
-    </tr>
-    </thead>
-    <tbody>
-        <tr ng-repeat="skill in model.skills">
-            <td>{{skill.type.name}}{{skill.choosing ? ': ' + skill.choosing : ''}}{{skill.schoolSkill ? '*' : ''}}</td>
-            <td></td>
-            <td>{{skill.rank}}</td>
-            <td>
-                <span ng-repeat="emphasis in skill.emphases">{{emphasis}}</span>
-            </td>
-        </tr>
-    </tbody>
-</table>
+<pi-skills-table></pi-skills-table>
