@@ -56,6 +56,17 @@ angular.module('pocketIkoma').service('ringService', function() {
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
         return {cost: xpCost, newValue: trait.value, name: trait.name};
     };
+    Ring.prototype.getTrait = function(traitName) {
+        if (this.voidTrait && this.voidTrait.id === traitName) {
+            return this.voidTrait;
+        } else if (this.physicalTrait && this.physicalTrait.id === traitName) {
+            return this.physicalTrait;
+        } else if (this.spiritualTrait && this.spiritualTrait.id === traitName) {
+            return this.spiritualTrait;
+        } else {
+            return null;
+        }
+    };
 
     var createEarthRing = function() {
         return new Ring('earth', 'Earth', 'images/earth_by_exahyl-d3is114.png', 4,
@@ -77,7 +88,7 @@ angular.module('pocketIkoma').service('ringService', function() {
         return new Ring('void', 'Void', 'images/void_by_exahyl-d3is16h.png', 6, null, null, new Trait('void', 'Void', '', 2));
     };
 
-    var findRingForTrait = function (trait, model) {
+    var findRingForTrait = function (traitName, model) {
         var ringMap ={
             stamina: model.rings.earth,
             willpower: model.rings.earth,
@@ -90,7 +101,11 @@ angular.module('pocketIkoma').service('ringService', function() {
             void: model.rings.void
         };
 
-        return ringMap[trait];
+        return ringMap[traitName];
+    };
+
+    var getTraitFromRingName = function(ringName, traitName, model) {
+        return this.findRingForTrait(traitName, model).getTrait(traitName);
     };
 
     return {
@@ -99,6 +114,7 @@ angular.module('pocketIkoma').service('ringService', function() {
         createFireRing: createFireRing,
         createAirRing: createAirRing,
         createVoidRing: createVoidRing,
-        findRingForTrait: findRingForTrait
+        findRingForTrait: findRingForTrait,
+        getTraitFromRingName: getTraitFromRingName
     };
 });
