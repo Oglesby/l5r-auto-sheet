@@ -1,179 +1,115 @@
 'use strict';
 
-angular.module('pocketIkoma').service('schoolService', function(skillService, _) {
-    return {
-        hidaBushi: {
-            name: 'Hida Bushi',
-            bonusTrait: 'Stamina',
-            description: '',
-            visit: function (model, options) {
-                model.schools = [
-                    {
-                        type: this,
-                        rank: 1,
-                        isBushi: true,
-                        isShugenja: false,
-                        isMonk: false
-                    }
-                ];
-                model.rings.earth.increaseTrait(model, 'stamina');
-
-                // Add school skills
-                skillService.athletics.increase(model, {schoolSkill: true});
-                skillService.defense.increase(model, {schoolSkill: true});
-                skillService.heavyWeapons.increase(model, {schoolSkill: true});
-                skillService.heavyWeapons.addEmphasis(model, 'Tetsubo');
-                skillService.intimidation.increase(model, {schoolSkill: true});
-                skillService.kenjutsu.increase(model, {schoolSkill: true});
-                skillService.lore.increase(model, {
-                    schoolSkill: true,
-                    choosing: 'Shadowlands'
-                });
-                _.each(options.chosenSkills, function (skill) {
-                    var options = _.extend({schoolSkill: true}, skill.options);
-                    skillService[skill.id].increase(model, options);
-                });
-
-                // Set honor
-                model.characterInfo.honor = 35;
-
-                // TODO Add outfit
-
-                return [
-                    {displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.earth.physicalTrait.value},
-                    // TODO: Fix this to be dynamic
-                    {displayText: 'Spent 0 XP to increase Athletics to 1'},
-                    {displayText: 'Spent 0 XP to increase Defense to 1'},
-                    {displayText: 'Spent 0 XP to increase Heavy Weapons to 1'},
-                    {displayText: 'Spent 0 XP to gain Tetsubo emphasis for the Heavy Weapons skill'},
-                    {displayText: 'Spent 0 XP to increase Intimidation to 1'},
-                    {displayText: 'Spent 0 XP to increase Kenjutsu to 1'},
-                    {displayText: 'Spent 0 XP to increase Lore: Shadowlands to 1'},
-                    {displayText: 'Spent 0 XP to increase Battle to 1 (Chosen Skill)'}
-                ];
-            }
+angular.module('pocketIkoma').service('schoolService', function(_, skillService, ringService) {
+    var json = [{
+        id: 'none',
+        name: 'None',
+        bonusTrait: '',
+        description: '',
+        clan: '*',
+        startingHonor: 35,
+        isBushi: false,
+        isShugenja: false,
+        isMonk: false,
+        schoolSkills: []
+    }, {
+        id: 'hidaBushi',
+        name: 'Hida Bushi',
+        bonusTrait: 'Stamina',
+        description: '',
+        clan: 'Crab',
+        startingHonor: 35,
+        isBushi: true,
+        isShugenja: false,
+        isMonk: false,
+        schoolSkills: [
+            { name: 'athletics'},
+            { name: 'defense'},
+            { name: 'heavyWeapons', emphasis: 'Tetsubo'},
+            { name: 'intimidation'},
+            { name: 'kenjutsu'},
+            { name: 'lore', choosing: 'Shadowlands'}
+        ]
+    }, {
+        id: 'mirumotoBushi',
+        name: 'Mirumoto Bushi',
+        bonusTrait: 'Stamina',
+        description: '',
+        clan: 'Dragon',
+        startingHonor: 45,
+        isBushi: true,
+        isShugenja: false,
+        isMonk: false,
+        schoolSkills: [
+            { name: 'athletics'},
+            { name: 'defense'},
+            { name: 'kenjutsu', emphasis: 'Katana'},
+            { name: 'meditation'},
+            { name: 'iaijutsu'},
+            { name: 'theology'},
+            { name: 'lore', choosing: 'Shugenja'}
+        ]
+    }, {
+        id: 'togashiMonk',
+        name: 'Togashi Tattooed Order',
+        bonusTrait: 'Void',
+        description: '',
+        clan: 'Dragon',
+        startingHonor: 45,
+        isBushi: false,
+        isShugenja: false,
+        isMonk: true,
+        kihoCostModifier: 1.5,
+        canTakeKiho: function(mastery, ringValue) {
+            return mastery <= (ringValue + this.rank);
         },
-        mirumotoBushi: {
-            name: 'Mirumoto Bushi',
-            bonusTrait: 'Stamina',
-            description: '',
-            visit: function (model, options) {
+        schoolSkills: [
+            { name: 'athletics'},
+            { name: 'defense'},
+            { name: 'kenjutsu'},
+            { name: 'jiujutsu'},
+            { name: 'artisan', choosing: 'Tattoo'}
+        ]
+    }, {
+        id: 'asahinaShugenja',
+        name: 'Asahina Shugenja',
+        bonusTrait: 'Awareness',
+        description: '',
+        clan: 'Crane',
+        startingHonor: 65,
+        isBushi: true,
+        isShugenja: false,
+        isMonk: false,
+        affinity: 'air',
+        deficiency: 'fire',
+        schoolSkills: [
+            { name: 'etiquette'},
+            { name: 'courtier'},
+            { name: 'calligraphy', emphasis: 'Cypher'},
+            { name: 'meditation'},
+            { name: 'spellcraft'},
+            { name: 'lore', choosing: 'Theology'}
+        ]
+    }];
+
+    function processJson(jsonArray) {
+        var schools = {};
+
+        jsonArray.forEach(function(schoolJson) {
+            var school = schoolJson;
+            school.visit = function (model, options) {
                 model.schools = [
                     {
+                        // TODO: this probably needs refactored somehow
                         type: this,
                         rank: 1,
-                        isBushi: true,
-                        isShugenja: false,
-                        isMonk: false
-                    }
-                ];
-                model.rings.earth.increaseTrait(model, 'stamina');
-
-                // Add school skills
-                skillService.athletics.increase(model, {schoolSkill: true});
-                skillService.defense.increase(model, {schoolSkill: true});
-                skillService.theology.increase(model, {schoolSkill: true});
-                skillService.meditation.increase(model, {schoolSkill: true});
-                skillService.iaijutsu.increase(model, {schoolSkill: true});
-                skillService.kenjutsu.increase(model, {schoolSkill: true});
-                skillService.kenjutsu.addEmphasis(model, 'Katana');
-                skillService.lore.increase(model, {
-                    schoolSkill: true,
-                    choosing: 'Shugenja'
-                });
-                _.each(options.chosenSkills, function (skill) {
-                    var options = _.extend({schoolSkill: true}, skill.options);
-                    skillService[skill.id].increase(model, options);
-                });
-
-                // Set honor
-                model.characterInfo.honor = 45;
-
-                // TODO Add outfit
-
-                return [
-                    {displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.earth.physicalTrait.value},
-                    // TODO: Fix this to be dynamic
-                    {displayText: 'Spent 0 XP to increase Theology to 1'},
-                    {displayText: 'Spent 0 XP to increase Defense to 1'},
-                    {displayText: 'Spent 0 XP to increase Meditation to 1'},
-                    {displayText: 'Spent 0 XP to increase Iaijutsu to 1'},
-                    {displayText: 'Spent 0 XP to increase Kenjutsu to 1'},
-                    {displayText: 'Spent 0 XP to gain Katana emphasis for the Kenjutsu skill'},
-                    {displayText: 'Spent 0 XP to increase Lore: Shugenja to 1'},
-                    {displayText: 'Spent 0 XP to increase Athletics to 1 (Chosen Skill)'}
-                ];
-            }
-        },
-        togashiMonk: {
-            name: 'Togashi Tattooed Order',
-            bonusTrait: 'Void',
-            description: '',
-            visit: function (model, options) {
-                model.schools = [
-                    {
-                        type: this,
-                        rank: 1,
-                        isBushi: false,
-                        isShugenja: false,
-                        isMonk: true,
-                        kihoCostModifier: 1.5,
-                        canTakeKiho: function(mastery, ringValue) {
-                            return mastery <= (ringValue + this.rank);
-                        }
-                    }
-                ];
-                model.rings.void.increaseTrait(model, 'void');
-
-                // Add school skills
-                skillService.artisan.increase(model, {
-                    schoolSkill: true,
-                    choosing: 'Tattoo'});
-                skillService.athletics.increase(model, {schoolSkill: true});
-                skillService.jiujutsu.increase(model, {schoolSkill: true});
-                skillService.kenjutsu.increase(model, {schoolSkill: true});
-                skillService.perform.increase(model, {
-                    schoolSkill: true,
-                    choosing: 'Haka'
-                });
-                skillService.lore.increase(model, {
-                    schoolSkill: true,
-                    choosing: 'Maori'
-                });
-
-                // Set honor
-                model.characterInfo.honor = 45;
-
-                // TODO Add outfit
-
-                return [
-                    {displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.void.voidTrait.value},
-                    // TODO: Fix this to be dynamic
-                    {displayText: 'Spent 0 XP to increase Theology to 1'},
-                    {displayText: 'Spent 0 XP to increase Defense to 1'},
-                    {displayText: 'Spent 0 XP to increase Meditation to 1'},
-                    {displayText: 'Spent 0 XP to increase Iaijutsu to 1'},
-                    {displayText: 'Spent 0 XP to increase Kenjutsu to 1'},
-                    {displayText: 'Spent 0 XP to gain Katana emphasis for the Kenjutsu skill'},
-                    {displayText: 'Spent 0 XP to increase Lore: Shugenja to 1'},
-                    {displayText: 'Spent 0 XP to increase Athletics to 1 (Chosen Skill)'}
-                ];
-            }
-        },
-        asahinaShugenja: {
-            name: 'Asahina Shugenja',
-            bonusTrait: 'Awareness',
-            description: '',
-            visit: function (model, options) {
-                model.schools = [
-                    {
-                        type: this,
-                        rank: 1,
-                        isBushi: false,
-                        isShugenja: true,
-                        isMonk: false,
-                        affinity: 'air',
-                        deficiency: 'fire',
+                        isBushi: this.isBushi,
+                        isShugenja: this.isShugenja,
+                        isMonk: this.isMonk,
+                        kihoCostModifier: this.kihoCostModifier,
+                        canTakeKiho: this.canTakeKiho,
+                        affinity: this.affinity,
+                        deficiency: this.deficiency,
                         getAffinityDeficiencyModifier: function(spell) {
                             if (this.affinity === spell.ring) {
                                 return 1;
@@ -185,41 +121,55 @@ angular.module('pocketIkoma').service('schoolService', function(skillService, _)
                         }
                     }
                 ];
-                model.rings.air.increaseTrait(model, 'awareness');
+                var logEntries = [];
+
+                var trait = this.bonusTrait.toLowerCase();
+                var traitRing = ringService.findRingForTrait(trait, model);
+                if (traitRing) {
+                    traitRing.increaseTrait(model, trait);
+                    logEntries.push({displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + traitRing.getTrait(trait).value});
+                }
 
                 // Add school skills
-                skillService.calligraphy.increase(model, {schoolSkill: true});
-                skillService.calligraphy.addEmphasis(model, 'Cypher');
-                skillService.etiquette.increase(model, {schoolSkill: true});
-                skillService.courtier.increase(model, {schoolSkill: true});
-                skillService.lore.increase(model, {
-                    schoolSkill: true,
-                    choosing: 'Theology'
+                this.schoolSkills.forEach(function(skillHolder) {
+                    var skill = skillService[skillHolder.name];
+
+                    var options = {schoolSkill: true};
+                    var skillName = skill.name;
+                    if (skillHolder.choosing) {
+                        options.choosing = skillHolder.choosing;
+                        skillName += ': ' + skillHolder.choosing;
+                    }
+                    logEntries.push({displayText: 'Spent 0 XP to increase ' + skillName + ' to 1'});
+
+                    skill.increase(model, options);
+                    if (skillHolder.emphasis) {
+                        skill.addEmphasis(model, skill.emphasis);
+                        logEntries.push({displayText: 'Spent 0 XP to gain ' + skillHolder.emphasis + ' for the ' + skillName + ' skill'});
+                    }
                 });
-                skillService.spellcraft.increase(model, {schoolSkill: true});
+
+                // Add chosen school skills
+                // TODO: This code should probably reuse the block above
                 _.each(options.chosenSkills, function (skill) {
                     var options = _.extend({schoolSkill: true}, skill.options);
                     skillService[skill.id].increase(model, options);
+                    logEntries.push({displayText: 'Spent 0 XP to increase ' + skill.name + ' to 1  (Chosen Skill)'});
+
                 });
 
                 // Set honor
-                model.characterInfo.honor = 65;
+                model.characterInfo.honor = this.startingHonor;
 
                 // TODO Add outfit
 
-                return [
-                    {displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + model.rings.air.physicalTrait.value},
-                    // TODO: Fix this to be dynamic
-                    {displayText: 'Spent 0 XP to increase Theology to 1'},
-                    {displayText: 'Spent 0 XP to increase Defense to 1'},
-                    {displayText: 'Spent 0 XP to increase Meditation to 1'},
-                    {displayText: 'Spent 0 XP to increase Iaijutsu to 1'},
-                    {displayText: 'Spent 0 XP to increase Kenjutsu to 1'},
-                    {displayText: 'Spent 0 XP to gain Katana emphasis for the Kenjutsu skill'},
-                    {displayText: 'Spent 0 XP to increase Lore: Shugenja to 1'},
-                    {displayText: 'Spent 0 XP to increase Athletics to 1 (Chosen Skill)'}
-                ];
-            }
-        }
-    };
+                return logEntries;
+            };
+            schools[school.id] = school;
+        });
+
+        return schools;
+    }
+
+    return processJson(json);
 });
