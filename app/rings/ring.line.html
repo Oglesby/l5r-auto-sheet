@@ -1,0 +1,13 @@
+<div class="trait-block form-horizontal">
+    <div class="form-group">
+        <label>{{ring.name}}</label> {{ring.getRank()}}
+    </div>
+    <div ng-if="!ring.voidTrait">
+        <div class="form-group">
+            <label>{{ring.physicalTrait.name}}</label> {{ring.physicalTrait.value}}
+        </div>
+        <div class="form-group">
+            <label>{{ring.spiritualTrait.name}}</label> {{ring.spiritualTrait.value}}
+        </div>
+    </div>
+</div>

@@ -1,2 +1,2 @@
-require('./ring.block.directive.js');
+require('./ring.directives.js');
 require('./ring.service.js');
