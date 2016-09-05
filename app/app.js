@@ -3,7 +3,7 @@
 var pocketIkomaModule = angular.module('pocketIkoma', ['ui.router']);
 pocketIkomaModule.constant('_', window._);
 
-require('./formatViews/default');
+require('./formatViews/bootstrap');
 require('./basicInfo/bootstrap');
 require('./advantages/bootstrap');
 require('./disadvantages/bootstrap');
@@ -25,6 +25,11 @@ pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
             url: '/{characterId}/default',
             templateUrl: 'formatViews/default.html',
             controller: 'DefaultController'
+        })
+        .state('new', {
+            url: '/new',
+            templateUrl: 'formatViews/new.html',
+            controller: 'NewController'
         });
 });
 

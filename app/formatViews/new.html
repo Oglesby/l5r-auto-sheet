@@ -1,0 +1,72 @@
+<div class="ui segment">
+    <h2 class="ui header">Welcome to Character Create Zone</h2>
+    <form class="ui form grid">
+        <div class="row">
+            <div class="column field">
+                <label>Initial XP</label>
+                <input type="number" ng-model="initialXp"/>
+            </div>
+        </div>
+        <div class="six wide column field">
+            <label>Select a family:</label>
+            <div class="ui search family selection dropdown">
+                <i class="dropdown icon"></i>
+                <div class="default text">Select Family</div>
+                <div class="menu">
+                    <div class="item" ng-class="{'disabled': !canChooseFamily(family)}" ng-click="setFamily(family)"
+                         ng-repeat="family in families">
+                        {{family.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="six wide column field">
+            <label>Select a school:</label>
+            <div class="ui search school selection dropdown">
+                <i class="dropdown icon"></i>
+                <div class="default text">Select School</div>
+                <div class="menu">
+                    <div class="item" ng-class="{'disabled': !canChooseSchool(school)}" ng-click="setSchool(school)"
+                         ng-repeat="school in schools">
+                        {{school.name}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="four wide column field">
+            <label>Buy Different School</label>
+            <div class="ui checkbox">
+                <input type="checkbox" ng-model="differentSchool" ng-change="onDifferentSchoolChange()">
+                <label></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <button class="ui primary button" ng-click="finish()">
+                    Finish & Save
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="ui grid">
+    <div class="row">
+        <h2 class="header six wide column">Rings</h2>
+        <div class="two wide column"></div>
+        <h2 class="header six wide column">Skills</h2>
+    </div>
+    <div class="row">
+        <div class="ui segment six wide column">
+            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.earth"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.water"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.fire"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.air"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.void"></pi-ring-line>
+        </div>
+        <div class="two wide column">
+        </div>
+        <div class="ui segment six wide column">
+            <pi-skills-table></pi-skills-table>
+        </div>
+    </div>
+</div>

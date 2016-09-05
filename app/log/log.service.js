@@ -6,33 +6,38 @@ angular.module('pocketIkoma').service('logService',
 
     var getLogs = function(characterId) {
         var model = createBaseModel();
-        var log = [];
+
         return characterService.getLogs(characterId)
             .then(function (logEntries) {
-                _.forEach(logEntries.data, function (logEntry) {
-                    switch (logEntry.type) {
-                        case 'CREATION':
-                            log.push(processCreationEntry(logEntry, model));
-                            break;
-                        case 'CHARACTER_INFO':
-                            log.push(processCharacterInfoEntry(logEntry, model));
-                            break;
-                        case 'XP_EXPENDITURE':
-                            log.push(processXpExpenditureEntry(logEntry, model));
-                            break;
-                        case 'MODULE_COMPLETION':
-                            log.push(processModuleCompletionEntry(logEntry, model));
-                    }
-                });
-
-                insightService.calculate(model);
-                secondaryStatsService.calculate(model);
-
+                var log = processLogsIntoModel(model, logEntries.data);
                 return {
                     model: model,
                     log: log
                 };
             });
+    };
+
+    var processLogsIntoModel = function(model, logEntries) {
+        var log = [];
+        _.forEach(logEntries, function (logEntry) {
+            switch (logEntry.type) {
+                case 'CREATION':
+                    log.push(processCreationEntry(logEntry, model));
+                    break;
+                case 'CHARACTER_INFO':
+                    log.push(processCharacterInfoEntry(logEntry, model));
+                    break;
+                case 'XP_EXPENDITURE':
+                    log.push(processXpExpenditureEntry(logEntry, model));
+                    break;
+                case 'MODULE_COMPLETION':
+                    log.push(processModuleCompletionEntry(logEntry, model));
+            }
+        });
+
+        insightService.calculate(model);
+        secondaryStatsService.calculate(model);
+        return log;
     };
 
     var createBaseModel = function() {
@@ -64,6 +69,33 @@ angular.module('pocketIkoma').service('logService',
 
         return baseModel;
     };
+
+    function makeCreationEntry(initialXp, familyId, schoolId) {
+        return {
+            type: 'CREATION',
+            initialXp: initialXp,
+            family: familyId ? familyId.toLowerCase() : 'none',
+            school: {
+                id: schoolId ? schoolId : 'none',
+                options: {}
+            },
+            creationTimestamp: null
+        };
+    }
+
+    function makeDifferentSchoolEntry() {
+        return {
+            'type': 'XP_EXPENDITURE',
+            'title': 'Character Building - Initial Different School',
+            'expenditures': [
+                {
+                    'type': 'ADVANTAGE',
+                    'id': 'differentSchool'
+                }
+            ],
+            'creationTimestamp': null
+        };
+    }
 
     function processCreationEntry(logEntry, model) {
         var family = familyService[logEntry.family],
@@ -249,6 +281,10 @@ angular.module('pocketIkoma').service('logService',
     }
 
     return {
-        getLogs: getLogs
+        getLogs: getLogs,
+        makeCreationEntry: makeCreationEntry,
+        makeDifferentSchoolEntry: makeDifferentSchoolEntry,
+        processLogsIntoModel: processLogsIntoModel,
+        createBaseModel: createBaseModel
     };
 });
