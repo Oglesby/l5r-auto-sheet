@@ -1,15 +1,17 @@
-<img class="col-lg-6 ring-icon" ng-src="{{ring.icon}}">
+<div>
+    <img class="ring-icon" ng-src="{{ring.icon}}">
 
-<div class="col-lg-6 trait-block form-horizontal">
-    <div class="form-group">
-        <label>{{ring.name}}</label> {{ring.getRank()}}
-    </div>
-    <div ng-if="!ring.voidTrait">
-        <div class="form-group">
-            <label>{{ring.physicalTrait.name}}</label> {{ring.physicalTrait.value}}
+    <div class="trait-block ">
+        <div class="ui huge form">
+            <div class="inline field">
+                <label>{{ring.name}}</label> {{ring.getRank()}}
+            </div>
         </div>
-        <div class="form-group">
-            <label>{{ring.spiritualTrait.name}}</label> {{ring.spiritualTrait.value}}
+        <div class="ui large form" ng-if="!ring.voidTrait" style="padding-top: 15px;">
+            <div class="inline field">
+                <div><label>{{ring.physicalTrait.name}}</label> {{ring.physicalTrait.value}}</div>
+                <div><label>{{ring.spiritualTrait.name}}</label> {{ring.spiritualTrait.value}}</div>
+            </div>
         </div>
     </div>
 </div>
