@@ -13,6 +13,32 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
 
     $timeout(function() {
         $('.ui.dropdown').dropdown();
+
+        $('.ui.form').form({
+            fields: {
+                school: {
+                    identifier: 'school',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Please enter a school.'
+                    }]
+                },
+                family: {
+                    identifier: 'family',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Please enter a family.'
+                    }]
+                },
+                initialXp: {
+                    identifier: 'initialXp',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Please enter an initial XP.'
+                    }]
+                }
+            }
+        });
     });
 
     $scope.canChooseSchool = function(school) {
@@ -33,11 +59,13 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
 
     $scope.setFamily = function(family) {
         $scope.selectedFamily = family;
+        $('.family.dropdown').removeClass('error');
         $scope.refreshLog();
     };
 
     $scope.setSchool = function(school) {
         $scope.selectedSchool = school;
+        $('.school.dropdown').removeClass('error');
         $scope.refreshLog();
     };
 
@@ -57,7 +85,10 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
     };
 
     $scope.finish = function() {
-        // TODO: Form validation
+        if (!$scope.selectedFamily || !$scope.selectedSchool) {
+            return;
+        }
+
         var date = new Date();
         $scope.creationEntry.creationTimestamp = date.toISOString();
 

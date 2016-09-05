@@ -4,12 +4,13 @@
         <div class="row">
             <div class="column field">
                 <label>Initial XP</label>
-                <input type="number" ng-model="initialXp"/>
+                <input type="number" ng-model="initialXp" name="initialXp"/>
             </div>
         </div>
         <div class="six wide column field">
-            <label>Select a family:</label>
+            <label>Family:</label>
             <div class="ui search family selection dropdown">
+                <input type="hidden" name="family">
                 <i class="dropdown icon"></i>
                 <div class="default text">Select Family</div>
                 <div class="menu">
@@ -21,8 +22,9 @@
             </div>
         </div>
         <div class="six wide column field">
-            <label>Select a school:</label>
+            <label>School:</label>
             <div class="ui search school selection dropdown">
+                <input type="hidden" name="school">
                 <i class="dropdown icon"></i>
                 <div class="default text">Select School</div>
                 <div class="menu">
@@ -38,6 +40,12 @@
             <div class="ui checkbox">
                 <input type="checkbox" ng-model="differentSchool" ng-change="onDifferentSchoolChange()">
                 <label></label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="column">
+                <div class="ui error message">
+                </div>
             </div>
         </div>
         <div class="row">
