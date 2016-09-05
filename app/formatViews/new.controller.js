@@ -89,15 +89,19 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
             return;
         }
 
+        var logs = [];
         var date = new Date();
         $scope.creationEntry.creationTimestamp = date.toISOString();
+        logs.push($scope.creationEntry);
 
         if ($scope.differentSchool) {
-            $scope.differentSchoolEntry = logService.makeDifferentSchoolEntry();
-            $scope.differentSchoolEntry = date.toISOString();
+             var differentSchoolEntry = logService.makeDifferentSchoolEntry();
+            differentSchoolEntry.creationTimestamp = date.toISOString();
+            logs.push(differentSchoolEntry);
         }
 
-        // TODO: Persist the entries somewheres
+        // TODO: Save the data somewheres
+
 
         $state.go('default');
     };
