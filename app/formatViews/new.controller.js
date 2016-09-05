@@ -10,11 +10,14 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
     $scope.selectedSchool = null;
     $scope.differentSchool = false;
     $scope.initialXp = 40;
+    $scope.step = 'creation';
+    $scope.inError = false;
+    $scope.name = '';
 
     $timeout(function() {
         $('.ui.dropdown').dropdown();
 
-        $('.ui.form').form({
+        $('.ui.initial.form').form({
             fields: {
                 school: {
                     identifier: 'school',
@@ -39,7 +42,27 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
                 }
             }
         });
+
+        $('.ui.details.form').form({
+            fields: {
+                school: {
+                    identifier: 'name',
+                    rules: [{
+                        type   : 'empty',
+                        prompt : 'Please enter a character name.'
+                    }]
+                }
+            }
+        });
     });
+
+    $scope.inCreation = function() {
+        return $scope.step === 'creation';
+    };
+
+    $scope.inDetails = function() {
+        return $scope.step === 'details';
+    };
 
     $scope.canChooseSchool = function(school) {
         if (!$scope.selectedFamily) {
@@ -84,11 +107,24 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
         logService.processLogsIntoModel($scope.model, [$scope.creationEntry]);
     };
 
-    $scope.finish = function() {
+    $scope.openDetailsPanel = function() {
         if (!$scope.selectedFamily || !$scope.selectedSchool) {
+            $scope.inError = true;
             return;
         }
 
+        $scope.inError = false;
+        $scope.step = 'details'
+    };
+
+
+    $scope.finish = function() {
+        if (!$scope.name) {
+            $scope.inError = true;
+            return;
+        }
+
+        $scope.inError = false;
         var logs = [];
         var date = new Date();
         $scope.creationEntry.creationTimestamp = date.toISOString();
