@@ -17,9 +17,10 @@ own client to `localhost:2222` .
 After ssh'ing into the VM
 
     > cd /source
-    > npm install
+    > npm install --no-bin-links
     > bower install
     > gulp
 
-will download the project's dependencies, build it, and begin serving the app on port 9000. The app can be accessed by
-navigating to `http://localhost:9000` on the host machine.
+will download the project's dependencies, build it, and begin serving the app on port 9000. If the npm command complains
+about `Maximum call stack size exceeded`, just run it again. The app can be accessed by navigating to
+`http://localhost:9000` on the host machine.
