@@ -4,72 +4,6 @@ angular.module('pocketIkoma').service('logService',
     function($http, _, characterService, advantageService, disadvantageService, ringService, familyService, spellService,
              schoolService, skillService, kataService, kihoService, insightService, secondaryStatsService) {
 
-    var getLogs = function(characterId) {
-        var model = createBaseModel();
-
-        return characterService.getLogs(characterId)
-            .then(function (logEntries) {
-                var log = processLogsIntoModel(model, logEntries.data);
-                return {
-                    model: model,
-                    log: log
-                };
-            });
-    };
-
-    var processLogsIntoModel = function(model, logEntries) {
-        var log = [];
-        _.forEach(logEntries, function (logEntry) {
-            switch (logEntry.type) {
-                case 'CREATION':
-                    log.push(processCreationEntry(logEntry, model));
-                    break;
-                case 'CHARACTER_INFO':
-                    log.push(processCharacterInfoEntry(logEntry, model));
-                    break;
-                case 'XP_EXPENDITURE':
-                    log.push(processXpExpenditureEntry(logEntry, model));
-                    break;
-                case 'MODULE_COMPLETION':
-                    log.push(processModuleCompletionEntry(logEntry, model));
-            }
-        });
-
-        insightService.calculate(model);
-        secondaryStatsService.calculate(model);
-        return log;
-    };
-
-    var createBaseModel = function() {
-        var baseModel = {
-            rings: {
-                earth: ringService.createEarthRing(),
-                water: ringService.createWaterRing(),
-                fire: ringService.createFireRing(),
-                air: ringService.createAirRing(),
-                void: ringService.createVoidRing()
-            },
-            characterInfo: {
-                glory: 10,
-                honor: 10,
-                status: 10,
-                taint: 0,
-                infamy: 0,
-                shadowRank: 0
-            },
-            secondaryStats: {
-                bonusTN: 0,
-                bonusInitiative: 0,
-                bonusMovement: 0,
-                bonusWoundsPerRank: 0,
-                woundPenalties: [0, 3, 5, 10, 15, 20, 40, null]
-            },
-            skills: []
-        };
-
-        return baseModel;
-    };
-
     function makeCreationEntry(initialXp, familyId, schoolId) {
         return {
             type: 'CREATION',
@@ -197,6 +131,21 @@ angular.module('pocketIkoma').service('logService',
         };
     }
 
+    function handleCharInfoType(type, logEntry, logItems, model, displayMult) {
+        var reward = logEntry[type + 'Reward'] || 0;
+        model.characterInfo[type] += reward;
+
+        if (type === 'xp') {
+            model.characterInfo.gainedXp += reward;
+        }
+
+        if (reward > 0) {
+            logItems.push({displayText: 'Gained ' + reward * displayMult + ' ' + type});
+        } else if (reward < 0) {
+            logItems.push({displayText: 'Lost ' + reward * displayMult + ' ' + type});
+        }
+    }
+
     function processModuleCompletionEntry(logEntry, model) {
         var logItems = [];
         var n = 0;
@@ -265,20 +214,71 @@ angular.module('pocketIkoma').service('logService',
         };
     }
 
-    function handleCharInfoType(type, logEntry, logItems, model, displayMult) {
-        var reward = logEntry[type + 'Reward'] || 0;
-        model.characterInfo[type] += reward;
+    var processLogsIntoModel = function(model, logEntries) {
+        var log = [];
+        _.forEach(logEntries, function (logEntry) {
+            switch (logEntry.type) {
+                case 'CREATION':
+                    log.push(processCreationEntry(logEntry, model));
+                    break;
+                case 'CHARACTER_INFO':
+                    log.push(processCharacterInfoEntry(logEntry, model));
+                    break;
+                case 'XP_EXPENDITURE':
+                    log.push(processXpExpenditureEntry(logEntry, model));
+                    break;
+                case 'MODULE_COMPLETION':
+                    log.push(processModuleCompletionEntry(logEntry, model));
+            }
+        });
 
-        if (type === 'xp') {
-            model.characterInfo.gainedXp += reward;
-        }
+        insightService.calculate(model);
+        secondaryStatsService.calculate(model);
+        return log;
+    };
 
-        if (reward > 0) {
-            logItems.push({displayText: 'Gained ' + reward * displayMult + ' ' + type});
-        } else if (reward < 0) {
-            logItems.push({displayText: 'Lost ' + reward * displayMult + ' ' + type});
-        }
-    }
+    var createBaseModel = function() {
+        var baseModel = {
+            rings: {
+                earth: ringService.createEarthRing(),
+                water: ringService.createWaterRing(),
+                fire: ringService.createFireRing(),
+                air: ringService.createAirRing(),
+                void: ringService.createVoidRing()
+            },
+            characterInfo: {
+                glory: 10,
+                honor: 10,
+                status: 10,
+                taint: 0,
+                infamy: 0,
+                shadowRank: 0
+            },
+            secondaryStats: {
+                bonusTN: 0,
+                bonusInitiative: 0,
+                bonusMovement: 0,
+                bonusWoundsPerRank: 0,
+                woundPenalties: [0, 3, 5, 10, 15, 20, 40, null]
+            },
+            skills: []
+        };
+
+        return baseModel;
+    };
+
+    var getLogs = function(characterId) {
+        var model = createBaseModel();
+
+        return characterService.getLogs(characterId)
+            .then(function (logEntries) {
+                var log = processLogsIntoModel(model, logEntries.data);
+                return {
+                    model: model,
+                    log: log
+                };
+            });
+    };
 
     return {
         getLogs: getLogs,

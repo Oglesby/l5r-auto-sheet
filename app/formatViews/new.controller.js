@@ -114,7 +114,7 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
         }
 
         $scope.inError = false;
-        $scope.step = 'details'
+        $scope.step = 'details';
     };
 
 

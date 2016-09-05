@@ -1,6 +1,18 @@
 'use strict';
 
 angular.module('pocketIkoma').service('insightService', function(_) {
+
+    function calculateRank(insight) {
+        var difference = insight - 150;
+        var rank = 1;
+
+        if (difference > 0) {
+            rank += 1 + Math.floor(difference / 50);
+        }
+
+        return rank;
+    }
+
     var calculate = function(model) {
         var insight = 0;
 
@@ -26,17 +38,6 @@ angular.module('pocketIkoma').service('insightService', function(_) {
         model.characterInfo.insight = insight;
         model.characterInfo.insightRank = calculateRank(insight);
     };
-
-    function calculateRank(insight) {
-        var difference = insight - 150;
-        var rank = 1;
-
-        if (difference > 0) {
-            rank += 1 + Math.floor(difference / 50);
-        }
-
-        return rank;
-    }
 
     return {
         calculate: calculate
