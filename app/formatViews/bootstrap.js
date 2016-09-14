@@ -1,2 +1,2 @@
 require('./new.controller');
-require('./default');
+require('./default.controller');

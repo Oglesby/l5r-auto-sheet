@@ -71,6 +71,7 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
             return isBushi ? 2 : 3;
         }),
         favor: new Advantage('favor', 'Favor', '', function(model, options) { return 0; }),
+        ally: new Advantage('ally', 'Ally', '', function(model, options) { return 0; }),
         tactician: new Advantage('tactician', 'Tactician', '', function(model, options) { return 3; }),
         elementalBlessing: new Advantage('elementalBlessing', 'Elemental Blessing', '', function(model, options) {
             return (model.characterInfo.clan === 'Phoenix') ? 3 : 4;

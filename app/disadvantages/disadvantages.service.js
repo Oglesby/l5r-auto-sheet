@@ -71,5 +71,6 @@ angular.module('pocketIkoma').service('disadvantageService', function() {
         sevenFortunesCurse: new Disadvantage('sevenFortunesCurse', 'Seven Fortune\'s Curse', '', function () { return 3; }),
         softHearted: new Disadvantage('softHearted', 'Soft Hearted', '', function () { return 2; }),
         idealistic: new Disadvantage('idealistic', 'Idealistic', '', function () { return 2; }),
+        swornEnemy: new Disadvantage('swornEnemy', 'Sworn Enemy', '', function (model, options) { return 0; })
     };
 });

@@ -16,21 +16,29 @@ require('./secondaryStats/bootstrap');
 require('./characters/bootstrap');
 require('./kiho/bootstrap');
 require('./spells/bootstrap');
+require('./nav/bootstrap');
+require('./common/bootstrap');
 
 pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/default');
 
-    $stateProvider
-        .state('default', {
-            url: '/{characterId}/default',
-            templateUrl: 'formatViews/default.html',
-            controller: 'DefaultController'
-        })
-        .state('new', {
-            url: '/new',
-            templateUrl: 'formatViews/new.html',
-            controller: 'NewController'
-        });
+    $stateProvider.state('default', {
+        url: '/default',
+        templateUrl: 'formatViews/default.html',
+        controller: 'DefaultController',
+        controllerAs: 'defaultController',
+        params: {
+            characterId: null
+        }
+    }).state('default.logModule', {
+        url: '/log',
+        templateUrl: 'log/logModule.html',
+        controller: 'LogModuleController'
+    }).state('new', {
+        url: '/new',
+        templateUrl: 'formatViews/new.html',
+        controller: 'NewController'
+    });
 });
 
 

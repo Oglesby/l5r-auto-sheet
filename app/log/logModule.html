@@ -1,0 +1,69 @@
+<br/>
+<div class="ui segment" id="new-log">
+    <div class="ui grid">
+        <h3 class="ui sixteen wide column header">Record Module</h3>
+        <form class="ui sixteen wide column module form">
+            <div class="fields">
+                <div class="six wide field">
+                    <label for="xp">Module Name</label>
+                    <input type="text" id="module-name" name="module-name" ng-model="moduleName"/>
+                </div>
+                <div class="four wide field">
+                    <label for="xp">Module Number</label>
+                    <input type="text" id="module-number" name="module-number" ng-model="moduleNumber"/>
+                </div>
+                <div class="four wide field">
+                    <label for="xp">XP Gained</label>
+                    <input type="number" id="xp" name="xp" ng-model="xp"/>
+                </div>
+            </div>
+            <div class="fields">
+                <div class="field">
+                    <label for="glory">Glory Change</label>
+                    <input type="number" id="glory" name="glory" step="0.1" ng-model="gloryChange"/>
+                </div>
+                <div class="field">
+                    <label for="honor">Honor Change</label>
+                    <input type="number" id="honor" name="honor" step="0.1" ng-model="honorChange"/>
+                </div>
+                <div class="field">
+                    <label for="status">Status Change</label>
+                    <input type="number" id="status" name="status" step="0.1" ng-model="statusChange"/>
+                </div>
+                <div class="field">
+                    <label for="infamy">Infamy Change</label>
+                    <input type="number" id="infamy" name="infamy" step="0.1" ng-model="infamyChange"/>
+                </div>
+            </div>
+            <div class="fields">
+                <div class="field">
+                    <label for="taint">Shadowlands Taint Change</label>
+                    <input type="number" id="taint" name="taint" step="0.1" ng-model="taintChange"/>
+                </div>
+                <div class="field">
+                    <label for="shadow">Shadow Taint Change</label>
+                    <input type="number" id="shadow" name="shadow" step="0.1" ng-model="shadowChange"/>
+                </div>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+        <div class="ui eight wide column">
+            <pi-item-list items="favors" item-class="favor" item-name="Favor" item-title="Favors" item-params="favorParams"
+                          get-display-text="getFavorDisplayText" new-item-prototype="favorPrototype"
+                          form-validation="favorValidation"></pi-item-list>
+        </div>
+        <div class="ui eight wide column">
+            <pi-item-list items="allies" item-class="ally" item-name="Ally" item-title="Allies" item-params="allyParams"
+                          get-display-text="getAllyDisplayText" new-item-prototype="allyPrototype"
+                          form-validation="allyValidation"></pi-item-list>
+        </div>
+        <div class="ui eight wide column">
+            <pi-item-list items="enemies" item-class="enemy" item-name="Enemy" item-title="Sworn Enemies" item-params="enemyParams"
+                          get-display-text="getEnemyDisplayText" new-item-prototype="enemyPrototype"
+                          form-validation="enemyValidation"></pi-item-list>
+        </div>
+        <div class="sixteen wide column">
+            <button class="ui button primary" type="submit" id="submit-module" name="submit-module" ng-click="saveModule()">Finish & Save</button>
+        </div>
+    </div>
+</div>

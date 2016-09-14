@@ -1,8 +1,8 @@
 'use strict';
 
-angular.module('pocketIkoma').service('logService',
-    function($http, _, characterService, advantageService, disadvantageService, ringService, familyService, spellService,
-             schoolService, skillService, kataService, kihoService, insightService, secondaryStatsService) {
+angular.module('pocketIkoma').service('logService', function($http, _, characterService, advantageService,
+    disadvantageService, ringService, familyService, spellService, schoolService, skillService, kataService,
+    kihoService, insightService, secondaryStatsService) {
 
     function makeCreationEntry(initialXp, familyId, schoolId) {
         return {
@@ -28,6 +28,22 @@ angular.module('pocketIkoma').service('logService',
                 }
             ],
             'creationTimestamp': null
+        };
+    }
+
+    function makeLogModuleEntry(moduleName, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
+        return {
+            'type': 'MODULE_COMPLETION',
+            'name': moduleName,
+            'xpReward': xp,
+            'gloryReward': gloryChange * 10,
+            'honorReward': honorChange * 10,
+            'statusChange': statusChange * 10,
+            'infamyChange': infamyChange * 10,
+            'taintChange': taintChange * 10,
+            'shadowChange': shadowChange * 10,
+            'creationTimestamp': null,
+            'gains': []
         };
     }
 
@@ -270,7 +286,7 @@ angular.module('pocketIkoma').service('logService',
     var getLogs = function(characterId) {
         var model = createBaseModel();
 
-        return characterService.getLogs(characterId)
+        return characterService.loadCharacter(characterId)
             .then(function (logEntries) {
                 var log = processLogsIntoModel(model, logEntries.data);
                 return {
@@ -284,6 +300,7 @@ angular.module('pocketIkoma').service('logService',
         getLogs: getLogs,
         makeCreationEntry: makeCreationEntry,
         makeDifferentSchoolEntry: makeDifferentSchoolEntry,
+        makeLogModuleEntry: makeLogModuleEntry,
         processLogsIntoModel: processLogsIntoModel,
         createBaseModel: createBaseModel
     };

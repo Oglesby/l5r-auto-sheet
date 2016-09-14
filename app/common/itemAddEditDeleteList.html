@@ -1,0 +1,78 @@
+<h3 class="ui header">{{itemTitle}}</h3>
+<div class="ui list">
+    <div class="ui item" ng-repeat="item in items">
+        <div class="ui segment" ng-if="!editingThisItem(item) && !deletingThisItem(item)">
+            <div class="ui middle aligned grid">
+                <div class="ten wide column">{{getDisplayText(item)}}</div>
+                <div class="six wide column">
+                    <div class="ui buttons" ng-if="!changingAnyItem()">
+                        <button class="ui button" type="submit" id="edit-item" name="edit-item" ng-click="startEditItem(item)">Edit</button>
+                        <div class="or"></div>
+                        <button class="ui button negative" id="delete-item" name="delete-item" ng-click="startDeleteItem(item)">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <form class="ui list-item edit form segment" ng-class="itemClass" ng-if="editingThisItem(item)">
+            <div class="fields">
+                <div class="field" ng-repeat="itemParam in itemParams">
+                    <label>{{itemParam.name}}</label>
+                    <input ng-if="itemParam.type === 'text'" ng-attr-id="{{itemParam.id}}" type="text"
+                           ng-model-options="{ getterSetter: true }" ng-model="modelAccessors[itemParam.name]"/>
+                    <input ng-if="itemParam.type === 'number'" ng-attr-id="{{itemParam.id}}" type="number"
+                           ng-attr-min="{{itemParam.min}}" ng-attr-max="{{itemParam.max}}"
+                           ng-model-options="{ getterSetter: true }" ng-model="modelAccessors[itemParam.name]"/>
+                </div>
+                <div class="field">
+                    <label>&nbsp;</label>
+                    <div class="ui buttons">
+                        <button class="ui submit button primary" type="submit" id="submit-editing-item" name="submit-editing-item" ng-click="finishChangingItem()">Save</button>
+                        <div class="or"></div>
+                        <button class="ui button" id="cancel-editing-item" name="cancel-editing-item" ng-click="cancelChangingItem()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+        <div class="ui segment" ng-if="deletingThisItem(item)">
+            <div class="ui middle aligned grid">
+                <div class="ten wide column"> Are you sure you want to delete this {{itemName.toLowerCase()}}?</div>
+                <div class="six wide column">
+                    <div class="ui buttons">
+                        <button class="ui button negative" type="submit" id="confirm-delete-item" name="confirm-delete-item" ng-click="finishChangingItem()">Delete</button>
+                        <div class="or"></div>
+                        <button class="ui button" id="cancel-delete-item" name="cancel-delete-item" ng-click="cancelChangingItem()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="item">
+        <div class="ui buttons" ng-if="!changingAnyItem()">
+            <button class="ui button" ng-click="startAddItem()"><i class="green add icon"></i> Add {{itemName}}</button>
+        </div>
+    </div>
+    <div class="item" ng-if="addingItem()">
+        <form class="ui segment list-item add form" ng-class="itemClass">
+            <div class="fields">
+                <div class="field" ng-repeat="itemParam in itemParams">
+                    <label>{{itemParam.name}}</label>
+                    <input ng-if="itemParam.type === 'text'" ng-attr-id="{{itemParam.id}}" type="text"
+                           ng-model-options="{ getterSetter: true }" ng-model="modelAccessors[itemParam.name]"/>
+                    <input ng-if="itemParam.type === 'number'" ng-attr-id="{{itemParam.id}}" type="number"
+                           ng-attr-min="{{itemParam.min}}" ng-attr-max="{{itemParam.max}}"
+                           ng-model-options="{ getterSetter: true }" ng-model="modelAccessors[itemParam.name]"/>
+                </div>
+                <div class="field">
+                    <label>&nbsp;</label>
+                    <div class="ui buttons">
+                        <button class="ui submit button primary" type="submit" id="submit-item" name="submit-item" ng-click="finishChangingItem()">Save</button>
+                        <div class="or"></div>
+                        <button class="ui button" id="cancel-item" name="cancel-item" ng-click="cancelChangingItem()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+            <div class="ui error message"></div>
+        </form>
+    </div>
+</div>

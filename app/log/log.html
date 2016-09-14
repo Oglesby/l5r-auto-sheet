@@ -1,14 +1,12 @@
 <br/>
 <h2 class="ui header">Log</h2>
-<div ng-repeat="logEntry in log">
+<div class="ui segment" ng-repeat="logEntry in log">
     <div class="ui small header">
         {{logEntry.title}}
         <div class="sub header">{{logEntry.creationTimestamp}}</div>
     </div>
 
-
     <div ng-repeat="logItem in logEntry.logItems">
         {{logItem.displayText}}
     </div>
-    <hr>
 </div>

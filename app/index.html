@@ -11,27 +11,7 @@
 
     </head>
     <body ng-app="pocketIkoma">
-        <div class="ui fixed menu">
-                <a ui-sref="default" class="header item">
-                    <!--<img class="logo" src="assets/images/logo.png">-->
-                    <i class="bar icon"></i>
-                    Pocket Ikoma
-                </a>
-                <div class="ui simple dropdown item">
-                    Views <i class="dropdown icon"></i>
-                    <div class="menu">
-                        <a class="item" ui-sref="default">Default</a>
-                        <a class="item" href="#">Print</a>
-                        <a class="item" href="#">Detailed</a>
-                    </div>
-                </div>
-                <a class="item" href="#">Record a Mod</a>
-                <a class="item" href="#">Spend XP</a>
-                <div class="right menu">
-                    <pi-characters></pi-characters>
-                </div>
-        </div>
-        <!-- TODO: Mobile menu.-->
+        <pi-nav></pi-nav>
         <div class="ui main container" ui-view></div>
 
         <script src="bower_components/angular/angular.js"></script>
