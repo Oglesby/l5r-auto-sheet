@@ -1,12 +1,44 @@
 <br/>
 <h2 class="ui header">Log</h2>
-<div class="ui segment" ng-repeat="logEntry in log">
-    <div class="ui small header">
-        {{logEntry.title}}
-        <div class="sub header">{{logEntry.creationTimestamp}}</div>
-    </div>
-
-    <div ng-repeat="logItem in logEntry.logItems">
-        {{logItem.displayText}}
+<div class="ui divided items">
+    <div class="ui item" ng-repeat="logEntry in log">
+        <div class="content" ng-if="editingLog !== logEntry">
+            <div class="ui right floated buttons" ng-if="!deletingLog && !editingLog">
+                <button class="ui button" type="submit" ng-click="startEditLog(logEntry)">Edit</button>
+                <div class="or" ng-if="!isMandatoryEntry(logEntry)"></div>
+                <button class="ui button negative" ng-if="!isMandatoryEntry(logEntry)" ng-click="startDeleteLog(logEntry)">Delete</button>
+            </div>
+            <div class="ui right floated" ng-if="deletingLog === logEntry">
+                <span style="padding-right: 5px">Are you sure you want to delete this log?</span>
+                <div class="ui  buttons">
+                    <button class="ui button negative" type="submit" id="confirm-delete-item" name="confirm-delete-item" ng-click="finishDeletingLog()">Delete</button>
+                    <div class="or"></div>
+                    <button class="ui button" id="cancel-delete-item" name="cancel-delete-item" ng-click="cancelChangingLog()">Cancel</button>
+                </div>
+            </div>
+            <div class="ui small header">
+                {{logEntry.title}}
+            </div>
+            <div class="meta">{{logEntry.creationTimestamp}}</div>
+            <div class="description">
+                <div ng-repeat="logItem in logEntry.logItems">
+                    {{logItem.displayText}}
+                </div>
+            </div>
+        </div>
+        <div class="content" ng-if="editingLog === logEntry" ng-switch="logEntry.logEntry.type">
+            <div ng-switch-when="CREATION">
+                Can't be edited yet. <button class="ui button" ng-click="cancelChangingLog()">Cancel</button>
+            </div>
+            <div ng-switch-when="CHARACTER_INFO">
+                Can't be edited yet. <button class="ui button" ng-click="cancelChangingLog()">Cancel</button>
+            </div>
+            <div ng-switch-when="XP_EXPENDITURE">
+                Can't be edited yet. <button class="ui button" ng-click="cancelChangingLog()">Cancel</button>
+            </div>
+            <div ng-switch-when="MODULE_COMPLETION">
+                <pi-edit-log-module log="log" model="model" on-save="finishEditingLog" on-cancel="cancelChangingLog"></pi-edit-log-module>
+            </div>
+        </div>
     </div>
 </div>

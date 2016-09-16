@@ -4,6 +4,13 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
     disadvantageService, ringService, familyService, spellService, schoolService, skillService, kataService,
     kihoService, insightService, secondaryStatsService) {
 
+    //var defaultId = 0;
+    var cachedLogEntries = [];
+
+    /* TODO: This feels like it should be two services now - one that holds the current character state and one that
+    understands how to process logs. Potentially a third that goes to the server and back? */
+
+
     function makeCreationEntry(initialXp, familyId, schoolId) {
         return {
             type: 'CREATION',
@@ -69,7 +76,9 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         logItems = logItems.concat(school.visit(model, logEntry.school.options));
 
         return {
+            logEntry: logEntry,
             title: 'Character Building - School and Family',
+            type: 'CREATION',
             comment: logEntry.comment,
             creationTimestamp: logEntry.creationTimestamp,
             logItems: logItems
@@ -80,7 +89,9 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         model.characterInfo.name = logEntry.name;
 
         return {
+            logEntry: logEntry,
             title: 'Character Building - Basic Information',
+            type: 'CHARACTER_INFO',
             comment: logEntry.comment,
             creationTimestamp: logEntry.creationTimestamp,
             logItems: [
@@ -140,6 +151,7 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         });
 
         return {
+            logEntry: logEntry,
             title: logEntry.title,
             comment: logEntry.comment,
             creationTimestamp: logEntry.creationTimestamp,
@@ -223,6 +235,7 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         });
 
         return {
+            logEntry: logEntry,
             title: 'Completed Module: ' + logEntry.name,
             comment: logEntry.comment,
             creationTimestamp: logEntry.creationTimestamp,
@@ -254,7 +267,7 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
     };
 
     var createBaseModel = function() {
-        var baseModel = {
+        return {
             rings: {
                 earth: ringService.createEarthRing(),
                 water: ringService.createWaterRing(),
@@ -279,21 +292,32 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
             },
             skills: []
         };
-
-        return baseModel;
     };
 
-    var getLogs = function(characterId) {
+    var resetModelFromLogs = function() {
         var model = createBaseModel();
+        var log = processLogsIntoModel(model, cachedLogEntries);
+        return {
+            model: model,
+            log: log
+        };
+    };
 
-        return characterService.loadCharacter(characterId)
-            .then(function (logEntries) {
-                var log = processLogsIntoModel(model, logEntries.data);
-                return {
-                    model: model,
-                    log: log
-                };
-            });
+
+    var getLogs = function(characterId) {
+        return characterService.loadCharacter(characterId).then(function (logEntries) {
+            Array.prototype.push.apply(cachedLogEntries, logEntries.data);
+            return resetModelFromLogs();
+        });
+    };
+
+    var deleteLogEntry = function(logEntry) {
+        var index = _.findIndex(cachedLogEntries, logEntry);
+        if (index > -1) {
+            cachedLogEntries.splice(index, 1);
+        }
+
+        return resetModelFromLogs();
     };
 
     return {
@@ -302,6 +326,7 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         makeDifferentSchoolEntry: makeDifferentSchoolEntry,
         makeLogModuleEntry: makeLogModuleEntry,
         processLogsIntoModel: processLogsIntoModel,
+        deleteLogEntry: deleteLogEntry,
         createBaseModel: createBaseModel
     };
 });

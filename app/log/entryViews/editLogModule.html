@@ -63,7 +63,11 @@
                           form-validation="enemyValidation"></pi-item-list>
         </div>
         <div class="sixteen wide column">
-            <button class="ui button primary" type="submit" id="submit-module" name="submit-module" ng-click="saveModule()">Finish & Save</button>
+            <div class="ui buttons">
+                <button class="ui button primary" type="submit" id="submit-module" name="submit-module" ng-click="save()">Finish & Save</button>
+                <div class="or"></div>
+                <button class="ui button" ng-click="cancel()">Cancel</button>
+            </div>
         </div>
     </div>
 </div>

@@ -2,6 +2,7 @@
 
 var pocketIkomaModule = angular.module('pocketIkoma', ['ui.router']);
 pocketIkomaModule.constant('_', window._);
+pocketIkomaModule.constant('$', window.$);
 
 require('./formatViews/bootstrap');
 require('./basicInfo/bootstrap');
@@ -32,8 +33,7 @@ pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
         }
     }).state('default.logModule', {
         url: '/log',
-        templateUrl: 'log/logModule.html',
-        controller: 'LogModuleController'
+        template: '<pi-edit-log-module log="log" model="model"></pi-edit-log-module>'
     }).state('new', {
         url: '/new',
         templateUrl: 'formatViews/new.html',
