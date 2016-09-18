@@ -1,49 +1,42 @@
 'use strict';
 
-angular.module('pocketIkoma').directive('piLog', function (_, logService) {
+angular.module('pocketIkoma').directive('piLog', function (_) {
     return {
         restrict: 'E',
         templateUrl: 'log/log.html',
-        controller: function($scope) {
+        controller: function($scope, modelService) {
 
-            $scope.deletingLog = null;
-            $scope.editingLog = null;
-            $scope.newEditingLog = null;
+            function resetChanges() {
+                $scope.deletingLogView = null;
+                $scope.editingLogView = null;
+                $scope.newEditingLogModel = null;
+            }
+            resetChanges();
 
-            $scope.startEditLog = function(logItem) {
-                $scope.editingLog = logItem;
-                $scope.newEditingLog = _.cloneDeep(logItem);
+            $scope.startEditLog = function(logView) {
+                $scope.editingLogView = logView;
+                $scope.newEditingLogModel = _.cloneDeep(logView.logModel);
             };
 
             $scope.finishEditingLog = function() {
-                //var result = logService.deleteLogEntry($scope.deletingLog.logEntry);
-                //
-                //$scope.model = result.model;
-                //$scope.log = result.log;
-                // TODO: actually edit log.
+                modelService.updateLogInModel($scope.newEditingLogModel);
+                resetChanges();
             };
 
             $scope.startDeleteLog = function(logItem) {
-                $scope.deletingLog = logItem;
+                $scope.deletingLogView = logItem;
             };
 
             $scope.finishDeletingLog = function() {
-                var result = logService.deleteLogEntry($scope.deletingLog.logEntry);
-
-                $scope.model = result.model;
-                $scope.log = result.log;
-                // TODO: actually delete log.
+                modelService.removeLogFromModel($scope.deletingLogView.logModel.id);
+                resetChanges();
             };
 
             $scope.cancelChangingLog = function() {
-                $scope.deletingLog = null;
-                $scope.editingLog = null;
-                $scope.newEditingLog = null;
+                resetChanges();
             };
 
-            $scope.isMandatoryEntry = function(logEntry) {
-                return logEntry.type === 'CREATION' || logEntry.type === 'CHARACTER_INFO' ;
-            };
+            $scope.isMandatoryEntry = modelService.isMandatoryLogModel;
         }
     };
 });

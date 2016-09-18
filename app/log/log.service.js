@@ -1,17 +1,24 @@
 'use strict';
 
-angular.module('pocketIkoma').service('logService', function($http, _, characterService, advantageService,
-    disadvantageService, ringService, familyService, spellService, schoolService, skillService, kataService,
-    kihoService, insightService, secondaryStatsService) {
+angular.module('pocketIkoma').service('logService', function(_, advantageService, disadvantageService, ringService,
+    familyService, spellService, schoolService, skillService, kataService, kihoService, insightService,
+    secondaryStatsService) {
 
-    //var defaultId = 0;
-    var cachedLogEntries = [];
+    function ensureLogModelHasId(logModel) {
+        if (logModel.id) {
+            return;
+        }
 
-    /* TODO: This feels like it should be two services now - one that holds the current character state and one that
-    understands how to process logs. Potentially a third that goes to the server and back? */
+        /*jslint bitwise: true */
+        // TODO: Replace this with a better UUID generation than one ripped from SO.
+        logModel.id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+            var r = Math.random()*16 | 0, v = c === 'x' ? r : (r&0x3|0x8);
+            return v.toString(16);
+        });
+        /*jslint bitwise: false */
+    }
 
-
-    function makeCreationEntry(initialXp, familyId, schoolId) {
+    function makeCreationLogModel(initialXp, familyId, schoolId) {
         return {
             type: 'CREATION',
             initialXp: initialXp,
@@ -24,7 +31,7 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         };
     }
 
-    function makeDifferentSchoolEntry() {
+    function makeDifferentSchoolLogModel() {
         return {
             'type': 'XP_EXPENDITURE',
             'title': 'Character Building - Initial Different School',
@@ -38,7 +45,7 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         };
     }
 
-    function makeLogModuleEntry(moduleName, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
+    function makeModuleCompletionLogModel(moduleName, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
         return {
             'type': 'MODULE_COMPLETION',
             'name': moduleName,
@@ -54,13 +61,13 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         };
     }
 
-    function processCreationEntry(logEntry, model) {
-        var family = familyService[logEntry.family],
-            school = schoolService[logEntry.school.id];
+    function processCreationLogModel(logModel, model) {
+        var family = familyService[logModel.family],
+            school = schoolService[logModel.school.id];
 
-        var logItems = [
+        var recordItems = [
             {
-                displayText: 'Set initial xp to ' + logEntry.initialXp
+                displayText: 'Set initial xp to ' + logModel.initialXp
             },
             {
                 displayText: 'Set family to ' + family.name
@@ -70,42 +77,42 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
             }
         ];
 
-        model.characterInfo.xp = logEntry.initialXp;
-        model.characterInfo.gainedXp = logEntry.initialXp;
-        logItems = logItems.concat(family.visit(model));
-        logItems = logItems.concat(school.visit(model, logEntry.school.options));
+        model.characterInfo.xp = logModel.initialXp;
+        model.characterInfo.gainedXp = logModel.initialXp;
+        recordItems = recordItems.concat(family.visit(model));
+        recordItems = recordItems.concat(school.visit(model, logModel.school.options));
 
         return {
-            logEntry: logEntry,
+            logModel: logModel,
             title: 'Character Building - School and Family',
             type: 'CREATION',
-            comment: logEntry.comment,
-            creationTimestamp: logEntry.creationTimestamp,
-            logItems: logItems
+            comment: logModel.comment,
+            creationTimestamp: logModel.creationTimestamp,
+            recordItems: recordItems
         };
     }
 
-    function processCharacterInfoEntry(logEntry, model) {
-        model.characterInfo.name = logEntry.name;
+    function processCharacterInfoLogModel(logModel, model) {
+        model.characterInfo.name = logModel.name;
 
         return {
-            logEntry: logEntry,
+            logModel: logModel,
             title: 'Character Building - Basic Information',
             type: 'CHARACTER_INFO',
-            comment: logEntry.comment,
-            creationTimestamp: logEntry.creationTimestamp,
-            logItems: [
+            comment: logModel.comment,
+            creationTimestamp: logModel.creationTimestamp,
+            recordItems: [
                 {
-                    displayText: 'Set name to ' + logEntry.name
+                    displayText: 'Set name to ' + logModel.name
                 }
             ]
         };
     }
 
-    function processXpExpenditureEntry(logEntry, model) {
-        var logItems = [];
+    function processXpExpenditureLogModel(logModel, model) {
+        var recordItems = [];
         var n = 0;
-        _.forEach(logEntry.expenditures, function (expenditure) {
+        _.forEach(logModel.expenditures, function (expenditure) {
             var displayText = '';
             switch (expenditure.type) {
                 case 'TRAIT':
@@ -144,23 +151,23 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
             if (expenditure.comment) {
                 displayText += ' (' + expenditure.comment + ')';
             }
-            logItems.push({
+            recordItems.push({
                 id: n++,
-                displayText:displayText
+                displayText: displayText
             });
         });
 
         return {
-            logEntry: logEntry,
-            title: logEntry.title,
-            comment: logEntry.comment,
-            creationTimestamp: logEntry.creationTimestamp,
-            logItems: logItems
+            logModel: logModel,
+            title: logModel.title,
+            comment: logModel.comment,
+            creationTimestamp: logModel.creationTimestamp,
+            recordItems: recordItems
         };
     }
 
-    function handleCharInfoType(type, logEntry, logItems, model, displayMult) {
-        var reward = logEntry[type + 'Reward'] || 0;
+    function handleCharInfoType(type, logModel, recordItems, model, displayMult) {
+        var reward = logModel[type + 'Reward'] || 0;
         model.characterInfo[type] += reward;
 
         if (type === 'xp') {
@@ -168,24 +175,24 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
         }
 
         if (reward > 0) {
-            logItems.push({displayText: 'Gained ' + reward * displayMult + ' ' + type});
+            recordItems.push({displayText: 'Gained ' + reward * displayMult + ' ' + type});
         } else if (reward < 0) {
-            logItems.push({displayText: 'Lost ' + reward * displayMult + ' ' + type});
+            recordItems.push({displayText: 'Lost ' + reward * displayMult + ' ' + type});
         }
     }
 
-    function processModuleCompletionEntry(logEntry, model) {
-        var logItems = [];
+    function processModuleCompletionLogModel(logModel, model) {
+        var recordItems = [];
         var n = 0;
 
-        handleCharInfoType('xp', logEntry, logItems, model, 1);
-        handleCharInfoType('status', logEntry, logItems, model, 0.1);
-        handleCharInfoType('glory', logEntry, logItems, model, 0.1);
-        handleCharInfoType('honor', logEntry, logItems, model, 0.1);
-        handleCharInfoType('taint', logEntry, logItems, model, 0.1);
-        handleCharInfoType('infamy', logEntry, logItems, model, 0.1);
+        handleCharInfoType('xp', logModel, recordItems, model, 1);
+        handleCharInfoType('status', logModel, recordItems, model, 0.1);
+        handleCharInfoType('glory', logModel, recordItems, model, 0.1);
+        handleCharInfoType('honor', logModel, recordItems, model, 0.1);
+        handleCharInfoType('taint', logModel, recordItems, model, 0.1);
+        handleCharInfoType('infamy', logModel, recordItems, model, 0.1);
 
-        _.forEach(logEntry.gains, function (expenditure) {
+        _.forEach(logModel.gains, function (expenditure) {
             var displayText = '';
             switch (expenditure.type) {
                 case 'TRAIT':
@@ -228,46 +235,48 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
             if (expenditure.comment) {
                 displayText += ' (' + expenditure.comment + ')';
             }
-            logItems.push({
+            recordItems.push({
                 id: n++,
                 displayText:displayText
             });
         });
 
         return {
-            logEntry: logEntry,
-            title: 'Completed Module: ' + logEntry.name,
-            comment: logEntry.comment,
-            creationTimestamp: logEntry.creationTimestamp,
-            logItems: logItems
+            logModel: logModel,
+            title: 'Completed Module: ' + logModel.name,
+            comment: logModel.comment,
+            creationTimestamp: logModel.creationTimestamp,
+            recordItems: recordItems
         };
     }
 
-    var processLogsIntoModel = function(model, logEntries) {
-        var log = [];
-        _.forEach(logEntries, function (logEntry) {
-            switch (logEntry.type) {
+    var processLogsIntoModel = function(model, logModels) {
+        var logViews = [];
+        _.forEach(logModels, function (logModel) {
+            ensureLogModelHasId(logModel);
+
+            switch (logModel.type) {
                 case 'CREATION':
-                    log.push(processCreationEntry(logEntry, model));
+                    logViews.push(processCreationLogModel(logModel, model));
                     break;
                 case 'CHARACTER_INFO':
-                    log.push(processCharacterInfoEntry(logEntry, model));
+                    logViews.push(processCharacterInfoLogModel(logModel, model));
                     break;
                 case 'XP_EXPENDITURE':
-                    log.push(processXpExpenditureEntry(logEntry, model));
+                    logViews.push(processXpExpenditureLogModel(logModel, model));
                     break;
                 case 'MODULE_COMPLETION':
-                    log.push(processModuleCompletionEntry(logEntry, model));
+                    logViews.push(processModuleCompletionLogModel(logModel, model));
             }
         });
 
         insightService.calculate(model);
         secondaryStatsService.calculate(model);
-        return log;
+        model.logViews = logViews;
     };
 
-    var createBaseModel = function() {
-        return {
+    var createBaseModel = function(modelObj) {
+        var newModel = {
             rings: {
                 earth: ringService.createEarthRing(),
                 water: ringService.createWaterRing(),
@@ -290,43 +299,29 @@ angular.module('pocketIkoma').service('logService', function($http, _, character
                 bonusWoundsPerRank: 0,
                 woundPenalties: [0, 3, 5, 10, 15, 20, 40, null]
             },
-            skills: []
+            skills: [],
+            logViews: []
         };
-    };
 
-    var resetModelFromLogs = function() {
-        var model = createBaseModel();
-        var log = processLogsIntoModel(model, cachedLogEntries);
-        return {
-            model: model,
-            log: log
-        };
-    };
-
-
-    var getLogs = function(characterId) {
-        return characterService.loadCharacter(characterId).then(function (logEntries) {
-            Array.prototype.push.apply(cachedLogEntries, logEntries.data);
-            return resetModelFromLogs();
-        });
-    };
-
-    var deleteLogEntry = function(logEntry) {
-        var index = _.findIndex(cachedLogEntries, logEntry);
-        if (index > -1) {
-            cachedLogEntries.splice(index, 1);
+        if (modelObj) {
+            /* In order for the 2-way mapping to hold to all the directives that accept the model, we need to keep the
+            same actual object. An alternative is switching to listeners. */
+            for (var member in modelObj) {
+                if (modelObj.hasOwnProperty(member)) {
+                    delete modelObj[member];
+                }
+            }
+            _.assign(modelObj, newModel);
+        } else {
+            return newModel;
         }
-
-        return resetModelFromLogs();
     };
 
     return {
-        getLogs: getLogs,
-        makeCreationEntry: makeCreationEntry,
-        makeDifferentSchoolEntry: makeDifferentSchoolEntry,
-        makeLogModuleEntry: makeLogModuleEntry,
+        makeCreationLogModel: makeCreationLogModel,
+        makeDifferentSchoolLogModel: makeDifferentSchoolLogModel,
+        makeModuleCompletionLogModel: makeModuleCompletionLogModel,
         processLogsIntoModel: processLogsIntoModel,
-        deleteLogEntry: deleteLogEntry,
         createBaseModel: createBaseModel
     };
 });

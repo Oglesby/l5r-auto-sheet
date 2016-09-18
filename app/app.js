@@ -19,6 +19,7 @@ require('./kiho/bootstrap');
 require('./spells/bootstrap');
 require('./nav/bootstrap');
 require('./common/bootstrap');
+require('./model/model.service');
 
 pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/default');
@@ -33,7 +34,7 @@ pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
         }
     }).state('default.logModule', {
         url: '/log',
-        template: '<pi-edit-log-module log="log" model="model"></pi-edit-log-module>'
+        template: '<pi-edit-log-module model="model"></pi-edit-log-module>'
     }).state('new', {
         url: '/new',
         templateUrl: 'formatViews/new.html',

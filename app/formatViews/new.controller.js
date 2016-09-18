@@ -1,9 +1,8 @@
 'use strict';
 var $ = window.$;
 
-angular.module('pocketIkoma').controller('NewController', function ($scope, $timeout, $state, logService, familyService, schoolService) {
-    $scope.model = logService.createBaseModel();
-    $scope.creationEntry = logService.makeCreationEntry();
+angular.module('pocketIkoma').controller('NewController', function ($scope, $timeout, $state, logService, modelService, familyService, schoolService) {
+    $scope.creationLogModel = logService.makeCreationLogModel();
     $scope.families = familyService;
     $scope.schools = schoolService;
     $scope.selectedFamily = null;
@@ -100,11 +99,11 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
     };
 
     $scope.refreshLog = function() {
-        $scope.model = logService.createBaseModel();
+        logService.createBaseModel();
         var familyId = $scope.selectedFamily ? $scope.selectedFamily.id : null;
         var schoolId = $scope.selectedSchool ? $scope.selectedSchool.id: null;
-        $scope.creationEntry = logService.makeCreationEntry($scope.initialXp, familyId, schoolId);
-        logService.processLogsIntoModel($scope.model, [$scope.creationEntry]);
+        $scope.creationLogModel = logService.makeCreationLogModel($scope.initialXp, familyId, schoolId);
+        modelService.addLogToModel($scope.creationLogModel);
     };
 
     $scope.openDetailsPanel = function() {
@@ -125,15 +124,15 @@ angular.module('pocketIkoma').controller('NewController', function ($scope, $tim
         }
 
         $scope.inError = false;
-        var logs = [];
+        var logModels = [];
         var date = new Date();
-        $scope.creationEntry.creationTimestamp = date.toISOString();
-        logs.push($scope.creationEntry);
+        $scope.creationLogModel.creationTimestamp = date.toISOString();
+        logModels.push($scope.creationLogModel);
 
         if ($scope.differentSchool) {
-             var differentSchoolEntry = logService.makeDifferentSchoolEntry();
-            differentSchoolEntry.creationTimestamp = date.toISOString();
-            logs.push(differentSchoolEntry);
+             var differentSchoolLogModel= logService.makeDifferentSchoolLogModel();
+            differentSchoolLogModel.creationTimestamp = date.toISOString();
+            logModels.push(differentSchoolLogModel);
         }
 
         // TODO: Save the data somewheres

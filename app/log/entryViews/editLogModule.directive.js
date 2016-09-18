@@ -2,7 +2,7 @@
 
 angular.module('pocketIkoma').directive('piEditLogModule', function () {
 
-    var EditLogModuleController = function (_, $, $scope, $timeout, $location, $anchorScroll, $state, logService) {
+    var EditLogModuleController = function (_, $, $scope, $timeout, $location, $anchorScroll, $state, logService, modelService) {
         $scope.xp = 2;
         $scope.gloryChange = 0;
         $scope.honorChange = 0;
@@ -210,7 +210,7 @@ angular.module('pocketIkoma').directive('piEditLogModule', function () {
             }
 
             // TODO: Add module number
-            var logModuleEntry = logService.makeLogModuleEntry($scope.moduleName, $scope.xp, $scope.honorChange,
+            var logModuleEntry = logService.makeModuleCompletionLogModel($scope.moduleName, $scope.xp, $scope.honorChange,
                 $scope.gloryChange, $scope.statusChange, $scope.infamyChange, $scope.taintChange, $scope.shadowChange);
             logModuleEntry.creationTimestamp = new Date().toISOString();
             Array.prototype.push.apply(logModuleEntry.gains, $scope.favors);
@@ -220,8 +220,7 @@ angular.module('pocketIkoma').directive('piEditLogModule', function () {
             if ($scope.onSave) {
                 $scope.onSave();
             } else {
-                // TODO: Actually send to the server
-                Array.prototype.push.apply($scope.log, logService.processLogsIntoModel($scope.model, [logModuleEntry]));
+                modelService.addLogToModel(logModuleEntry);
                 $state.go('^');
             }
         };
@@ -239,7 +238,6 @@ angular.module('pocketIkoma').directive('piEditLogModule', function () {
         restrict: 'E',
         templateUrl: 'log/entryViews/editLogModule.html',
         scope: {
-            log: '=',
             model: '=',
             onSave: '=',
             onCancel: '='
