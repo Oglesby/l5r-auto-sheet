@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('pocketIkoma').directive('piEditLogModule', function () {
+angular.module('pocketIkoma').directive('piAddEditLogModule', function () {
 
     var EditLogModuleController = function (_, $, $scope, $timeout, $location, $anchorScroll, $state, logService, modelService) {
 
@@ -256,7 +256,7 @@ angular.module('pocketIkoma').directive('piEditLogModule', function () {
 
     return {
         restrict: 'E',
-        templateUrl: 'log/entryViews/editLogModule.html',
+        templateUrl: 'log/entryViews/addEditLogModule.html',
         scope: {
             logModel: '=',
             onSave: '=',

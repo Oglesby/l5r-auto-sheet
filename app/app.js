@@ -34,7 +34,7 @@ pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
         }
     }).state('default.logModule', {
         url: '/log',
-        template: '<pi-edit-log-module model="model"></pi-edit-log-module>'
+        template: '<pi-add-edit-log-module></pi-add-edit-log-module>'
     }).state('new', {
         url: '/new',
         templateUrl: 'formatViews/new.html',

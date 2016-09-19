@@ -1,1 +1,1 @@
-require('./editLogModule.directive');
+require('./addEditLogModule.directive');
