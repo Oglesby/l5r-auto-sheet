@@ -37,7 +37,7 @@
                 Can't be edited yet. <button class="ui button" ng-click="cancelChangingLog()">Cancel</button>
             </div>
             <div ng-switch-when="MODULE_COMPLETION">
-                <pi-edit-log-module log="log" model="model" on-save="finishEditingLog" on-cancel="cancelChangingLog"></pi-edit-log-module>
+                <pi-edit-log-module log-model="logView.logModel" on-save="finishEditingLog" on-cancel="cancelChangingLog"></pi-edit-log-module>
             </div>
         </div>
     </div>

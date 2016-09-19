@@ -9,17 +9,15 @@ angular.module('pocketIkoma').directive('piLog', function (_) {
             function resetChanges() {
                 $scope.deletingLogView = null;
                 $scope.editingLogView = null;
-                $scope.newEditingLogModel = null;
             }
             resetChanges();
 
             $scope.startEditLog = function(logView) {
                 $scope.editingLogView = logView;
-                $scope.newEditingLogModel = _.cloneDeep(logView.logModel);
             };
 
-            $scope.finishEditingLog = function() {
-                modelService.updateLogInModel($scope.newEditingLogModel);
+            $scope.finishEditingLog = function(newLogModel) {
+                modelService.updateLogInModel(newLogModel);
                 resetChanges();
             };
 

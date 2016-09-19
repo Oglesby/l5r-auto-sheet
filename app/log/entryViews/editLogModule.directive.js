@@ -3,16 +3,29 @@
 angular.module('pocketIkoma').directive('piEditLogModule', function () {
 
     var EditLogModuleController = function (_, $, $scope, $timeout, $location, $anchorScroll, $state, logService, modelService) {
-        $scope.xp = 2;
-        $scope.gloryChange = 0;
-        $scope.honorChange = 0;
-        $scope.statusChange = 0;
-        $scope.infamyChange = 0;
-        $scope.taintChange = 0;
-        $scope.shadowChange = 0;
-        $scope.moduleName = '';
-        $scope.moduleNumber = '';
+
         // TODO: GM name?
+        if (!$scope.logModel) {
+            $scope.xp = 2;
+            $scope.gloryChange = 0;
+            $scope.honorChange = 0;
+            $scope.statusChange = 0;
+            $scope.infamyChange = 0;
+            $scope.taintChange = 0;
+            $scope.shadowChange = 0;
+            $scope.moduleName = '';
+            $scope.moduleNumber = '';
+        } else {
+            $scope.xp = $scope.logModel.xpReward;
+            $scope.gloryChange = ($scope.logModel.gloryReward ? $scope.logModel.gloryReward : 0) / 10;
+            $scope.honorChange = ($scope.logModel.honorReward ? $scope.logModel.honorReward : 0) / 10;
+            $scope.statusChange = ($scope.logModel.statusChange ? $scope.logModel.statusChange : 0) / 10;
+            $scope.infamyChange = ($scope.logModel.infamyChange ? $scope.logModel.infamyChange : 0) / 10;
+            $scope.taintChange = ($scope.logModel.taintChange ? $scope.logModel.taintChange : 0) / 10;
+            $scope.shadowChange = ($scope.logModel.shadowChange ? $scope.logModel.shadowChange : 0) / 10;
+            $scope.moduleName = $scope.logModel.name ? $scope.logModel.name : '';
+            $scope.moduleNumber = $scope.logModel.number ? $scope.logModel.number : '';
+        }
 
         // TODO: Move into link function.
         $timeout(function() {
@@ -210,17 +223,24 @@ angular.module('pocketIkoma').directive('piEditLogModule', function () {
             }
 
             // TODO: Add module number
-            var logModuleEntry = logService.makeModuleCompletionLogModel($scope.moduleName, $scope.xp, $scope.honorChange,
-                $scope.gloryChange, $scope.statusChange, $scope.infamyChange, $scope.taintChange, $scope.shadowChange);
-            logModuleEntry.creationTimestamp = new Date().toISOString();
-            Array.prototype.push.apply(logModuleEntry.gains, $scope.favors);
-            Array.prototype.push.apply(logModuleEntry.gains, $scope.allies);
-            Array.prototype.push.apply(logModuleEntry.gains, $scope.enemies);
+            var logModuleLogModel= logService.makeModuleCompletionLogModel($scope.moduleName, $scope.moduleNumber,
+                $scope.xp, $scope.honorChange, $scope.gloryChange, $scope.statusChange, $scope.infamyChange,
+                $scope.taintChange, $scope.shadowChange);
+            Array.prototype.push.apply(logModuleLogModel.gains, $scope.favors);
+            Array.prototype.push.apply(logModuleLogModel.gains, $scope.allies);
+            Array.prototype.push.apply(logModuleLogModel.gains, $scope.enemies);
+
+            if ($scope.logModel) {
+                logModuleLogModel.creationTimestamp = $scope.logModel.creationTimestamp;
+                logModuleLogModel.id = $scope.logModel.id;
+            } else {
+                logModuleLogModel.creationTimestamp = new Date().toISOString();
+            }
 
             if ($scope.onSave) {
-                $scope.onSave();
+                $scope.onSave(logModuleLogModel);
             } else {
-                modelService.addLogToModel(logModuleEntry);
+                modelService.addLogToModel(logModuleLogModel);
                 $state.go('^');
             }
         };
@@ -238,7 +258,7 @@ angular.module('pocketIkoma').directive('piEditLogModule', function () {
         restrict: 'E',
         templateUrl: 'log/entryViews/editLogModule.html',
         scope: {
-            model: '=',
+            logModel: '=',
             onSave: '=',
             onCancel: '='
         },

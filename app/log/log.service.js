@@ -45,10 +45,11 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         };
     }
 
-    function makeModuleCompletionLogModel(moduleName, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
+    function makeModuleCompletionLogModel(moduleName, moduleNumber, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
         return {
             'type': 'MODULE_COMPLETION',
             'name': moduleName,
+            'number': moduleNumber,
             'xpReward': xp,
             'gloryReward': gloryChange * 10,
             'honorReward': honorChange * 10,
@@ -243,7 +244,7 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
 
         return {
             logModel: logModel,
-            title: 'Completed Module: ' + logModel.name,
+            title: 'Completed Module: ' + logModel.name + (logModel.number ? ' (' + logModel.number + ')' : ''),
             comment: logModel.comment,
             creationTimestamp: logModel.creationTimestamp,
             recordItems: recordItems

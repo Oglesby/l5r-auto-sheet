@@ -30,6 +30,8 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
         var index = _.findIndex(loadedLogModels, {id: logId});
         if (index > -1) {
             loadedLogModels.splice(index, 1);
+        } else {
+            // TODO: log a warning
         }
 
         // TODO: persist the removal
@@ -38,7 +40,16 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
     };
 
     var updateLogInModel = function(logModel) {
+        var index = _.findIndex(loadedLogModels, {id: logModel.id});
+        if (index > -1) {
+            loadedLogModels[index] = logModel;
+        } else {
+            // TODO: error in some way
+        }
+
         // TODO: Persist the update.
+        logService.createBaseModel(currentModel);
+        return logService.processLogsIntoModel(currentModel, loadedLogModels);
     };
 
     var isMandatoryLogModel = function(logModel) {
