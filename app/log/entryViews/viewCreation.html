@@ -1,0 +1,23 @@
+<div class="ui grid">
+    <div class="twelve wide column">
+        <div class="ui sub header">Initial XP</div>
+        {{model.characterInfo.xp}}
+    </div>
+    <div class="five wide column">
+        <div class="ui sub header">Clan</div>
+        {{model.characterInfo.clan.name}}
+    </div>
+    <div class="five wide column">
+        <div class="ui sub header">Family</div>
+        {{model.characterInfo.family.name}}
+    </div>
+    <div class="five wide column">
+        <div class="ui sub header">School</div>
+        {{model.schools[0].type.name}}
+    </div>
+    <div class="four wide column">
+        <div class="ui sub header">Different School</div>
+        <span ng-if="isDifferentSchool()"><i class="icon check"></i></span>
+        <span ng-if="!isDifferentSchool()"><i class="icon close"></i></span>
+    </div>
+</div>

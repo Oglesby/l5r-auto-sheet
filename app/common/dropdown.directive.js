@@ -5,13 +5,16 @@ angular.module('pocketIkoma').directive('piDropdown', function ($, $timeout) {
         restrict: 'C',
         link: function (scope, element, attr) {
             $timeout(function () {
-                $(element).dropdown();
+                $(element).dropdown({
+                    forceSelection: false
+                });
 
                 $(element).dropdown('set selected', scope[attr.ngModel]);
 
                 $(element).dropdown('setting', {
                     onChange: function (value) {
                         scope[attr.ngModel] = value;
+                        scope[attr.ngChange]();
                         scope.$apply();
                     }
                 });

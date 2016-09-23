@@ -2,6 +2,7 @@
   {
     "type": "CREATION",
     "initialXp": 45,
+    "clan": "dragon",
     "family": "mirumoto",
     "school": {
       "id": "mirumotoBushi",

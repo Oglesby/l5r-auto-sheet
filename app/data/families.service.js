@@ -6,29 +6,25 @@ angular.module('pocketIkoma').service('familyService', function(ringService) {
             id: 'none',
             name: 'None',
             bonusTrait: '',
-            description: '',
-            clan: 'None'
+            description: ''
         },
         {
             id: 'hida',
             name: 'Hida',
             bonusTrait: 'Strength',
-            description: '',
-            clan: 'Crab'
+            description: ''
         },
         {
             id: 'mirumoto',
             name: 'Mirumoto',
             bonusTrait: 'Agility',
-            description: '',
-            clan: 'Dragon'
+            description: ''
         },
         {
             id: 'hoshi',
             name: 'Hoshi',
             bonusTrait: 'Void',
-            description: '',
-            clan: 'Dragon'
+            description: ''
         },
         {
             id: 'doji',
@@ -46,6 +42,7 @@ angular.module('pocketIkoma').service('familyService', function(ringService) {
             family.visit = function (model) {
                 var logEntries = [];
 
+                logEntries.push({displayText: 'Assigned to the ' + this.name + ' family.'});
                 var trait = this.bonusTrait.toLowerCase();
                 var traitRing = ringService.findRingForTrait(trait, model);
                 if (traitRing) {
@@ -53,9 +50,6 @@ angular.module('pocketIkoma').service('familyService', function(ringService) {
                     logEntries.push({displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + traitRing.getTrait(trait).value});
                 }
                 model.characterInfo.family = this;
-                model.characterInfo.clan = this.clan;
-                logEntries.push({displayText: 'Assigned to the ' + this.clan + ' clan.'});
-
                 return logEntries;
             };
 

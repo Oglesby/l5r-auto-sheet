@@ -1,105 +1,18 @@
 <div class="ui segment">
     <h2 class="ui header">Welcome to Character Create Zone</h2>
-    <form class="ui initial form" ng-show="inCreation()">
-        <div class="fields">
-            <div class="field">
-                <label>Initial XP</label>
-                <input type="number" ng-model="initialXp" name="initialXp"/>
-            </div>
-        </div>
-        <div class="fields">
-            <div class="six wide field">
-                <label>Family:</label>
-                <div class="ui search family selection dropdown">
-                    <input type="hidden" name="family">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Select Family</div>
-                    <div class="menu">
-                        <div class="item" ng-class="{'disabled': !canChooseFamily(family)}" ng-click="setFamily(family)"
-                             ng-repeat="family in families">
-                            {{family.name}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="six wide field">
-                <label>School:</label>
-                <div class="ui search school selection dropdown">
-                    <input type="hidden" name="school">
-                    <i class="dropdown icon"></i>
-                    <div class="default text">Select School</div>
-                    <div class="menu">
-                        <div class="item" ng-class="{'disabled': !canChooseSchool(school)}" ng-click="setSchool(school)"
-                             ng-repeat="school in schools">
-                            {{school.name}}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="four wide field">
-                <label>Buy Different School</label>
-                <div class="ui checkbox">
-                    <input type="checkbox" ng-model="differentSchool" ng-change="onDifferentSchoolChange()">
-                    <label></label>
-                </div>
-            </div>
-        </div>
-        <div class="field" ng-show="inError">
-            <div class="ui error message">
-            </div>
-        </div>
-        <div class="field">
-            <button class="ui primary button" ng-click="openDetailsPanel()">
-                Enter Details
-            </button>
-        </div>
-    </form>
-    <div class="ui grid" ng-show="!inCreation()">
-        <div class="row">
-            <div class="column">
-                <div class="ui sub header">Initial XP</div>
-                {{initialXp}}
-            </div>
-        </div>
-        <div class="row">
-            <div class="six wide column">
-                <div class="ui sub header">Family</div>
-                {{selectedFamily.name}}
-            </div>
-            <div class="six wide column">
-                <div class="ui sub header">School</div>
-                {{selectedSchool.name}}
-            </div>
-            <div class="four wide field">
-                <div class="ui sub header">Different School</div>
-                <div class="ui checkbox">
-                    <input type="checkbox" ng-model="differentSchool" disabled="">
-                    <label></label>
-                </div>
-            </div>
-        </div>
-    </div>
+    <pi-add-edit-creation ng-if="inCreation()" on-save="onSaveCreation" on-cancel="onCancel"></pi-add-edit-creation>
+    <pi-view-creation ng-if="!inCreation()"></pi-view-creation>
 </div>
-<div class="ui segment" ng-show="!inCreation()">
-    <form class="ui details form" ng-show="inDetails()">
-        <div class="field">
-            <label>Name</label>
-            <input type="text" ng-model="name" name="name" placeholder="Character's Personal Name"/>
-        </div>
-        <div class="field">
-            <label>Description</label>
-            <textarea ng-model="description" name="description" placeholder="Description"></textarea>
-        </div>
-        <div class="field" ng-show="inError">
-            <div class="ui error message">
-            </div>
-        </div>
-        <div class="field">
-            <button class="ui primary button" ng-click="finish()">
-                Finish and Save
-            </button>
-        </div>
-    </form>
+<div class="ui segment" ng-if="!inCreation()">
+    <pi-add-edit-character-details ng-if="inDetails()" on-save="onSaveDetails" on-cancel="onCancel"></pi-add-edit-character-details>
+    <pi-view-character-details ng-if="!inDetails()"></pi-view-character-details>
+</div>
+<div class="ui segment" ng-if="inConfirm()">
+    <div class="ui buttons">
+        <button class="ui button primary" type="submit" ng-click="onFinish()">Finish</button>
+        <div class="or"></div>
+        <button class="ui button" ng-click="onCancel()">Cancel</button>
+    </div>
 </div>
 <div class="ui grid">
     <div class="row">
@@ -118,7 +31,7 @@
         <div class="two wide column">
         </div>
         <div class="ui segment six wide column">
-            <pi-skills-table></pi-skills-table>
+            <pi-skills-table model="model"></pi-skills-table>
         </div>
     </div>
 </div>

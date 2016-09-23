@@ -28,10 +28,10 @@
         </div>
         <div class="content" ng-if="editingLogView === logView" ng-switch="logView.logModel.type">
             <div ng-switch-when="CREATION">
-                Can't be edited yet. <button class="ui button" ng-click="cancelChangingLog()">Cancel</button>
+                <pi-add-edit-creation log-model="logView.logModel" on-save="finishEditingLog" on-cancel="cancelChangingLog"></pi-add-edit-creation>
             </div>
             <div ng-switch-when="CHARACTER_INFO">
-                Can't be edited yet. <button class="ui button" ng-click="cancelChangingLog()">Cancel</button>
+                <pi-add-edit-character-details log-model="logView.logModel" on-save="finishEditingLog" on-cancel="cancelChangingLog"></pi-add-edit-character-details>
             </div>
             <div ng-switch-when="XP_EXPENDITURE">
                 Can't be edited yet. <button class="ui button" ng-click="cancelChangingLog()">Cancel</button>

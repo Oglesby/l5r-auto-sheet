@@ -6,52 +6,62 @@ angular.module('pocketIkoma').service('clanService', function() {
         id: 'none',
         name: 'None',
         description: '',
-        families: ['none']
+        families: ['none'],
+        schools: ['none']
     }, {
         id: 'crab',
         name: 'Crab',
         description: '',
-        families: ['hida']
+        families: ['hida'],
+        schools: ['hidaBushi']
     }, {
         id: 'crane',
         name: 'Crane',
         description: '',
-        families: ['asahina']
+        families: ['doji'],
+        schools: ['asahinaShugenja']
     }, {
         id: 'dragon',
         name: 'Dragon',
         description: '',
-        families: ['hoshi', 'mirumoto']
+        families: ['hoshi', 'mirumoto'],
+        schools: ['mirumotoBushi', 'togashiMonk']
     }, {
         id: 'imperial',
         name: 'Imperial',
         description: '',
-        families: []
+        families: [],
+        schools: []
     }, {
         id: 'lion',
         name: 'Lion',
         description: '',
-        families: []
+        families: [],
+        schools: []
     }, {
         id: 'mantis',
         name: 'Mantis',
         description: '',
-        families: []
+        families: [],
+        schools: []
     }, {
         id: 'phoenix',
         name: 'Phoenix',
         description: '',
-        families: []
+        families: [],
+        schools: []
     }, {
         id: 'scorpion',
         name: 'Scorpion',
         description: '',
-        families: []
+        families: [],
+        schools: []
     }, {
         id: 'unicorn',
         name: 'Unicorn',
         description: '',
-        families: []
+        families: [],
+        schools: []
     }];
 
     function processJson(jsonArray) {

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('pocketIkoma').service('logService', function(_, advantageService, disadvantageService, ringService,
-    familyService, spellService, schoolService, skillService, kataService, kihoService, insightService,
+    familyService, clanService, spellService, schoolService, skillService, kataService, kihoService, insightService,
     secondaryStatsService) {
 
     function ensureLogModelHasId(logModel) {
@@ -18,35 +18,45 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         /*jslint bitwise: false */
     }
 
-    function makeCreationLogModel(initialXp, familyId, schoolId) {
-        return {
+    function makeCreationLogModel(initialXp, clanId, familyId, schoolId, differentSchool) {
+        var creationLogModel = {
             type: 'CREATION',
             initialXp: initialXp,
+            clan: clanId ? clanId.toLowerCase() : 'none',
             family: familyId ? familyId.toLowerCase() : 'none',
             school: {
                 id: schoolId ? schoolId : 'none',
                 options: {}
             },
+            mandatoryExpenditures: [],
             creationTimestamp: null
         };
+
+        if (differentSchool) {
+            creationLogModel.mandatoryExpenditures.push({
+                'type': 'ADVANTAGE',
+                'id': 'differentSchool'
+            });
+        }
+
+        ensureLogModelHasId(creationLogModel);
+        return creationLogModel;
     }
 
-    function makeDifferentSchoolLogModel() {
-        return {
-            'type': 'XP_EXPENDITURE',
-            'title': 'Character Building - Initial Different School',
-            'expenditures': [
-                {
-                    'type': 'ADVANTAGE',
-                    'id': 'differentSchool'
-                }
-            ],
+    function makeCharacterDetailsLogModel(name, description) {
+        var characterDetailLogModel = {
+            'type': 'CHARACTER_INFO',
+            'name': name,
+            'description': description,
             'creationTimestamp': null
         };
+
+        ensureLogModelHasId(characterDetailLogModel);
+        return characterDetailLogModel;
     }
 
     function makeModuleCompletionLogModel(moduleName, moduleNumber, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
-        return {
+        var moduleCompletionLogModel = {
             'type': 'MODULE_COMPLETION',
             'name': moduleName,
             'number': moduleNumber,
@@ -60,28 +70,81 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             'creationTimestamp': null,
             'gains': []
         };
+
+        ensureLogModelHasId(moduleCompletionLogModel);
+        return moduleCompletionLogModel;
+    }
+
+    function processIndividualExpenditure(expenditure, model) {
+        var displayText = '';
+        switch (expenditure.type) {
+            case 'TRAIT':
+                var result = ringService.findRingForTrait(expenditure.id, model).purchase(model, expenditure.id);
+                displayText = 'Spent ' + result.cost + ' XP to raise trait ' + result.name + ' to ' + result.newValue;
+                break;
+            case 'SKILL':
+                result = skillService[expenditure.id].purchase(model, expenditure.options, expenditure.cost);
+                displayText = 'Spent ' + result.cost + ' XP to raise skill ' + result.name + ' to ' + result.newValue;
+                break;
+            case 'EMPHASIS':
+                result = skillService[expenditure.skillId].purchaseEmphasis(model, expenditure.emphasis, expenditure.options);
+                displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name + ' emphasis for the ' + result.skillName + ' skill';
+                break;
+            case 'ADVANTAGE':
+                result = advantageService[expenditure.id].purchase(model, expenditure.options);
+                displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
+                break;
+            case 'DISADVANTAGE':
+                result = disadvantageService[expenditure.id].purchase(model, expenditure.options);
+                displayText ='Gained ' + result.cost + ' XP from ' + result.name;
+                break;
+            case 'KATA':
+                result = kataService[expenditure.id].purchase(model, expenditure.options);
+                displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
+                break;
+            case 'KIHO':
+                result = kihoService[expenditure.id].purchase(model, expenditure.options);
+                displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
+                break;
+            case 'SPELL':
+                result = spellService[expenditure.id].purchase(model, expenditure.options);
+                displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
+        }
+
+        if (expenditure.comment) {
+            displayText += ' (' + expenditure.comment + ')';
+        }
+        return displayText;
     }
 
     function processCreationLogModel(logModel, model) {
-        var family = familyService[logModel.family],
-            school = schoolService[logModel.school.id];
+        var clan = clanService[logModel.clan];
+        var family = familyService[logModel.family];
+        var school = schoolService[logModel.school.id];
 
         var recordItems = [
             {
                 displayText: 'Set initial xp to ' + logModel.initialXp
-            },
-            {
-                displayText: 'Set family to ' + family.name
-            },
-            {
-                displayText: 'Set school to ' + school.name
             }
         ];
 
         model.characterInfo.xp = logModel.initialXp;
         model.characterInfo.gainedXp = logModel.initialXp;
-        recordItems = recordItems.concat(family.visit(model));
-        recordItems = recordItems.concat(school.visit(model, logModel.school.options));
+        recordItems = recordItems.concat(clan.visit(model));
+        if (family) {
+            recordItems = recordItems.concat(family.visit(model));
+        }
+        if (school) {
+            recordItems = recordItems.concat(school.visit(model, logModel.school.options));
+        }
+
+        var n = 0;
+        _.forEach(logModel.mandatoryExpenditures, function (expenditure) {
+            recordItems.push({
+                id: n++,
+                displayText: processIndividualExpenditure(expenditure, model)
+            });
+        });
 
         return {
             logModel: logModel,
@@ -95,6 +158,7 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
 
     function processCharacterInfoLogModel(logModel, model) {
         model.characterInfo.name = logModel.name;
+        model.characterInfo.description = logModel.description;
 
         return {
             logModel: logModel,
@@ -114,47 +178,9 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         var recordItems = [];
         var n = 0;
         _.forEach(logModel.expenditures, function (expenditure) {
-            var displayText = '';
-            switch (expenditure.type) {
-                case 'TRAIT':
-                    var result = ringService.findRingForTrait(expenditure.id, model).purchase(model, expenditure.id);
-                    displayText = 'Spent ' + result.cost + ' XP to raise trait ' + result.name + ' to ' + result.newValue;
-                    break;
-                case 'SKILL':
-                    result = skillService[expenditure.id].purchase(model, expenditure.options, expenditure.cost);
-                    displayText = 'Spent ' + result.cost + ' XP to raise skill ' + result.name + ' to ' + result.newValue;
-                    break;
-                case 'EMPHASIS':
-                    result = skillService[expenditure.skillId].purchaseEmphasis(model, expenditure.emphasis, expenditure.options);
-                    displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name + ' emphasis for the ' + result.skillName + ' skill';
-                    break;
-                case 'ADVANTAGE':
-                    result = advantageService[expenditure.id].purchase(model, expenditure.options);
-                    displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
-                    break;
-                case 'DISADVANTAGE':
-                    result = disadvantageService[expenditure.id].purchase(model, expenditure.options);
-                    displayText ='Gained ' + result.cost + ' XP from ' + result.name;
-                    break;
-                case 'KATA':
-                    result = kataService[expenditure.id].purchase(model, expenditure.options);
-                    displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
-                    break;
-                case 'KIHO':
-                    result = kihoService[expenditure.id].purchase(model, expenditure.options);
-                    displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
-                    break;
-                case 'SPELL':
-                    result = spellService[expenditure.id].purchase(model, expenditure.options);
-                    displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
-            }
-
-            if (expenditure.comment) {
-                displayText += ' (' + expenditure.comment + ')';
-            }
             recordItems.push({
                 id: n++,
-                displayText: displayText
+                displayText: processIndividualExpenditure(expenditure, model)
             });
         });
 
@@ -273,7 +299,7 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
 
         insightService.calculate(model);
         secondaryStatsService.calculate(model);
-        model.logViews = logViews;
+        model.logViews = model.logViews.concat(logViews);
     };
 
     var createBaseModel = function(modelObj) {
@@ -320,7 +346,7 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
 
     return {
         makeCreationLogModel: makeCreationLogModel,
-        makeDifferentSchoolLogModel: makeDifferentSchoolLogModel,
+        makeCharacterDetailsLogModel: makeCharacterDetailsLogModel,
         makeModuleCompletionLogModel: makeModuleCompletionLogModel,
         processLogsIntoModel: processLogsIntoModel,
         createBaseModel: createBaseModel

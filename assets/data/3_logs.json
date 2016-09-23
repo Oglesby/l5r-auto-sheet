@@ -2,6 +2,7 @@
   {
     "type": "CREATION",
     "initialXp": 80,
+    "clan": "dragon",
     "family": "hoshi",
     "school": {
       "id": "togashiMonk",

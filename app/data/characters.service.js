@@ -1,12 +1,32 @@
 'use strict';
 
-angular.module('pocketIkoma').service('characterService', function($http) {
+angular.module('pocketIkoma').service('characterService', function(_, $q, $http) {
 
     var currentCharacterId = null;
+    var nextCharacterId = 100;
+    var cachedCharacters = [];
 
     var loadCharacter = function(id) {
         currentCharacterId = id;
-        return $http.get('data/' + id + '_logs.json');
+        var character = _.find(cachedCharacters, {id: id});
+        if (character && character.logModels) {
+            return $q.when({ data: character.logModels });
+        } else {
+            return $http.get('data/' + id + '_logs.json');
+        }
+    };
+
+    var addCharacter = function(model) {
+        var id = nextCharacterId++;
+        cachedCharacters.push({
+            name: model.characterInfo.family.name + ' ' + model.characterInfo.name,
+            id: id,
+            logModels: _.map(model.logViews, function(logView) {
+                return logView.logModel;
+            })
+        });
+
+        return id;
     };
 
     var getCurrentCharacterId = function() {
@@ -15,12 +35,13 @@ angular.module('pocketIkoma').service('characterService', function($http) {
 
     var getCharacters = function() {
         return $http.get('data/characters.json').then(function(data) {
-            return data.data.characters;
+            return _.merge(cachedCharacters, data.data.characters);
         });
     };
 
     return {
         loadCharacter: loadCharacter,
+        addCharacter: addCharacter,
         getCurrentCharacterId: getCurrentCharacterId,
         getCharacters: getCharacters
     };

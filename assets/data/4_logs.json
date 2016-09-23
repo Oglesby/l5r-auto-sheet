@@ -2,6 +2,7 @@
   {
     "type": "CREATION",
     "initialXp": 45,
+    "clan": "crane",
     "family": "doji",
     "school": {
       "id": "asahinaShugenja",

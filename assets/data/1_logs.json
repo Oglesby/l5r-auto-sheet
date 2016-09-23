@@ -2,6 +2,7 @@
     {
         "type": "CREATION",
         "initialXp": 125,
+        "clan": "crab",
         "family": "hida",
         "school": {
             "id": "hidaBushi",
