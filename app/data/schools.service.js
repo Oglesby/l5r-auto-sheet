@@ -21,13 +21,17 @@ angular.module('pocketIkoma').service('schoolService', function(_, skillService,
         isShugenja: false,
         isMonk: false,
         schoolSkills: [
-            { name: 'athletics'},
-            { name: 'defense'},
-            { name: 'heavyWeapons', emphasis: 'Tetsubo'},
-            { name: 'intimidation'},
-            { name: 'kenjutsu'},
-            { name: 'lore', choosing: 'Shadowlands'}
-        ]
+            { id: 'athletics'},
+            { id: 'defense'},
+            { id: 'heavyWeapons', options: { emphasis: 'Tetsubo'} },
+            { id: 'intimidation'},
+            { id: 'kenjutsu'},
+            { id: 'lore', options: { choosing: 'Shadowlands'} }
+        ],
+        choices: [{
+            type: 'skill',
+            keywords: ['bugei']
+        }]
     }, {
         id: 'mirumotoBushi',
         name: 'Mirumoto Bushi',
@@ -38,14 +42,17 @@ angular.module('pocketIkoma').service('schoolService', function(_, skillService,
         isShugenja: false,
         isMonk: false,
         schoolSkills: [
-            { name: 'athletics'},
-            { name: 'defense'},
-            { name: 'kenjutsu', emphasis: 'Katana'},
-            { name: 'meditation'},
-            { name: 'iaijutsu'},
-            { name: 'theology'},
-            { name: 'lore', choosing: 'Shugenja'}
-        ]
+            { id: 'athletics'},
+            { id: 'defense'},
+            { id: 'kenjutsu', options: { emphasis: 'Katana'} },
+            { id: 'meditation'},
+            { id: 'theology'},
+            { id: 'lore', options: {choosing: 'Shugenja'} }
+        ],
+        choices: [{
+            type: 'skill',
+            keywords: ['bugei', 'high']
+        }]
     }, {
         id: 'togashiMonk',
         name: 'Togashi Tattooed Order',
@@ -60,12 +67,19 @@ angular.module('pocketIkoma').service('schoolService', function(_, skillService,
             return mastery <= (ringValue + this.rank);
         },
         schoolSkills: [
-            { name: 'athletics'},
-            { name: 'defense'},
-            { name: 'kenjutsu'},
-            { name: 'jiujutsu'},
-            { name: 'artisan', choosing: 'Tattoo'}
-        ]
+            { id: 'athletics'},
+            { id: 'defense'},
+            { id: 'jiujutsu'},
+            { id: 'meditation'},
+            { id: 'artisan', options: { choosing: 'Tattoo' } }
+        ],
+        choices: [{
+            type: 'skill',
+            id: 'lore'
+        }, {
+            type: 'skill',
+            restrictedKeywords: ['low']
+        }]
     }, {
         id: 'asahinaShugenja',
         name: 'Asahina Shugenja',
@@ -78,13 +92,19 @@ angular.module('pocketIkoma').service('schoolService', function(_, skillService,
         affinity: 'air',
         deficiency: 'fire',
         schoolSkills: [
-            { name: 'etiquette'},
-            { name: 'courtier'},
-            { name: 'calligraphy', emphasis: 'Cypher'},
-            { name: 'meditation'},
-            { name: 'spellcraft'},
-            { name: 'lore', choosing: 'Theology'}
-        ]
+            { id: 'etiquette'},
+            { id: 'calligraphy', options: { emphasis: 'Cypher'} },
+            { id: 'meditation'},
+            { id: 'spellcraft'},
+            { id: 'lore', options: { choosing: 'Theology'} }
+        ],
+        choices: [{
+            type: 'skill',
+            id: 'artisan'
+        }, {
+            type: 'skill',
+            keywords: ['high']
+        }]
     }];
 
     function processJson(jsonArray) {
@@ -92,6 +112,26 @@ angular.module('pocketIkoma').service('schoolService', function(_, skillService,
 
         jsonArray.forEach(function(schoolJson) {
             var school = schoolJson;
+
+            var processSkillHolder = function(skillHolder, model, logEntries) {
+                var skill = skillService[skillHolder.id];
+
+                var options = {schoolSkill: true};
+                var skillName = skill.name;
+                if (skillHolder.options && skillHolder.options.choosing) {
+                    options.choosing = skillHolder.options.choosing;
+                    skillName += ': ' + skillHolder.options.choosing;
+                }
+                logEntries.push({displayText: 'Spent 0 XP to increase ' + skillName + ' to 1'});
+
+                skill.increase(model, options);
+                if (skillHolder.options && skillHolder.options.emphasis) {
+                    skill.addEmphasis(model, skillHolder.options.emphasis);
+                    logEntries.push({displayText: 'Spent 0 XP to gain ' + skillHolder.options.emphasis + ' for the ' + skillName + ' skill'});
+                }
+            };
+
+
             school.visit = function (model, options) {
                 model.schools = [
                     {
@@ -127,31 +167,15 @@ angular.module('pocketIkoma').service('schoolService', function(_, skillService,
 
                 // Add school skills
                 this.schoolSkills.forEach(function(skillHolder) {
-                    var skill = skillService[skillHolder.name];
-
-                    var options = {schoolSkill: true};
-                    var skillName = skill.name;
-                    if (skillHolder.choosing) {
-                        options.choosing = skillHolder.choosing;
-                        skillName += ': ' + skillHolder.choosing;
-                    }
-                    logEntries.push({displayText: 'Spent 0 XP to increase ' + skillName + ' to 1'});
-
-                    skill.increase(model, options);
-                    if (skillHolder.emphasis) {
-                        skill.addEmphasis(model, skill.emphasis);
-                        logEntries.push({displayText: 'Spent 0 XP to gain ' + skillHolder.emphasis + ' for the ' + skillName + ' skill'});
-                    }
+                    processSkillHolder(skillHolder, model, logEntries);
                 });
 
                 // Add chosen school skills
-                // TODO: This code should probably reuse the block above
-                _.each(options.chosenSkills, function (skill) {
-                    var options = _.extend({schoolSkill: true}, skill.options);
-                    skillService[skill.id].increase(model, options);
-                    logEntries.push({displayText: 'Spent 0 XP to increase ' + skill.name + ' to 1  (Chosen Skill)'});
-
-                });
+                if (options.chosenSkills) {
+                    options.chosenSkills.forEach(function (skillHolder) {
+                        processSkillHolder(skillHolder, model, logEntries);
+                    });
+                }
 
                 // Set honor
                 model.characterInfo.honor = this.startingHonor;

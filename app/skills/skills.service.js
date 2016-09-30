@@ -1,13 +1,16 @@
 'use strict';
 
 angular.module('pocketIkoma').service('skillService', function(_) {
-    var Skill = function (id, name, description, availableEmphases) {
+    var Skill = function (id, name, traitId, description, availableEmphases, keywords, subSkills) {
         this.id = id;
         this.name = name;
+        this.traitId = traitId;
         this.description = description;
         this.availableEmphases = availableEmphases;
+        this.subSkills = subSkills;
         this.xpMult = 1;
         this.xpMod = 0;
+        this.keywords = keywords;
     };
     Skill.prototype.increase = function (model, options) {
         options = options || {};
@@ -84,28 +87,581 @@ angular.module('pocketIkoma').service('skillService', function(_) {
         return {cost: xpCost, name: emphasis, skill: skillName};
     };
 
-    return {
-        athletics: new Skill('athletics', 'Athletics', '', []),
-        battle: new Skill('battle', 'Battle', '', []),
-        defense: new Skill('defense', 'Defense', '', []),
-        etiquette: new Skill('etiquette', 'Etiquette', '', []),
-        heavyWeapons: new Skill('heavyWeapons', 'Heavy Weapons', '', []),
-        hunting: new Skill('hunting', 'Hunting', '', []),
-        intimidation: new Skill('intimidation', 'Intimidation', '', []),
-        jiujutsu: new Skill('jiujutsu', 'Jiujutsu', '', []),
-        kenjutsu: new Skill('kenjutsu', 'Kenjutsu', '', []),
-        knives: new Skill('knives', 'Knives', '', []),
-        horsemanship: new Skill('horsemanship', 'Horsemanship', '', []),
-        investigation: new Skill('investigation', 'Investigation', '', []),
-        lore: new Skill('lore', 'Lore', '', []),
-        iaijutsu: new Skill('iaijutsu', 'Iaijutsu', '', ['Katana']),
-        theology: new Skill('theology', 'Theology', '', []),
-        meditation: new Skill('meditation', 'Meditation', '', []),
-        games: new Skill('games', 'Games', '', []),
-        artisan: new Skill('artisan', 'Artisan', '', []),
-        perform: new Skill('perform', 'Artisan', '', []),
-        calligraphy: new Skill('calligraphy', 'Calligraphy', '', []),
-        spellcraft: new Skill('spellcraft', 'Spellcraft', '', []),
-        courtier: new Skill('courtier', 'Courtier', '', [])
+    var json = [
+        // High
+        {
+            id: 'acting',
+            name: 'Acting',
+            traitId: 'awareness',
+            description: '',
+            keywords: ['high', 'social', 'perform'],
+            availableEmphases: ['Clan', 'Gender', 'Profession']
+        }, {
+            id: 'artisan',
+            name: 'Artisan',
+            description: '',
+            keywords: ['high', 'macro'],
+            subSkills: [{
+                name: 'Bonsai',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Gardening',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Ikebana',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Origami',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Painting',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Poetry',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Sculpture',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Tattooing',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }]
+        }, {
+            id: 'calligraphy',
+            name: 'Calligraphy',
+            traitId: 'intelligence',
+            description: '',
+            keywords: ['high', 'artisan'],
+            availableEmphases: ['Cipher', 'High Rokugani']
+        }, {
+            id: 'courtier',
+            name: 'Courtier',
+            traitId: 'awareness',
+            description: '',
+            keywords: ['high', 'social'],
+            availableEmphases: ['Gossip', 'Manipulation', 'Rhetoric']
+        }, {
+            id: 'divination',
+            name: 'Divination',
+            traitId: 'intelligence',
+            description: '',
+            keywords: ['high'],
+            availableEmphases: ['Astrology', 'Kawaru']
+        }, {
+            id: 'empathy',
+            name: 'Empathy',
+            traitId: 'awareness',
+            description: '',
+            keywords: ['high', 'social'],
+            availableEmphases: ['Emotion', 'Interrogation', 'Personalities']
+        }, {
+            id: 'etiquette',
+            name: 'Etiquette',
+            traitId: 'awareness',
+            description: '',
+            keywords: ['high', 'social'],
+            availableEmphases: ['Bureaucracy', 'Conversation', 'Courtesy']
+        }, {
+            id: 'games',
+            name: 'Games',
+            description: '',
+            keywords: ['high', 'macro'],
+            subSkills: [{
+                name: 'Fortunes and Winds',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Go',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Kemari',
+                traitId: 'agility',
+                availableEmphases: ['*']
+            }, {
+                name: 'Letters',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Sadane',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Shogi',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }]
+        }, {
+            id: 'investigation',
+            name: 'Investigation',
+            traitId: 'perception',
+            description: '',
+            keywords: ['high'],
+            availableEmphases: ['Interrogation', 'Notice', 'Search']
+        }, {
+            id: 'lore',
+            name: 'Lore',
+            description: '',
+            keywords: ['high', 'macro'],
+            subSkills: [{
+                name: 'Anatomy',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Architecture',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Bushido',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Great Clan',
+                traitId: 'intelligence',
+                availableEmphases: ['*'],
+                choices: ['Crab', 'Crane', 'Dragon', 'Lion', 'Mantis', 'Phoenix', 'Scorpion', 'Unicorn', '*']
+            }, {
+                name: 'Elements',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Gaijin Culture',
+                traitId: 'intelligence',
+                availableEmphases: ['*'],
+                choices: ['Yobanjin', 'Thrane', '*']
+            }, {
+                name: 'Ghosts',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Heraldry',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'History',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Maho',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Nature',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Nonhuman Culture',
+                traitId: 'intelligence',
+                availableEmphases: ['*'],
+                choices: ['Naga', 'Ratling', '*']
+            }, {
+                name: 'Omens',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Shadowlands',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Shugenja',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Spirit Realms',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Theology',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }, {
+                name: 'Underworld',
+                traitId: 'intelligence',
+                availableEmphases: ['*']
+            }]
+        }, {
+            id: 'medicine',
+            name: 'Medicine',
+            traitId: 'intelligence',
+            description: '',
+            keywords: ['high'],
+            availableEmphases: ['Antidotes', 'Disease', 'Herbalism', 'Non-Humans', 'Wound Treatment']
+        }, {
+            id: 'meditation',
+            name: 'Meditation',
+            traitId: 'void',
+            description: '',
+            keywords: ['high'],
+            availableEmphases: ['Fasting', 'Void Recovery']
+        }, {
+            id: 'perform',
+            name: 'Perform',
+            description: '',
+            keywords: ['high', 'macro'],
+            subSkills: [{
+                name: 'Biwa',
+                traitId: 'agility',
+                availableEmphases: ['*']
+            }, {
+                name: 'Dance',
+                traitId: 'agility',
+                availableEmphases: ['*']
+            }, {
+                name: 'Drums',
+                traitId: 'agility',
+                availableEmphases: ['*']
+            }, {
+                name: 'Flute',
+                traitId: 'agility',
+                availableEmphases: ['*']
+            }, {
+                name: 'Oratory',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Puppeteer',
+                traitId: 'agility',
+                availableEmphases: ['*']
+            }, {
+                name: 'Samisen',
+                traitId: 'agility',
+                availableEmphases: ['*']
+            }, {
+                name: 'Song',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }, {
+                name: 'Storytelling',
+                traitId: 'awareness',
+                availableEmphases: ['*']
+            }]
+        }, {
+            id: 'sincerity',
+            name: 'Sincerity',
+            traitId: 'awareness',
+            description: '',
+            keywords: ['high', 'social'],
+            availableEmphases: ['Honesty', 'Deceit']
+        }, {
+            id: 'spellcraft',
+            name: 'Spellcraft',
+            traitId: 'intelligence',
+            description: '',
+            keywords: ['high'],
+            availableEmphases: ['Importune', 'Spell Research']
+        }, {
+            id: 'teaCeremony',
+            name: 'Tea Ceremony',
+            traitId: 'void',
+            description: '',
+            keywords: ['high'],
+            availableEmphases: ['']
+        },
+        // Bugei
+        {
+            id: 'athletics',
+            name: 'Athletics',
+            traitId: 'strength',
+            description: '',
+            keywords: ['bugei'],
+            availableEmphases: ['Climbing', 'Running', 'Throwing', 'Swimming']
+        }, {
+            id: 'battle',
+            name: 'Battle',
+            traitId: 'perception',
+            description: '',
+            keywords: ['bugei'],
+            availableEmphases: ['Mass Combat', 'Skirmish']
+        }, {
+            id: 'defense',
+            name: 'Defense',
+            traitId: 'reflexes',
+            description: '',
+            keywords: ['bugei'],
+            availableEmphases: ['']
+        }, {
+            id: 'horsemanship',
+            name: 'Horsemanship',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei'],
+            availableEmphases: ['Gaijin Riding Horse', 'Rokugani Pony', 'Utaku Steed']
+        }, {
+            id: 'hunting',
+            name: 'Hunting',
+            traitId: 'perception',
+            description: '',
+            keywords: ['bugei'],
+            availableEmphases: ['Survival', 'Tracking', 'Trailblazing']
+        }, {
+            id: 'iaijutsu',
+            name: 'Iaijutsu',
+            traitId: 'reflexes',
+            description: '',
+            keywords: ['bugei'],
+            availableEmphases: ['Assessment', 'Focus']
+        }, {
+            id: 'jiujutsu',
+            name: 'Jiujutsu',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei'],
+            availableEmphases: ['Grappling', 'Improvised Weapons', 'Martial Arts']
+        }, {
+            id: 'weapons',
+            name: 'Weapons (Other)',
+            traitId: '*',
+            description: '',
+            keywords: ['bugei', 'weapon', 'macro'],
+            subSkills: []
+        }, {
+            id: 'chainWeapons',
+            name: 'Chain Weapons',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei', 'weapon'],
+            availableEmphases: ['Kusarigama', 'Kyoketsu-shogi', 'Manrikikusari']
+        }, {
+            id: 'heavyWeapons',
+            name: 'Heavy Weapons',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei', 'weapon'],
+            availableEmphases: ['Dai Tsuchi', 'Masakari', 'Ono', 'Tetsubo']
+        }, {
+            id: 'kenjutsu',
+            name: 'Kenjutsu',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei'],
+            availableEmphases: ['Katana', 'Ninja-to', 'No-dachi', 'Parangu', 'Scimitar', 'Wakazashi']
+        }, {
+            id: 'knives',
+            name: 'Knives',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei', 'weapon'],
+            availableEmphases: ['Aiguchi', 'Jute', 'Kama', 'Sai', 'Tanto']
+        }, {
+            id: 'kyujutsu',
+            name: 'Kyujutsu',
+            traitId: 'reflexes',
+            description: '',
+            keywords: ['bugei', 'weapon'],
+            availableEmphases: ['Dai-kyu', 'Han-kyu', 'Yumi']
+        }, {
+            id: 'ninjutsu',
+            name: 'Ninjutsu',
+            traitId: '*',
+            description: '',
+            keywords: ['bugei', 'weapon', 'low'],
+            availableEmphases: ['Blowgun', 'Shuriken', 'Tsubute']
+        }, {
+            id: 'polearms',
+            name: 'Polearms',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei', 'weapon'],
+            availableEmphases: ['Bisento', 'Nagamaki', 'Naginata', 'Sasumata', 'Sodegarami']
+        }, {
+            id: 'spears',
+            name: 'Spears',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei', 'weapon'],
+            availableEmphases: ['Mai Chong', 'Kumade', 'Lance', 'Nage-yari', 'Yari']
+        }, {
+            id: 'staves',
+            name: 'Staves',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei', 'weapon'],
+            availableEmphases: ['Bo', 'Jo', 'Machi-kanshisha', 'Nunchaku', 'Sang Kauw', 'Tonfa']
+        }, {
+            id: 'warFan',
+            name: 'War Fan',
+            traitId: 'agility',
+            description: '',
+            keywords: ['bugei', 'weapon'],
+            availableEmphases: []
+        }, {
+            id: 'animalHandling',
+            name: 'Animal Handling',
+            traitId: 'awareness',
+            description: '',
+            keywords: ['merchant'],
+            availableEmphases: ['Dogs', 'Horses', 'Falcons', '*']
+        }, {
+            id: 'commerce',
+            name: 'Commerce',
+            traitId: 'intelligence',
+            description: '',
+            keywords: ['merchant'],
+            availableEmphases: ['Appraisal', 'Mathematics']
+        }, {
+            id: 'craft',
+            name: 'Craft',
+            description: '',
+            keywords: ['merchant', 'macro'],
+            subSkills: [{
+                name: 'Armorsmithing',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Blacksmithing',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Bowyer',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Carpentry',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Cartography',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Cobbling',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Cooking',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Farming',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Fishing',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Masonry',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Mining',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Poison',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Pottery',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Shipbuilding',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Tailoring',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Weaponsmithing',
+                traitId: '*',
+                availableEmphases: ['*']
+            }, {
+                name: 'Weaving',
+                traitId: '*',
+                availableEmphases: ['*']
+            }]
+        }, {
+            id: 'engineering',
+            name: 'Engineering',
+            traitId: 'intelligence',
+            description: '',
+            keywords: ['merchant'],
+            availableEmphases: ['Construction', 'Siege']
+        }, {
+            id: 'sailing',
+            name: 'Sailing',
+            traitId: '*',
+            description: '',
+            keywords: ['merchant'],
+            availableEmphases: ['Knots', 'Navigation']
+        }, {
+            id: 'forgery',
+            name: 'Forgery',
+            traitId: 'agility',
+            description: '',
+            keywords: ['low'],
+            availableEmphases: ['Artwork', 'Documents', 'Personal Seals', '*']
+        }, {
+            id: 'intimidation',
+            name: 'Intimidation',
+            traitId: 'awareness',
+            description: '',
+            keywords: ['low', 'social'],
+            availableEmphases: ['Bullying', 'Control', 'Torture']
+        }, {
+            id: 'sleightOfHand',
+            name: 'Sleight of Hand',
+            traitId: 'agility',
+            description: '',
+            keywords: ['low'],
+            availableEmphases: ['Conceal', 'Escape', 'Pick Pocket', 'Prestidigitation']
+        }, {
+            id: 'stealth',
+            name: 'Stealth',
+            traitId: 'agility',
+            description: '',
+            keywords: ['low'],
+            availableEmphases: ['Ambush', 'Shadowing', 'Sneaking', 'Spell Casting']
+        }, {
+            id: 'temptation',
+            name: 'Temptation',
+            traitId: 'awareness',
+            description: '',
+            keywords: ['low', 'social'],
+            availableEmphases: ['Bribery', 'Seduction']
+        }
+    ];
+
+    function processJson(jsonArray) {
+        var skills = {};
+
+        jsonArray.forEach(function(skillJson) {
+            var skill = new Skill(skillJson.id, skillJson.name, skillJson.traitId, skillJson.description,
+                skillJson.availableEmphases, skillJson.keywords, skillJson.subSkills);
+            skills[skill.id] = skill;
+        });
+
+        return skills;
+    }
+
+    var skills = processJson(json);
+    skills.getSkillsWithKeyword = function(keywords) {
+        var matchedSkills = [];
+        keywords.forEach(function(keyword) {
+            matchedSkills = matchedSkills.concat(_.filter(skills, function(skill) {
+                return _.includes(skill.keywords, keyword);
+            }));
+        });
+        return _.uniq(matchedSkills);
     };
+    skills.getSkillsWithoutKeyword = function(keywords) {
+        var matchedSkills = [];
+        keywords.forEach(function(keyword) {
+            matchedSkills = matchedSkills.concat(_.filter(skills, function(skill) {
+                return !_.includes(skill.keywords, keyword) && typeof skill !== 'function';
+            }));
+        });
+        return _.uniq(matchedSkills);
+    };
+    return skills;
 });

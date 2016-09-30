@@ -18,16 +18,13 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         /*jslint bitwise: false */
     }
 
-    function makeCreationLogModel(initialXp, clanId, familyId, schoolId, differentSchool) {
+    function makeCreationLogModel(initialXp, clanId, familyId, school, differentSchool) {
         var creationLogModel = {
             type: 'CREATION',
             initialXp: initialXp,
             clan: clanId ? clanId.toLowerCase() : 'none',
             family: familyId ? familyId.toLowerCase() : 'none',
-            school: {
-                id: schoolId ? schoolId : 'none',
-                options: {}
-            },
+            school: school,
             mandatoryExpenditures: [],
             creationTimestamp: null
         };

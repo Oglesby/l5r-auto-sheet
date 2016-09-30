@@ -14,7 +14,7 @@ angular.module('pocketIkoma').directive('piDropdown', function ($, $timeout) {
                 $(element).dropdown('setting', {
                     onChange: function (value) {
                         scope[attr.ngModel] = value;
-                        scope[attr.ngChange]();
+                        scope[attr.ngChange](scope[attr.ngModel]);
                         scope.$apply();
                     }
                 });

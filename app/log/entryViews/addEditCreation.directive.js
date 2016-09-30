@@ -2,7 +2,7 @@
 
 angular.module('pocketIkoma').directive('piAddEditCreation', function () {
 
-    var AddEditCreationController = function (_, $, $scope, $timeout, clanService, familyService, schoolService, logService, modelService) {
+    var AddEditCreationController = function (_, $, $scope, $timeout, clanService, familyService, schoolService, skillService, logService, modelService) {
 
         $scope.clans = clanService;
         $scope.families = familyService;
@@ -13,6 +13,7 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
             $scope.selectedSchoolId = null;
             $scope.differentSchool = false;
             $scope.initialXp = 40;
+            $scope.schoolChoices = [];
         } else {
             $scope.selectedClanId = $scope.logModel.clan;
             $scope.selectedFamilyId = $scope.logModel.family;
@@ -24,33 +25,33 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
             $scope.differentSchool = !!differentSchoolExpenditure;
         }
 
+        $scope.$watch('schoolChoices', function() {
+            $scope.refreshLog();
+        }, true);
+
         $timeout(function() {
             // TODO: move into link function.
             $('.ui.initial.form').form({
                 fields: {
                     clan: {
-                        identifier: 'clan',
                         rules: [{
                             type: 'empty',
                             prompt: 'Please enter a clan.'
                         }]
                     },
                     school: {
-                        identifier: 'school',
                         rules: [{
                             type: 'empty',
                             prompt: 'Please enter a school.'
                         }]
                     },
                     family: {
-                        identifier: 'family',
                         rules: [{
                             type: 'empty',
                             prompt: 'Please enter a family.'
                         }]
                     },
                     initialXp: {
-                        identifier: 'initialXp',
                         rules: [{
                             type: 'empty',
                             prompt: 'Please enter an initial XP.'
@@ -71,7 +72,6 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
             return familyId === 'none' || (selectedClan.families.indexOf(family.id) > -1);
         };
 
-
         $scope.canChooseSchool = function(schoolId) {
             if (!$scope.selectedClanId) {
                 return false;
@@ -83,7 +83,15 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
             return $scope.differentSchool || schoolId === 'none' || (selectedClan.schools.indexOf(school.id) > -1);
         };
 
-        $scope.setClan = function(clan) {
+        $scope.hasSchoolChoices = function() {
+            return $scope.schoolChoices.length > 0;
+        };
+
+        $scope.getSchoolChoices = function() {
+            return $scope.schoolChoices;
+        };
+
+        $scope.setClan = function() {
             $scope.selectedFamilyId = null;
             $scope.selectedSchoolId = null;
             // TODO: Move into link function.
@@ -92,16 +100,30 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
             $('.school.dropdown').dropdown('clear');
         };
 
-        $scope.setFamily = function(family) {
+        $scope.setFamily = function() {
             // TODO: Move into link function.
             $('.family.dropdown').removeClass('error');
 
             $scope.refreshLog();
         };
 
-        $scope.setSchool = function(school) {
+        $scope.setSchool = function() {
             // TODO: Move into link function.
             $('.school.dropdown').removeClass('error');
+            var selectedSchool = _.find($scope.schools, {id: $scope.selectedSchoolId});
+
+            var choices = [];
+            if (selectedSchool && selectedSchool.choices) {
+                selectedSchool.choices.forEach(function (choice) {
+                    choices.push({
+                        choice: choice,
+                        decision: {}
+                    });
+                });
+            }
+
+            $scope.schoolChoices.length = 0;
+            Array.prototype.push.apply($scope.schoolChoices, choices);
             $scope.refreshLog();
         };
 
@@ -116,8 +138,19 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
         $scope.refreshLog = function() {
             var logId = $scope.logModel ? $scope.logModel.id : $scope.creationLogModel ? $scope.creationLogModel.id : undefined;
 
+            var school = {
+                id: $scope.selectedSchoolId ? $scope.selectedSchoolId : 'none',
+                    options: {
+                        chosenSkills: _($scope.schoolChoices).filter(function(choice) {
+                            return !!choice.decision.skill;
+                        }).map(function(choice) {
+                            return choice.decision.skill;
+                        }).value()
+                    }
+            };
+
             $scope.creationLogModel = logService.makeCreationLogModel($scope.initialXp,
-                $scope.selectedClanId, $scope.selectedFamilyId, $scope.selectedSchoolId, $scope.differentSchool);
+                $scope.selectedClanId, $scope.selectedFamilyId, school, $scope.differentSchool);
             $scope.creationLogModel.id = logId;
 
             if (!$scope.logModel) {
@@ -129,7 +162,18 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
             // TODO: Move into link function.
             var form = $('.ui.initial.form');
             form.form('validate form');
+            if (!form.form('is valid')) {
+                return;
+            }
 
+            var choiceFields = {
+                fields: {}
+            };
+            _.forEach($scope.schoolChoices, function(schoolChoice) {
+                _.merge(choiceFields.fields, schoolChoice.decision.formValidation);
+            });
+            form.form(choiceFields);
+            form.form('validate form');
             if (!form.form('is valid')) {
                 return;
             }

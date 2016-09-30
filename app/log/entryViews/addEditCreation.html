@@ -53,6 +53,12 @@
             </div>
         </div>
     </div>
+    <div class="field" ng-if="hasSchoolChoices()">
+        <h4 class="ui header">School Choices</h4>
+        <div ng-repeat="choice in getSchoolChoices()">
+            <pi-skill-choice school-choice="choice.choice" school-decision="choice.decision" index="$index"></pi-skill-choice>
+        </div>
+    </div>
     <div class="field">
         <div class="ui error message">
         </div>

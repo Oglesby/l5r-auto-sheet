@@ -1,0 +1,33 @@
+<div class="ui fields">
+    <div class="four wide field">
+        <div class="ui choice selection dropdown pi-dropdown" ng-model="baseSkillId" ng-change="onSkillChange">
+            <input type="hidden" name="{{'choice' + index}}">
+            <i class="dropdown icon"></i>
+            <div class="default text">Select Skill</div>
+            <div class="menu">
+                <div class="item" ng-repeat="skill in choiceOptions" data-value="{{skill.id}}" >
+                    {{skill.name}}
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="four wide field" ng-if="baseSkill && baseSkill.subSkills">
+        <div class="ui choice selection dropdown pi-dropdown" ng-model="subSkillText" ng-change="onSubSkillChange">
+            <input type="hidden" name="{{'subChoice' + index}}">
+            <i class="dropdown icon"></i>
+            <div class="default text">Select Sub-skill</div>
+            <div class="menu">
+                <div class="item" ng-repeat="subSkill in baseSkill.subSkills" data-value="{{subSkill.name}}" >
+                    {{subSkill.name}}
+                </div>
+                <div class="item" data-value="other">
+                    Other
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="four wide field" ng-if="choosingOther">
+        <input type="text" placeholder="Enter other choice" name="{{'otherChoice' + index}}"
+               ng-model="otherChoice" ng-change="onOtherTextChange(otherChoice)" ng-model-options="{debounce: 250}" />
+    </div>
+</div>
