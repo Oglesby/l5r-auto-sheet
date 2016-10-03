@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('pocketIkoma').directive('piSkillChoice', function (skillService) {
+angular.module('pocketIkoma').directive('piSkillChoice', function (_, skillService, modelService) {
 
     var SkillChoiceController = function ($scope) {
 
@@ -67,6 +67,11 @@ angular.module('pocketIkoma').directive('piSkillChoice', function (skillService)
             } else if ($scope.choice.restrictedKeywords) {
                 $scope.choiceOptions = skillService.getSkillsWithoutKeyword($scope.choice.restrictedKeywords);
             }
+
+            var modelSkills = _.map(modelService.getCurrentModel().skills, function(skill) { return skill.type; });
+            $scope.choiceOptions = _.filter($scope.choiceOptions, function(skill) {
+                return modelSkills.indexOf(skill) === -1;
+            });
         }
     };
 
