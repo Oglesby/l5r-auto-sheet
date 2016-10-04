@@ -4,16 +4,32 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
 
     var AddEditCreationController = function (_, $, $scope, $timeout, clanService, familyService, schoolService, skillService, logService, modelService) {
 
+        function updateSchoolChoices(selectedSchoolId, scope) {
+            var selectedSchool = _.find(scope.schools, {id: selectedSchoolId});
+            var choices = [];
+            if (selectedSchool && selectedSchool.choices) {
+                selectedSchool.choices.forEach(function (choice) {
+                    choices.push({
+                        choice: choice,
+                        decision: {}
+                    });
+                });
+            }
+
+            scope.schoolChoices.length = 0;
+            Array.prototype.push.apply(scope.schoolChoices, choices);
+        }
+
         $scope.clans = clanService;
         $scope.families = familyService;
         $scope.schools = schoolService;
+        $scope.schoolChoices = [];
         if (!$scope.logModel) {
             $scope.selectedClanId = null;
             $scope.selectedFamilyId = null;
             $scope.selectedSchoolId = null;
             $scope.differentSchool = false;
             $scope.initialXp = 40;
-            $scope.schoolChoices = [];
         } else {
             $scope.selectedClanId = $scope.logModel.clan;
             $scope.selectedFamilyId = $scope.logModel.family;
@@ -23,6 +39,15 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
             // TODO: Fix the direct ID reference?
             var differentSchoolExpenditure = _.find($scope.logModel.mandatoryExpenditures, {id: 'differentSchool'});
             $scope.differentSchool = !!differentSchoolExpenditure;
+
+            if ($scope.logModel.school.options) {
+                updateSchoolChoices($scope.selectedSchoolId, $scope);
+
+                var index = 0;
+                $scope.logModel.school.options.chosenSkills.forEach(function(chosenSkill) {
+                    $scope.schoolChoices[index++].decision.skill = chosenSkill;
+                });
+            }
         }
 
         $scope.$watch('schoolChoices', function() {
@@ -110,20 +135,8 @@ angular.module('pocketIkoma').directive('piAddEditCreation', function () {
         $scope.setSchool = function() {
             // TODO: Move into link function.
             $('.school.dropdown').removeClass('error');
-            var selectedSchool = _.find($scope.schools, {id: $scope.selectedSchoolId});
+            updateSchoolChoices($scope.selectedSchoolId, $scope);
 
-            var choices = [];
-            if (selectedSchool && selectedSchool.choices) {
-                selectedSchool.choices.forEach(function (choice) {
-                    choices.push({
-                        choice: choice,
-                        decision: {}
-                    });
-                });
-            }
-
-            $scope.schoolChoices.length = 0;
-            Array.prototype.push.apply($scope.schoolChoices, choices);
             $scope.refreshLog();
         };
 

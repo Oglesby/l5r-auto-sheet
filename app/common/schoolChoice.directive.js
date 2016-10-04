@@ -5,10 +5,27 @@ angular.module('pocketIkoma').directive('piSkillChoice', function (_, skillServi
     var SkillChoiceController = function ($scope) {
 
         // TODO: This all becomes GROSSLY wrong when it's equipment or anything else. Fix that.
-        $scope.baseSkillId = null;
-        $scope.baseSkill = null;
-        $scope.choosingOther = false;
-        $scope.otherChoice = null;
+
+        if ($scope.decision.skill && $scope.decision.skill.id) {
+            $scope.baseSkillId = $scope.decision.skill.id;
+            $scope.baseSkill = skillService[$scope.baseSkillId];
+
+            if ($scope.baseSkill.subSkills) {
+                $scope.subSkillText = $scope.decision.skill.options.choosing;
+
+                if ($scope.baseSkill.subSkills.indexOf($scope.subSkillText) === -1) {
+                    $scope.choosingOther = true;
+                    $scope.otherChoice = $scope.decision.skill.options.choosing;
+                }
+            }
+
+        } else {
+            $scope.baseSkillId = null;
+            $scope.baseSkill = null;
+            $scope.choosingOther = false;
+            $scope.otherChoice = null;
+        }
+
         $scope.decision.formValidation = {};
         $scope.decision.formValidation['choice' + $scope.index] = {
             rules: [{
@@ -70,7 +87,7 @@ angular.module('pocketIkoma').directive('piSkillChoice', function (_, skillServi
 
             var modelSkills = _.map(modelService.getCurrentModel().skills, function(skill) { return skill.type; });
             $scope.choiceOptions = _.filter($scope.choiceOptions, function(skill) {
-                return modelSkills.indexOf(skill) === -1;
+                return modelSkills.indexOf(skill) === -1 || ($scope.decision.skill && $scope.decision.skill.id === skill.id);
             });
         }
     };
