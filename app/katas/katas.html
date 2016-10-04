@@ -1,9 +1,10 @@
-<br/>
-<h2 class="ui header">Katas</h2>
-<div class="ui segment list">
-    <div class="item" ng-repeat="kata in model.katas">
-        {{kata.type.name}}
-        <br/>
-        {{kata.type.description}}
+<div ng-if="model.katas.length > 0">
+    <h2 class="ui header">Katas</h2>
+    <div class="ui segment list">
+        <div class="item" ng-repeat="kata in model.katas">
+            {{kata.type.name}}
+            <br/>
+            {{kata.type.description}}
+        </div>
     </div>
 </div>

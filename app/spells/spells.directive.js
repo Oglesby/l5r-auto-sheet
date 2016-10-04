@@ -6,6 +6,15 @@ angular.module('pocketIkoma').directive('piSpells', function () {
         scope: {
             model: '='
         },
-        templateUrl: 'spells/spells.html'
+        templateUrl: 'spells/spells.html',
+        link: function(scope, element) {
+            scope.$watch('model', function(newValue) {
+                if (newValue && newValue.spells && newValue.spells.length > 0) {
+                    element.addClass('sixteen wide column');
+                } else {
+                    element.removeClass('sixteen wide column');
+                }
+            });
+        }
     };
 });
