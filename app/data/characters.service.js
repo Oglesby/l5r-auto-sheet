@@ -39,10 +39,16 @@ angular.module('pocketIkoma').service('characterService', function(_, $q, $http)
         });
     };
 
+    var deleteCharacter = function(id) {
+        _.remove(cachedCharacters, {id: id});
+        // TODO: actually delete.
+    };
+
     return {
         loadCharacter: loadCharacter,
         addCharacter: addCharacter,
         getCurrentCharacterId: getCurrentCharacterId,
+        deleteCharacter: deleteCharacter,
         getCharacters: getCharacters
     };
 });
