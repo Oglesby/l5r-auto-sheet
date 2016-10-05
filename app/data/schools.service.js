@@ -46,7 +46,7 @@ angular.module('pocketIkoma').service('schoolService', function(_, skillService,
             { id: 'defense'},
             { id: 'kenjutsu', options: { emphasis: 'Katana'} },
             { id: 'meditation'},
-            { id: 'theology'},
+            { id: 'lore', options: {choosing: 'Theology'} },
             { id: 'lore', options: {choosing: 'Shugenja'} }
         ],
         choices: [{
