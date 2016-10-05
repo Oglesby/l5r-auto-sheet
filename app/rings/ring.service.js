@@ -56,12 +56,12 @@ angular.module('pocketIkoma').service('ringService', function() {
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
         return {cost: xpCost, newValue: trait.value, name: trait.name};
     };
-    Ring.prototype.getTrait = function(traitName) {
-        if (this.voidTrait && this.voidTrait.id === traitName) {
+    Ring.prototype.getTrait = function(traitId) {
+        if (this.voidTrait && this.voidTrait.id === traitId) {
             return this.voidTrait;
-        } else if (this.physicalTrait && this.physicalTrait.id === traitName) {
+        } else if (this.physicalTrait && this.physicalTrait.id === traitId) {
             return this.physicalTrait;
-        } else if (this.spiritualTrait && this.spiritualTrait.id === traitName) {
+        } else if (this.spiritualTrait && this.spiritualTrait.id === traitId) {
             return this.spiritualTrait;
         } else {
             return null;
@@ -88,7 +88,7 @@ angular.module('pocketIkoma').service('ringService', function() {
         return new Ring('void', 'Void', 'images/void_by_exahyl-d3is16h.png', 6, null, null, new Trait('void', 'Void', '', 2));
     };
 
-    var findRingForTrait = function (traitName, model) {
+    var findRingForTrait = function(traitId, model) {
         var ringMap ={
             stamina: model.rings.earth,
             willpower: model.rings.earth,
@@ -101,11 +101,11 @@ angular.module('pocketIkoma').service('ringService', function() {
             void: model.rings.void
         };
 
-        return ringMap[traitName];
+        return ringMap[traitId];
     };
 
-    var getTraitFromRingName = function(ringName, traitName, model) {
-        return this.findRingForTrait(traitName, model).getTrait(traitName);
+    var findTraitById = function(traitId, model) {
+        return this.findRingForTrait(traitId, model).getTrait(traitId);
     };
 
     return {
@@ -115,6 +115,6 @@ angular.module('pocketIkoma').service('ringService', function() {
         createAirRing: createAirRing,
         createVoidRing: createVoidRing,
         findRingForTrait: findRingForTrait,
-        getTraitFromRingName: getTraitFromRingName
+        findTraitById: findTraitById
     };
 });

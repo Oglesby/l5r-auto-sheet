@@ -100,38 +100,31 @@ angular.module('pocketIkoma').service('skillService', function(_) {
             id: 'artisan',
             name: 'Artisan',
             description: '',
+            traitId: 'awareness',
             keywords: ['high', 'macro'],
             subSkills: [{
                 name: 'Bonsai',
-                traitId: 'awareness',
                 availableEmphases: ['*']
             }, {
                 name: 'Gardening',
-                traitId: 'awareness',
                 availableEmphases: ['*']
             }, {
                 name: 'Ikebana',
-                traitId: 'awareness',
                 availableEmphases: ['*']
             }, {
                 name: 'Origami',
-                traitId: 'awareness',
                 availableEmphases: ['*']
             }, {
                 name: 'Painting',
-                traitId: 'awareness',
                 availableEmphases: ['*']
             }, {
                 name: 'Poetry',
-                traitId: 'awareness',
                 availableEmphases: ['*']
             }, {
                 name: 'Sculpture',
-                traitId: 'awareness',
                 availableEmphases: ['*']
             }, {
                 name: 'Tattooing',
-                traitId: 'awareness',
                 availableEmphases: ['*']
             }]
         }, {
@@ -210,81 +203,64 @@ angular.module('pocketIkoma').service('skillService', function(_) {
             id: 'lore',
             name: 'Lore',
             description: '',
+            traitId: 'intelligence',
             keywords: ['high', 'macro'],
             subSkills: [{
                 name: 'Anatomy',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Architecture',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Bushido',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Great Clan',
-                traitId: 'intelligence',
                 availableEmphases: ['*'],
                 choices: ['Crab', 'Crane', 'Dragon', 'Lion', 'Mantis', 'Phoenix', 'Scorpion', 'Unicorn', '*']
             }, {
                 name: 'Elements',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Gaijin Culture',
-                traitId: 'intelligence',
                 availableEmphases: ['*'],
                 choices: ['Yobanjin', 'Thrane', '*']
             }, {
                 name: 'Ghosts',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Heraldry',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'History',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Maho',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Nature',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Nonhuman Culture',
-                traitId: 'intelligence',
                 availableEmphases: ['*'],
                 choices: ['Naga', 'Ratling', '*']
             }, {
                 name: 'Omens',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Shadowlands',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Shugenja',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Spirit Realms',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Theology',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }, {
                 name: 'Underworld',
-                traitId: 'intelligence',
                 availableEmphases: ['*']
             }]
         }, {
