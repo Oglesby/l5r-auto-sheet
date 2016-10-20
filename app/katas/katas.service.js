@@ -21,10 +21,6 @@ angular.module('pocketIkoma').service('kataService', function() {
         var kata = this.gain(model);
         var xpCost = kata.rank;
 
-        if (xpCost > model.characterInfo.xp) {
-            // TODO: File a warning and/or flag this log as somehow invalid?
-        }
-
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
         var description = kata.type.name;
         var invalidReasons = [];
