@@ -31,12 +31,15 @@ angular.module('pocketIkoma').service('disadvantageService', function() {
         var disadvantage = this.gain(model, options);
         var xpGain =  this.xpFetcher(model, options);
 
-        if (xpGain > model.characterInfo.xp) {
-            // TODO: File a warning and/or flag this log as somehow invalid?
+        var invalidReasons = [];
+        var description = disadvantage.type.name;
+        if ((xpGain + model.characterInfo.disadXp) > 10) {
+            xpGain = 10 - model.characterInfo.disadXp;
+            invalidReasons.push('Purchasing ' + description + ' at this point will only grant you ' + xpGain + ' xp.');
         }
 
         model.characterInfo.xp = model.characterInfo.xp + xpGain;
-        var description = disadvantage.type.name;
+        model.characterInfo.disadXp = model.characterInfo.disadXp + xpGain;
         if (options) {
             if (options.choosing) {
                 description += ': ' + options.choosing;
@@ -44,7 +47,7 @@ angular.module('pocketIkoma').service('disadvantageService', function() {
                 description += ' (Rank ' + options.rank + ')';
             }
         }
-        return {cost: xpGain, name: description};
+        return {cost: xpGain, name: description, invalidReasons: invalidReasons};
     };
     return {
         brash: new Disadvantage('brash', 'Brash', '',

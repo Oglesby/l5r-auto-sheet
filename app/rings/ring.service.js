@@ -49,12 +49,14 @@ angular.module('pocketIkoma').service('ringService', function() {
         var trait = this.increaseTrait(model, traitId);
         var xpCost = this.xpMult * trait.value;
 
+        var invalidReasons = [];
+        var description = trait.name;
         if (xpCost > model.characterInfo.xp) {
-            // TODO: File a warning and/or flag this log as somehow invalid?
+            invalidReasons.push('Insufficient XP to purchase ' + description + ' at this point.');
         }
 
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
-        return {cost: xpCost, newValue: trait.value, name: trait.name};
+        return {cost: xpCost, newValue: trait.value, name: description, invalidReasons: invalidReasons};
     };
     Ring.prototype.getTrait = function(traitId) {
         if (this.voidTrait && this.voidTrait.id === traitId) {

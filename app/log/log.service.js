@@ -18,6 +18,18 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         /*jslint bitwise: false */
     }
 
+    function createLogView(title, logModel, recordItems) {
+        return {
+            logModel: logModel,
+            title: title,
+            type: logModel.type,
+            comment: logModel.comment,
+            creationTimestamp: logModel.creationTimestamp,
+            recordItems: recordItems,
+            invalidReasons: []
+        };
+    }
+
     function makeCreationLogModel(initialXp, clanId, familyId, school, differentSchool) {
         var creationLogModel = {
             type: 'CREATION',
@@ -108,10 +120,12 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
                 displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
         }
 
+        var invalidReasons = [];
+        invalidReasons = invalidReasons.concat(result.invalidReasons);
         if (expenditure.comment) {
             displayText += ' (' + expenditure.comment + ')';
         }
-        return displayText;
+        return { displayText: displayText, invalidReasons: invalidReasons };
     }
 
     function processCreationLogModel(logModel, model) {
@@ -143,51 +157,38 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             });
         });
 
-        return {
-            logModel: logModel,
-            title: 'Character Building - School and Family',
-            type: 'CREATION',
-            comment: logModel.comment,
-            creationTimestamp: logModel.creationTimestamp,
-            recordItems: recordItems
-        };
+        return createLogView('Character Building - School and Family', logModel, recordItems);
     }
 
     function processCharacterInfoLogModel(logModel, model) {
         model.characterInfo.name = logModel.name;
         model.characterInfo.description = logModel.description;
 
-        return {
-            logModel: logModel,
-            title: 'Character Building - Basic Information',
-            type: 'CHARACTER_INFO',
-            comment: logModel.comment,
-            creationTimestamp: logModel.creationTimestamp,
-            recordItems: [
-                {
-                    displayText: 'Set name to ' + logModel.name
-                }
-            ]
-        };
+        return createLogView('Character Building - Basic Information', logModel, [{
+            displayText: 'Set name to ' + logModel.name
+        }]);
     }
 
     function processXpExpenditureLogModel(logModel, model) {
         var recordItems = [];
+        var invalidReasons = [];
         var n = 0;
         _.forEach(logModel.expenditures, function (expenditure) {
+            var results = processIndividualExpenditure(expenditure, model);
+
             recordItems.push({
                 id: n++,
-                displayText: processIndividualExpenditure(expenditure, model)
+                displayText: results.displayText
             });
+
+            invalidReasons = invalidReasons.concat(results.invalidReasons);
         });
 
-        return {
-            logModel: logModel,
-            title: logModel.title,
-            comment: logModel.comment,
-            creationTimestamp: logModel.creationTimestamp,
-            recordItems: recordItems
-        };
+        var log = createLogView(logModel.title, logModel, recordItems);
+        if (!log.isHouseruled) {
+            log.invalidReasons = invalidReasons;
+        }
+        return log;
     }
 
     function handleCharInfoType(type, logModel, recordItems, model, displayMult) {
@@ -265,13 +266,7 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             });
         });
 
-        return {
-            logModel: logModel,
-            title: 'Completed Module: ' + logModel.name + (logModel.number ? ' (' + logModel.number + ')' : ''),
-            comment: logModel.comment,
-            creationTimestamp: logModel.creationTimestamp,
-            recordItems: recordItems
-        };
+        return createLogView('Completed Module: ' + logModel.name + (logModel.number ? ' (' + logModel.number + ')' : ''), logModel, recordItems);
     }
 
     var processLogsIntoModel = function(model, logModels) {
@@ -299,53 +294,10 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         model.logViews = model.logViews.concat(logViews);
     };
 
-    var createBaseModel = function(modelObj) {
-        var newModel = {
-            rings: {
-                earth: ringService.createEarthRing(),
-                water: ringService.createWaterRing(),
-                fire: ringService.createFireRing(),
-                air: ringService.createAirRing(),
-                void: ringService.createVoidRing()
-            },
-            characterInfo: {
-                glory: 10,
-                honor: 10,
-                status: 10,
-                taint: 0,
-                infamy: 0,
-                shadowRank: 0
-            },
-            secondaryStats: {
-                bonusTN: 0,
-                bonusInitiative: 0,
-                bonusMovement: 0,
-                bonusWoundsPerRank: 0,
-                woundPenalties: [0, 3, 5, 10, 15, 20, 40, null]
-            },
-            skills: [],
-            logViews: []
-        };
-
-        if (modelObj) {
-            /* In order for the 2-way mapping to hold to all the directives that accept the model, we need to keep the
-            same actual object. An alternative is switching to listeners. */
-            for (var member in modelObj) {
-                if (modelObj.hasOwnProperty(member)) {
-                    delete modelObj[member];
-                }
-            }
-            _.assign(modelObj, newModel);
-        } else {
-            return newModel;
-        }
-    };
-
     return {
         makeCreationLogModel: makeCreationLogModel,
         makeCharacterDetailsLogModel: makeCharacterDetailsLogModel,
         makeModuleCompletionLogModel: makeModuleCompletionLogModel,
-        processLogsIntoModel: processLogsIntoModel,
-        createBaseModel: createBaseModel
+        processLogsIntoModel: processLogsIntoModel
     };
 });

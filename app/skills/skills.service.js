@@ -44,16 +44,17 @@ angular.module('pocketIkoma').service('skillService', function(_) {
         var skill = this.increase(model, options);
         var xpCost = _.isUndefined(costOverride) ? skill.rank : costOverride;
 
-        if (xpCost > model.characterInfo.xp) {
-            // TODO: File a warning and/or flag this log as somehow invalid?
-        }
-
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
         var description = skill.type.name;
         if (options && options.choosing) {
             description += ': ' + options.choosing;
         }
-        return {cost: xpCost, newValue: skill.rank, name: description};
+
+        var invalidReasons = [];
+        if (xpCost > model.characterInfo.xp) {
+            invalidReasons.push('Insufficient XP to purchase ' + description + ' ' + Number(skill.rank).toString() + ' at this point.');
+        }
+        return {cost: xpCost, newValue: skill.rank, name: description, invalidReasons: invalidReasons};
     };
     Skill.prototype.addEmphasis = function (model, emphasis, options) {
         options = options || {};
@@ -63,8 +64,7 @@ angular.module('pocketIkoma').service('skillService', function(_) {
             });
 
         if (!skill) {
-            // TODO Throw error
-            console.log('couldn\'t find skill with ID ' + id + ' for requested emphasis');
+            throw Error('Couldn\'t find a skill with ID ' + id + ' to add emphasis ' + emphasis + ' to.');
         } else {
             skill.emphases.push(emphasis);
         }
@@ -75,16 +75,18 @@ angular.module('pocketIkoma').service('skillService', function(_) {
         var skill = this.addEmphasis(model, emphasis, options);
         var xpCost = 2;
 
-        if (xpCost > model.characterInfo.xp) {
-            // TODO: File a warning and/or flag this log as somehow invalid?
+        model.characterInfo.xp = model.characterInfo.xp - xpCost;
+        var description = skill.type.name;
+        if (options && options.choosing) {
+            description += ': ' + options.choosing;
         }
 
-        model.characterInfo.xp = model.characterInfo.xp - xpCost;
-        var skillName = skill.type.name;
-        if (options && options.choosing) {
-            skillName += ': ' + options.choosing;
+        var invalidReasons = [];
+        if (xpCost > model.characterInfo.xp) {
+            invalidReasons.push('Insufficient XP to purchase ' + description + ' at this point.');
         }
-        return {cost: xpCost, name: emphasis, skill: skillName};
+
+        return {cost: xpCost, name: emphasis, skill: description, invalidReasons: invalidReasons};
     };
 
     var json = [

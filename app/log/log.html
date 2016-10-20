@@ -1,31 +1,30 @@
 <h2 class="ui header">Log</h2>
-<div class="ui divided items">
-    <div class="ui item" ng-repeat="logView in model.logViews">
-        <div class="content" ng-if="editingLogView !== logView">
-            <div class="ui right floated buttons" ng-if="!deletingLogView && !editingLogView">
-                <button class="ui button" type="submit" ng-click="startEditLog(logView)">Edit</button>
-                <div class="or" ng-if="!isMandatoryEntry(logView)"></div>
-                <button class="ui button negative" ng-if="!isMandatoryEntry(logView)" ng-click="startDeleteLog(logView)">Delete</button>
-            </div>
-            <div class="ui right floated" ng-if="deletingLogView === logView">
-                <span style="padding-right: 5px">Are you sure you want to delete this log?</span>
-                <div class="ui  buttons">
-                    <button class="ui button negative" type="submit" id="confirm-delete-item" name="confirm-delete-item" ng-click="finishDeletingLog()">Delete</button>
-                    <div class="or"></div>
-                    <button class="ui button" id="cancel-delete-item" name="cancel-delete-item" ng-click="cancelChangingLog()">Cancel</button>
+<div class="ui cards">
+    <div class="ui log card" ng-repeat="logView in model.logViews">
+        <div class="ui icon warning top attached message" ng-if="logViewIsInvalid(logView)">
+            <i class="home icon"></i>
+            <div class="content">
+                <button class="ui right floated yellow button" ng-click="markHouseruled(logView)">Houserule</button>
+                <div class="header">
+                    This log isn't valid according to 4th Edition.
                 </div>
-            </div>
-            <div class="ui small header">
-                {{logView.title}}
-            </div>
-            <div class="meta">{{logView.creationTimestamp}}</div>
-            <div class="description">
-                <div ng-repeat="recordItem in logView.recordItems">
-                    {{recordItem.displayText}}
-                </div>
+                <p>Reason:
+                    <ul>
+                        <li ng-repeat="reason in logView.invalidReasons">{{reason}}</li>
+                    </ul>
+                </p>
+                <p>You can edit it, or you can mark it as houseruled.</p>
             </div>
         </div>
-        <div class="content" ng-if="editingLogView === logView" ng-switch="logView.logModel.type">
+        <div class="ui top attached content">
+            <span class="header">{{logView.title}}</span> <span class="right floated meta">{{logView.creationTimestamp}}</span>
+        </div>
+        <div class="ui content" ng-if="editingLogView !== logView">
+            <div ng-repeat="recordItem in logView.recordItems">
+                {{recordItem.displayText}}
+            </div>
+        </div>
+        <div class="ui content" ng-if="editingLogView === logView" ng-switch="logView.logModel.type">
             <div ng-switch-when="CREATION">
                 <pi-add-edit-creation log-model="logView.logModel" on-save="finishEditingLog" on-cancel="cancelChangingLog"></pi-add-edit-creation>
             </div>
@@ -37,6 +36,24 @@
             </div>
             <div ng-switch-when="MODULE_COMPLETION">
                 <pi-add-edit-log-module log-model="logView.logModel" on-save="finishEditingLog" on-cancel="cancelChangingLog"></pi-add-edit-log-module>
+            </div>
+        </div>
+        <div class="content">
+            <div class="ui right floated " ng-if="deletingLogView !== logView && editingLogView !== logView">
+                <i class="large yellow home icon" ng-if="logView.isHouseruled"></i>
+                <div class="ui buttons">
+                    <button class="ui button" type="submit" ng-click="startEditLog(logView)" ng-disabled="deletingLogView || editingLogView">Edit</button>
+                    <div class="or" ng-if="!isMandatoryEntry(logView)"></div>
+                    <button class="ui button negative" ng-if="!isMandatoryEntry(logView)" ng-click="startDeleteLog(logView)" ng-disabled="deletingLogView || editingLogView">Delete</button>
+                </div>
+            </div>
+            <div class="ui right floated" ng-if="deletingLogView === logView">
+                <span style="padding-right: 5px">Are you sure you want to delete this log?</span>
+                <div class="ui buttons">
+                    <button class="ui button negative" type="submit" id="confirm-delete-item" name="confirm-delete-item" ng-click="finishDeletingLog()">Delete</button>
+                    <div class="or"></div>
+                    <button class="ui button" id="cancel-delete-item" name="cancel-delete-item" ng-click="cancelChangingLog()">Cancel</button>
+                </div>
             </div>
         </div>
     </div>

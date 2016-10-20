@@ -52,7 +52,7 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
             return newModel;
         }
     }
-    
+
     var loadedLogModels = [];
     var currentModel = createBaseModel();
 

@@ -31,13 +31,14 @@ angular.module('pocketIkoma').service('spellService', function(_) {
             }
         });
 
+        var invalidReasons = [];
+        var description = spell.name;
         if (!validShugenjaSchool) {
-            // TODO: File a warning and/or flag this log as somehow invalid?
+            invalidReasons.push('You have no school that allows you to purchase ' + description + ' at this point.');
         }
 
         this.gain(model, options);
-        var description = spell.name;
-        return {cost: 0, name: description};
+        return {cost: 0, name: description, invalidReasons: invalidReasons};
     };
     return {
         tempestOfAir: new Spell('tempestOfAir', 'Tempest of Air', '', 1, 'air', []),

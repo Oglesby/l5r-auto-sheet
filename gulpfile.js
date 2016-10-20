@@ -18,7 +18,7 @@ gulp.task('default', ['serve', 'watch']);
 gulp.task('serve', ['less', 'lint', 'browserify', 'test', 'connect']);
 
 gulp.task('watch', function() {
-    gulp.watch(['./app/*.js', './app/**/*.js', './app/*.html', './app/**/*.html', './assets/**/*.less'], ['re-serve']);
+    gulp.watch(['./app/*.js', './app/**/*.js', './app/*.html', './app/**/*.html', './assets/styles/**/*.less'], ['re-serve']);
 });
 
 gulp.task('lint', function() {

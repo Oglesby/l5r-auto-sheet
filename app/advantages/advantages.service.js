@@ -30,16 +30,18 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
         var advantage = this.gain(model, options);
         var xpCost = this.xpFetcher(model, options);
 
-        if (xpCost > model.characterInfo.xp) {
-            // TODO: File a warning and/or flag this log as somehow invalid?
-        }
-
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
         var description = advantage.type.name;
         if (options && options.choosing) {
             description += ': ' + options.choosing;
         }
-        return {cost: xpCost, name: description};
+
+        var invalidReasons = [];
+        if (xpCost > model.characterInfo.xp) {
+            invalidReasons.push('Insufficient XP to purchase ' + description + ' at this point.');
+        }
+
+        return {cost: xpCost, name: description, invalidReasons: invalidReasons};
     };
     return {
         // TODO: add a function that gets excuted on purchase

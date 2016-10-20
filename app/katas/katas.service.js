@@ -26,7 +26,12 @@ angular.module('pocketIkoma').service('kataService', function() {
         }
 
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
-        return {cost: xpCost, name: kata.type.name};
+        var description = kata.type.name;
+        var invalidReasons = [];
+        if (xpCost > model.characterInfo.xp) {
+            invalidReasons.push('Insufficient XP to purchase ' + description + ' at this point.');
+        }
+        return {cost: xpCost, name: description, invalidReasons: invalidReasons};
     };
 
     return {

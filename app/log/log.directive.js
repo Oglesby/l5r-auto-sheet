@@ -20,8 +20,8 @@ angular.module('pocketIkoma').directive('piLog', function (_) {
                 resetChanges();
             };
 
-            $scope.startDeleteLog = function(logItem) {
-                $scope.deletingLogView = logItem;
+            $scope.startDeleteLog = function(logView) {
+                $scope.deletingLogView = logView;
             };
 
             $scope.finishDeletingLog = function() {
@@ -31,6 +31,15 @@ angular.module('pocketIkoma').directive('piLog', function (_) {
 
             $scope.cancelChangingLog = function() {
                 resetChanges();
+            };
+
+            $scope.markHouseruled = function(logView) {
+                logView.invalidReasons = [];
+                logView.isHouseruled = true;
+            };
+
+            $scope.logViewIsInvalid = function(logView) {
+                return logView.invalidReasons && logView.invalidReasons.length > 0;
             };
 
             $scope.isMandatoryEntry = modelService.isMandatoryLogModel;
