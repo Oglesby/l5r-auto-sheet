@@ -43,8 +43,8 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
 
         if (differentSchool) {
             creationLogModel.mandatoryExpenditures.push({
-                'type': 'ADVANTAGE',
-                'id': 'differentSchool'
+                type: 'ADVANTAGE',
+                id: 'differentSchool'
             });
         }
 
@@ -54,10 +54,10 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
 
     function makeCharacterDetailsLogModel(name, description) {
         var characterDetailLogModel = {
-            'type': 'CHARACTER_INFO',
-            'name': name,
-            'description': description,
-            'creationTimestamp': null
+            type: 'CHARACTER_INFO',
+            name: name,
+            description: description,
+            creationTimestamp: null
         };
 
         ensureLogModelHasId(characterDetailLogModel);
@@ -66,22 +66,33 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
 
     function makeModuleCompletionLogModel(moduleName, moduleNumber, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
         var moduleCompletionLogModel = {
-            'type': 'MODULE_COMPLETION',
-            'name': moduleName,
-            'number': moduleNumber,
-            'xpReward': xp,
-            'gloryReward': gloryChange * 10,
-            'honorReward': honorChange * 10,
-            'statusChange': statusChange * 10,
-            'infamyChange': infamyChange * 10,
-            'taintChange': taintChange * 10,
-            'shadowChange': shadowChange * 10,
-            'creationTimestamp': null,
-            'gains': []
+            type: 'MODULE_COMPLETION',
+            name: moduleName,
+            number: moduleNumber,
+            xpReward: xp,
+            gloryReward: gloryChange * 10,
+            honorReward: honorChange * 10,
+            statusChange: statusChange * 10,
+            infamyChange: infamyChange * 10,
+            taintChange: taintChange * 10,
+            shadowChange: shadowChange * 10,
+            creationTimestamp: null,
+            gains: []
         };
 
         ensureLogModelHasId(moduleCompletionLogModel);
         return moduleCompletionLogModel;
+    }
+
+    function makeXpExpenditureLogModel(name) {
+        var xpExpenditureLogModel = {
+            type: 'XP_EXPENDITURE',
+            name: name,
+            expenditures: []
+        };
+
+        ensureLogModelHasId(xpExpenditureLogModel);
+        return xpExpenditureLogModel;
     }
 
     function processIndividualExpenditure(expenditure, model) {
@@ -184,7 +195,7 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             invalidReasons = invalidReasons.concat(results.invalidReasons);
         });
 
-        var log = createLogView(logModel.title, logModel, recordItems);
+        var log = createLogView(logModel.name, logModel, recordItems);
         if (!log.isHouseruled) {
             log.invalidReasons = invalidReasons;
         }
@@ -298,6 +309,7 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         makeCreationLogModel: makeCreationLogModel,
         makeCharacterDetailsLogModel: makeCharacterDetailsLogModel,
         makeModuleCompletionLogModel: makeModuleCompletionLogModel,
+        makeXpExpenditureLogModel: makeXpExpenditureLogModel,
         processLogsIntoModel: processLogsIntoModel
     };
 });

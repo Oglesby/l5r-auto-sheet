@@ -54,7 +54,9 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
     }
 
     var loadedLogModels = [];
+    var modelMode = 'viewing';
     var currentModel = createBaseModel();
+    var currentSpendingLog = null;
 
     var loadCharacter = function(characterId) {
         return characterService.loadCharacter(characterId).then(function (logModels) {
@@ -119,6 +121,27 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
         return logModel.type === 'CREATION' || logModel.type === 'CHARACTER_INFO' ;
     };
 
+    var isInSpendingMode = function() {
+        return modelMode === 'spending';
+    };
+
+    var startSpendingMode = function(spendingLog) {
+        modelMode = 'spending';
+        if (spendingLog) {
+            currentSpendingLog = spendingLog;
+        } else {
+            currentSpendingLog = logService.makeXpExpenditureLogModel();
+        }
+    };
+
+    var stopSpendingMode = function() {
+        modelMode = 'viewing';
+    };
+
+    var addSpendingResult = function(result) {
+        currentSpendingLog.expenditures.push(result);
+    };
+
     return {
         loadCharacter: loadCharacter,
         getCurrentModel: getCurrentModel,
@@ -127,6 +150,10 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
         removeLogFromModel: removeLogFromModel,
         updateLogInModel: updateLogInModel,
         addOrUpdateLogInModel: addOrUpdateLogInModel,
-        isMandatoryLogModel: isMandatoryLogModel
+        isMandatoryLogModel: isMandatoryLogModel,
+        isInSpendingMode: isInSpendingMode,
+        startSpendingMode: startSpendingMode,
+        stopSpendingMode: stopSpendingMode,
+        addSpendingResult: addSpendingResult
     };
 });

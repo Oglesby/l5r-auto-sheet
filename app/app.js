@@ -35,6 +35,12 @@ pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
     }).state('default.logModule', {
         url: '/log',
         template: '<pi-add-edit-log-module></pi-add-edit-log-module>'
+    }).state('default.spendXp', {
+        url: '/spend',
+        template: '<pi-add-edit-xp-expenditure></pi-add-edit-xp-expenditure>',
+        controller: function($scope, modelService) {
+            modelService.startSpendingMode();
+        }
     }).state('new', {
         url: '/new',
         templateUrl: 'formatViews/new.html',
