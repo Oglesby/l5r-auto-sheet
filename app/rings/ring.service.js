@@ -1,14 +1,16 @@
 'use strict';
 
-angular.module('pocketIkoma').service('ringService', function() {
-    var Trait = function (id, name, description, value) {
+class Trait {
+    constructor(id, name, description, value) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.value = value;
     };
+}
 
-    var Ring = function (id, name, icon, xpMult, physicalTrait, spiritualTrait, voidTrait) {
+class Ring {
+    constructor(id, name, icon, xpMult, physicalTrait, spiritualTrait, voidTrait) {
         this.id = id;
         this.name = name;
         this.icon = icon;
@@ -17,10 +19,11 @@ angular.module('pocketIkoma').service('ringService', function() {
         this.voidTrait = voidTrait;
         this.xpMult = xpMult;
     };
-    Ring.prototype.getRank = function () {
-        var physical = -1;
-        var spiritual = -1;
-        var voidVal = -1;
+
+    getRank() {
+        let physical = -1;
+        let spiritual = -1;
+        let voidVal = -1;
         if (this.physicalTrait) {
             physical = this.physicalTrait.value;
         }
@@ -31,9 +34,10 @@ angular.module('pocketIkoma').service('ringService', function() {
             voidVal = this.voidTrait.value;
         }
         return Math.max(Math.min(physical, spiritual), voidVal);
-    };
-    Ring.prototype.increaseTrait = function (model, traitId) {
-        var trait;
+    }
+
+    increaseTrait(model, traitId) {
+        let trait;
         if (this.physicalTrait && this.physicalTrait.id === traitId) {
             trait = this.physicalTrait;
         } else if (this.spiritualTrait && this.spiritualTrait.id === traitId) {
@@ -45,12 +49,13 @@ angular.module('pocketIkoma').service('ringService', function() {
         trait.value++;
         return trait;
     };
-    Ring.prototype.purchase = function (model, traitId) {
-        var trait = this.increaseTrait(model, traitId);
-        var xpCost = this.xpMult * trait.value;
 
-        var invalidReasons = [];
-        var description = trait.name;
+    purchase(model, traitId) {
+        let trait = this.increaseTrait(model, traitId);
+        let xpCost = this.xpMult * trait.value;
+
+        let invalidReasons = [];
+        let description = trait.name;
         if (xpCost > model.characterInfo.xp) {
             invalidReasons.push('Insufficient XP to purchase ' + description + ' at this point.');
         }
@@ -58,7 +63,8 @@ angular.module('pocketIkoma').service('ringService', function() {
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
         return {cost: xpCost, newValue: trait.value, name: description, invalidReasons: invalidReasons};
     };
-    Ring.prototype.getTrait = function(traitId) {
+
+    getTrait(traitId) {
         if (this.voidTrait && this.voidTrait.id === traitId) {
             return this.voidTrait;
         } else if (this.physicalTrait && this.physicalTrait.id === traitId) {
@@ -69,29 +75,39 @@ angular.module('pocketIkoma').service('ringService', function() {
             return null;
         }
     };
+}
 
-    var createEarthRing = function() {
+
+class RingService {
+    constructor() {
+    }
+
+    createEarthRing() {
         return new Ring('earth', 'Earth', 'images/earth_by_exahyl-d3is114.png', 4,
             new Trait('stamina', 'Stamina', '', 2), new Trait('willpower', 'Willpower', '', 2));
     };
-    var createWaterRing = function() {
+
+    createWaterRing() {
         return new Ring('water', 'Water', 'images/water_ring_by_exahyl-d3is12g.png', 4,
             new Trait('strength', 'Strength', '', 2), new Trait('perception', 'Perception', '', 2));
     };
-    var createFireRing = function() {
+
+    createFireRing() {
         return new Ring('fire', 'Fire', 'images/fire_ring_by_exahyl-d3is13z.png', 4,
             new Trait('agility', 'Agility', '', 2), new Trait('intelligence', 'Intelligence', '', 2));
     };
-    var createAirRing = function() {
+
+    createAirRing() {
         return new Ring('air', 'Air', 'images/air_ring_by_exahyl-d3is15c.png', 4,
             new Trait('reflexes', 'Reflexes', '', 2), new Trait('awareness', 'Awareness', '', 2));
     };
-    var createVoidRing = function() {
+
+    createVoidRing() {
         return new Ring('void', 'Void', 'images/void_by_exahyl-d3is16h.png', 6, null, null, new Trait('void', 'Void', '', 2));
     };
 
-    var findRingForTrait = function(traitId, model) {
-        var ringMap ={
+    findRingForTrait(traitId, model) {
+        const ringMap ={
             stamina: model.rings.earth,
             willpower: model.rings.earth,
             strength: model.rings.water,
@@ -106,17 +122,9 @@ angular.module('pocketIkoma').service('ringService', function() {
         return ringMap[traitId];
     };
 
-    var findTraitById = function(traitId, model) {
+    findTraitById(traitId, model) {
         return this.findRingForTrait(traitId, model).getTrait(traitId);
     };
+}
 
-    return {
-        createEarthRing: createEarthRing,
-        createWaterRing: createWaterRing,
-        createFireRing: createFireRing,
-        createAirRing: createAirRing,
-        createVoidRing: createVoidRing,
-        findRingForTrait: findRingForTrait,
-        findTraitById: findTraitById
-    };
-});
+export default RingService;

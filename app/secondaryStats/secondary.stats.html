@@ -3,15 +3,15 @@
     <div class="row">
         <div class="one wide column">
             <div class="ui sub header">TN</div>
-            <span>{{model.secondaryStats.tn}}</span>
+            <span>{{$ctrl.model.secondaryStats.tn}}</span>
         </div>
         <div class="two wide column">
             <div class="ui sub header">Initiative</div>
-            <span>{{model.secondaryStats.initiative}}</span>
+            <span>{{$ctrl.model.secondaryStats.initiative}}</span>
         </div>
         <div class="one wide column">
             <div class="ui sub header">Movement</div>
-            <span>{{model.secondaryStats.movement}}</span>
+            <span>{{$ctrl.model.secondaryStats.movement}}</span>
         </div>
     </div>
 </div>
@@ -26,7 +26,7 @@
         </tr>
     </thead>
     <tbody>
-        <tr ng-repeat="woundRank in model.secondaryStats.woundRanks">
+        <tr ng-repeat="woundRank in $ctrl.model.secondaryStats.woundRanks">
             <td>{{woundRank.name}} (+{{woundRank.penalty}})</td>
             <td>{{woundRank.totalWounds}}</td>
             <td></td>

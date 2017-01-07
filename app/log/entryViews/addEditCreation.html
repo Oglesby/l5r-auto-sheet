@@ -2,18 +2,18 @@
     <div class="fields">
         <div class="field">
             <label>Initial XP</label>
-            <input type="number" ng-model="initialXp" name="initialXp"/>
+            <input type="number" ng-model="$ctrl.initialXp" name="initialXp"/>
         </div>
     </div>
     <div class="fields">
         <div class="five wide field">
             <label>Clan:</label>
-            <div class="ui search clan selection dropdown pi-dropdown" ng-model="selectedClanId" ng-change="setClan">
+            <div class="ui search clan selection dropdown pi-dropdown" pi-dropdown ng-model="$ctrl.selectedClanId" ng-change="$ctrl.setClan">
                 <input type="hidden" name="clan">
                 <i class="dropdown icon"></i>
                 <div class="default text">Select Clan</div>
                 <div class="menu">
-                    <div class="item" ng-repeat="clan in clans" data-value="{{clan.id}}">
+                    <div class="item" ng-repeat="clan in $ctrl.clans" data-value="{{clan.id}}">
                         {{clan.name}}
                     </div>
                 </div>
@@ -21,12 +21,12 @@
         </div>
         <div class="five wide field">
             <label>Family:</label>
-            <div class="ui search family selection dropdown pi-dropdown" ng-model="selectedFamilyId" ng-class="{'disabled': !selectedClanId}" ng-change="setFamily">
+            <div class="ui search family selection dropdown pi-dropdown" pi-dropdown ng-model="$ctrl.selectedFamilyId" ng-class="{'disabled': !$ctrl.selectedClanId}" ng-change="$ctrl.setFamily">
                 <input type="hidden" name="family">
                 <i class="dropdown icon"></i>
                 <div class="default text">Select Family</div>
                 <div class="menu">
-                    <div class="item" ng-class="{'disabled': !canChooseFamily(family.id)}" ng-repeat="family in families" data-value="{{family.id}}">
+                    <div class="item" ng-class="{'disabled': !$ctrl.canChooseFamily(family.id)}" ng-repeat="family in $ctrl.families" data-value="{{family.id}}">
                         {{family.name}}
                     </div>
                 </div>
@@ -34,12 +34,12 @@
         </div>
         <div class="five wide field">
             <label>School:</label>
-            <div class="ui search school selection dropdown pi-dropdown" ng-model="selectedSchoolId" ng-class="{'disabled': !selectedFamilyId}" ng-change="setSchool">
+            <div class="ui search school selection dropdown pi-dropdown" pi-dropdown ng-model="$ctrl.selectedSchoolId" ng-class="{'disabled': !$ctrl.selectedFamilyId}" ng-change="$ctrl.setSchool">
                 <input type="hidden" name="school">
                 <i class="dropdown icon"></i>
                 <div class="default text">Select School</div>
                 <div class="menu">
-                    <div class="item" ng-class="{'disabled': !canChooseSchool(school.id)}" ng-repeat="school in schools" data-value="{{school.id}}">
+                    <div class="item" ng-class="{'disabled': !$ctrl.canChooseSchool(school.id)}" ng-repeat="school in $ctrl.schools" data-value="{{school.id}}">
                         {{school.name}}
                     </div>
                 </div>
@@ -48,14 +48,14 @@
         <div class="four wide field">
             <label>Buy Different School</label>
             <div class="ui checkbox">
-                <input type="checkbox" ng-model="differentSchool" ng-change="onDifferentSchoolChange()">
+                <input type="checkbox" ng-model="$ctrl.differentSchool" ng-change="$ctrl.onDifferentSchoolChange()">
                 <label></label>
             </div>
         </div>
     </div>
-    <div class="field" ng-if="hasSchoolChoices()">
+    <div class="field" ng-if="$ctrl.hasSchoolChoices()">
         <h4 class="ui header">School Choices</h4>
-        <div ng-repeat="choice in getSchoolChoices()">
+        <div ng-repeat="choice in $ctrl.getSchoolChoices()">
             <pi-skill-choice school-choice="choice.choice" school-decision="choice.decision" index="$index"></pi-skill-choice>
         </div>
     </div>
@@ -65,9 +65,9 @@
     </div>
     <div class="field">
         <div class="ui buttons">
-            <button class="ui button primary" type="submit" id="submit-module" name="submit-module" ng-click="save()">Save</button>
+            <button class="ui button primary" type="submit" id="submit-module" name="submit-module" ng-click="$ctrl.save()">Save</button>
             <div class="or"></div>
-            <button class="ui button" ng-click="cancel()">Cancel</button>
+            <button class="ui button" ng-click="$ctrl.cancel()">Cancel</button>
         </div>
     </div>
 </form>

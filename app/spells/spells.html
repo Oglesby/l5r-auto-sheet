@@ -1,7 +1,7 @@
 <div ng-if="model.spells.length > 0">
     <h2 class="ui header">Spells</h2>
     <div class="ui segment list">
-        <div class="item" ng-repeat="spell in model.spells">
+        <div class="item" ng-repeat="spell in $ctrl.model.spells">
             {{spell.type.name}}
             <br/>
             {{spell.type.description}}

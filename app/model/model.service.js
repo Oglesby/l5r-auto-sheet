@@ -1,8 +1,18 @@
 'use strict';
 
-angular.module('pocketIkoma').service('modelService', function(_, logService, characterService, ringService) {
+import _ from 'lodash';
 
-    // TODO: This service should be pushing out the model updates.
+class ModelService {
+    constructor(logService, characterService, ringService) {
+        this.ringService = ringService;
+        this.characterService = characterService;
+        this.logService = logService;
+
+        this.loadedLogModels = [];
+        this.modelMode = 'viewing';
+        this.currentModel = this.createBaseModel();
+        this.currentSpendingLog = null;
+    }
 
     /**
      * Creates a new model, optionally replacing all the properties in the given model with the base model.
@@ -11,14 +21,14 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
      * @param modelObj The model to replace values for (optional).
      * @returns {{rings: {earth, water, fire, air, void}, characterInfo: {glory: number, honor: number, status: number, taint: number, infamy: number, shadowRank: number}, secondaryStats: {bonusTN: number, bonusInitiative: number, bonusMovement: number, bonusWoundsPerRank: number, woundPenalties: *[]}, skills: Array, logViews: Array}}
      */
-    function createBaseModel(modelObj) {
-        var newModel = {
+    createBaseModel(modelObj) {
+        let newModel = {
             rings: {
-                earth: ringService.createEarthRing(),
-                water: ringService.createWaterRing(),
-                fire: ringService.createFireRing(),
-                air: ringService.createAirRing(),
-                void: ringService.createVoidRing()
+                earth: this.ringService.createEarthRing(),
+                water: this.ringService.createWaterRing(),
+                fire: this.ringService.createFireRing(),
+                air: this.ringService.createAirRing(),
+                void: this.ringService.createVoidRing()
             },
             characterInfo: {
                 glory: 10,
@@ -42,7 +52,7 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
         if (modelObj) {
             /* In order for the 2-way mapping to hold to all the directives that accept the model, we need to keep the
              same actual object. An alternative is switching to listeners. */
-            for (var member in modelObj) {
+            for (let member in modelObj) {
                 if (modelObj.hasOwnProperty(member)) {
                     delete modelObj[member];
                 }
@@ -53,107 +63,89 @@ angular.module('pocketIkoma').service('modelService', function(_, logService, ch
         }
     }
 
-    var loadedLogModels = [];
-    var modelMode = 'viewing';
-    var currentModel = createBaseModel();
-    var currentSpendingLog = null;
+    loadCharacter(characterId) {
+        return this.characterService.loadCharacter(characterId).then((logModels) => {
+            this.currentModel = this.createBaseModel();
+            this.loadedLogModels = logModels.data;
 
-    var loadCharacter = function(characterId) {
-        return characterService.loadCharacter(characterId).then(function (logModels) {
-            currentModel = createBaseModel();
-            loadedLogModels = logModels.data;
-
-            return logService.processLogsIntoModel(currentModel, loadedLogModels);
+            return this.logService.processLogsIntoModel(this.currentModel, this.loadedLogModels);
         });
     };
 
-    var resetCurrentModel = function() {
-        currentModel = createBaseModel();
-        return currentModel;
+    resetCurrentModel() {
+        this.currentModel = this.createBaseModel();
+        return this.currentModel;
     };
 
-    var getCurrentModel = function() {
-        return currentModel;
+    getCurrentModel() {
+        return this.currentModel;
     };
 
-    var addLogToModel = function(logModel) {
-        loadedLogModels.push(logModel);
+    addLogToModel(logModel) {
+        this.loadedLogModels.push(logModel);
         // TODO: persist the logModel
-        return logService.processLogsIntoModel(currentModel, [logModel]);
+        return this.logService.processLogsIntoModel(this.currentModel, [logModel]);
     };
 
-    var updateLogInModel = function(logModel) {
-        var index = _.findIndex(loadedLogModels, {id: logModel.id});
+    updateLogInModel(logModel) {
+        const index = _.findIndex(this.loadedLogModels, {id: logModel.id});
         if (index > -1) {
-            loadedLogModels[index] = logModel;
+            this.loadedLogModels[index] = logModel;
         } else {
             // TODO: error in some way
         }
 
         // TODO: Persist the update.
-        createBaseModel(currentModel);
-        return logService.processLogsIntoModel(currentModel, loadedLogModels);
+        this.createBaseModel(this.currentModel);
+        return this.logService.processLogsIntoModel(this.currentModel, this.loadedLogModels);
     };
 
-    var addOrUpdateLogInModel = function(logModel) {
-        var index = _.findIndex(loadedLogModels, {id: logModel.id});
+    addOrUpdateLogInModel(logModel) {
+        const index = _.findIndex(this.loadedLogModels, {id: logModel.id});
         if (index === -1) {
-            return addLogToModel(logModel);
+            return this.addLogToModel(logModel);
         } else {
-            return updateLogInModel(logModel);
+            return this.updateLogInModel(logModel);
         }
     };
 
-    var removeLogFromModel = function(logId) {
-        var index = _.findIndex(loadedLogModels, {id: logId});
+    removeLogFromModel(logId) {
+        const index = _.findIndex(this.loadedLogModels, {id: logId});
         if (index > -1) {
-            loadedLogModels.splice(index, 1);
+            this.loadedLogModels.splice(index, 1);
         } else {
             // TODO: log a warning
         }
 
         // TODO: persist the removal
-        createBaseModel(currentModel);
-        return logService.processLogsIntoModel(currentModel, loadedLogModels);
+        this.createBaseModel(this.currentModel);
+        return this.logService.processLogsIntoModel(this.currentModel, this.loadedLogModels);
     };
 
-    var isMandatoryLogModel = function(logModel) {
+    isMandatoryLogModel(logModel) {
         return logModel.type === 'CREATION' || logModel.type === 'CHARACTER_INFO' ;
     };
 
-    var isInSpendingMode = function() {
-        return modelMode === 'spending';
+    isInSpendingMode() {
+        return this.modelMode === 'spending';
     };
 
-    var startSpendingMode = function(spendingLog) {
-        modelMode = 'spending';
+    startSpendingMode(spendingLog) {
+        this.modelMode = 'spending';
         if (spendingLog) {
-            currentSpendingLog = spendingLog;
+            this.currentSpendingLog = spendingLog;
         } else {
-            currentSpendingLog = logService.makeXpExpenditureLogModel();
+            this.currentSpendingLog = this.logService.makeXpExpenditureLogModel();
         }
     };
 
-    var stopSpendingMode = function() {
-        modelMode = 'viewing';
+    stopSpendingMode() {
+        this.modelMode = 'viewing';
     };
 
-    var addSpendingResult = function(result) {
-        currentSpendingLog.expenditures.push(result);
+    addSpendingResult(result) {
+        this.currentSpendingLog.expenditures.push(result);
     };
+}
 
-    return {
-        loadCharacter: loadCharacter,
-        getCurrentModel: getCurrentModel,
-        resetCurrentModel: resetCurrentModel,
-        addLogToModel: addLogToModel,
-        removeLogFromModel: removeLogFromModel,
-        updateLogInModel: updateLogInModel,
-        addOrUpdateLogInModel: addOrUpdateLogInModel,
-        isMandatoryLogModel: isMandatoryLogModel,
-        isInSpendingMode: isInSpendingMode,
-        startSpendingMode: startSpendingMode,
-        stopSpendingMode: stopSpendingMode,
-        addSpendingResult: addSpendingResult
-    };
-});
+export default ModelService;

@@ -1,7 +1,7 @@
 <div ng-if="model.kiho.length > 0">
     <h2 class="ui header">Kiho</h2>
     <div class="ui segment list">
-        <div class="item" ng-repeat="kiho in model.kiho">
+        <div class="item" ng-repeat="kiho in $ctrl.model.kiho">
             {{kiho.type.name}}
             <br/>
             {{kiho.type.description}}

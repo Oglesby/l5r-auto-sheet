@@ -1,23 +1,23 @@
 <div class="ui grid">
-    <pi-basic-info class="sixteen wide column" model="model"></pi-basic-info>
+    <pi-basic-info class="sixteen wide column" model="$ctrl.model"></pi-basic-info>
     <div class="sixteen wide column">
         <h2 class="header">Rings</h2>
         <div class="ui segment equal width grid">
-            <pi-ring-block class="ring-block three wide column" ring="model.rings.earth"></pi-ring-block>
-            <pi-ring-block class="ring-block three wide column" ring="model.rings.water"></pi-ring-block>
-            <pi-ring-block class="ring-block three wide column" ring="model.rings.fire"></pi-ring-block>
-            <pi-ring-block class="ring-block three wide column" ring="model.rings.air"></pi-ring-block>
-            <pi-ring-block class="ring-block three wide column" ring="model.rings.void"></pi-ring-block>
+            <pi-ring-block class="ring-block three wide column" ring="$ctrl.model.rings.earth"></pi-ring-block>
+            <pi-ring-block class="ring-block three wide column" ring="$ctrl.model.rings.water"></pi-ring-block>
+            <pi-ring-block class="ring-block three wide column" ring="$ctrl.model.rings.fire"></pi-ring-block>
+            <pi-ring-block class="ring-block three wide column" ring="$ctrl.model.rings.air"></pi-ring-block>
+            <pi-ring-block class="ring-block three wide column" ring="$ctrl.model.rings.void"></pi-ring-block>
         </div>
     </div>
-    <pi-secondary-stats class="sixteen wide column" model="model"></pi-secondary-stats>
-    <pi-skills class="sixteen wide column" model="model"></pi-skills>
-    <pi-advantages class="sixteen wide column" model="model"></pi-advantages>
-    <pi-disadvantages class="sixteen wide column" model="model"></pi-disadvantages>
-    <pi-katas model="model"></pi-katas>
-    <pi-kiho model="model"></pi-kiho>
-    <pi-spells model="model"></pi-spells>
-    <pi-description model="model"></pi-description>
-    <pi-log class="sixteen wide column" model="model"></pi-log>
-    <div class="sixteen wide column" ui-view></div>
+    <pi-secondary-stats class="sixteen wide column" model="$ctrl.model"></pi-secondary-stats>
+    <pi-skills class="sixteen wide column" model="$ctrl.model"></pi-skills>
+    <pi-advantages class="sixteen wide column" model="$ctrl.model"></pi-advantages>
+    <pi-disadvantages class="sixteen wide column" model="$ctrl.model"></pi-disadvantages>
+    <pi-katas model="$ctrl.model"></pi-katas>
+    <pi-kiho model="$ctrl.model"></pi-kiho>
+    <pi-spells model="$ctrl.model"></pi-spells>
+    <pi-description model="$ctrl.model"></pi-description>
+    <pi-log class="sixteen wide column" model="$ctrl.model"></pi-log>
+    <ui-view class="sixteen wide column"></ui-view>
 </div>

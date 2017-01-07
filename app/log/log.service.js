@@ -1,24 +1,41 @@
 'use strict';
 
-angular.module('pocketIkoma').service('logService', function(_, advantageService, disadvantageService, ringService,
-    familyService, clanService, spellService, schoolService, skillService, kataService, kihoService, insightService,
-    secondaryStatsService) {
+import _ from 'lodash';
 
-    function ensureLogModelHasId(logModel) {
+class LogService {
+
+    constructor(advantageService, disadvantageService, ringService,
+                familyService, clanService, spellService, schoolService, skillService, kataService, kihoService, insightService,
+                secondaryStatsService) {
+        this.advantageService = advantageService;
+        this.disadvantageService = disadvantageService;
+        this.ringService = ringService;
+        this.familyService = familyService;
+        this.clanService = clanService;
+        this.spellService = spellService;
+        this.schoolService = schoolService;
+        this.skillService = skillService;
+        this.kataService = kataService;
+        this.kihoService = kihoService;
+        this.insightService = insightService;
+        this.secondaryStatsService = secondaryStatsService;
+    }
+
+    ensureLogModelHasId(logModel) {
         if (logModel.id) {
             return;
         }
 
         /*jslint bitwise: true */
         // TODO: Replace this with a better UUID generation than one ripped from SO.
-        logModel.id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
-            var r = Math.random()*16 | 0, v = c === 'x' ? r : (r&0x3|0x8);
+        logModel.id = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
+            const r = Math.random()*16 | 0, v = c === 'x' ? r : (r&0x3|0x8);
             return v.toString(16);
         });
         /*jslint bitwise: false */
     }
 
-    function createLogView(title, logModel, recordItems) {
+    createLogView(title, logModel, recordItems) {
         return {
             logModel: logModel,
             title: title,
@@ -30,8 +47,8 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         };
     }
 
-    function makeCreationLogModel(initialXp, clanId, familyId, school, differentSchool) {
-        var creationLogModel = {
+    makeCreationLogModel(initialXp, clanId, familyId, school, differentSchool) {
+        const creationLogModel = {
             type: 'CREATION',
             initialXp: initialXp,
             clan: clanId ? clanId.toLowerCase() : 'none',
@@ -48,24 +65,24 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             });
         }
 
-        ensureLogModelHasId(creationLogModel);
+        this.ensureLogModelHasId(creationLogModel);
         return creationLogModel;
     }
 
-    function makeCharacterDetailsLogModel(name, description) {
-        var characterDetailLogModel = {
+    makeCharacterDetailsLogModel(name, description) {
+        const characterDetailLogModel = {
             type: 'CHARACTER_INFO',
             name: name,
             description: description,
             creationTimestamp: null
         };
 
-        ensureLogModelHasId(characterDetailLogModel);
+        this.ensureLogModelHasId(characterDetailLogModel);
         return characterDetailLogModel;
     }
 
-    function makeModuleCompletionLogModel(moduleName, moduleNumber, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
-        var moduleCompletionLogModel = {
+    makeModuleCompletionLogModel(moduleName, moduleNumber, xp, honorChange, gloryChange, statusChange, infamyChange, taintChange, shadowChange) {
+        const moduleCompletionLogModel = {
             type: 'MODULE_COMPLETION',
             name: moduleName,
             number: moduleNumber,
@@ -80,58 +97,59 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             gains: []
         };
 
-        ensureLogModelHasId(moduleCompletionLogModel);
+        this.ensureLogModelHasId(moduleCompletionLogModel);
         return moduleCompletionLogModel;
     }
 
-    function makeXpExpenditureLogModel(name) {
-        var xpExpenditureLogModel = {
+    makeXpExpenditureLogModel(name) {
+        const xpExpenditureLogModel = {
             type: 'XP_EXPENDITURE',
             name: name,
             expenditures: []
         };
 
-        ensureLogModelHasId(xpExpenditureLogModel);
+        this.ensureLogModelHasId(xpExpenditureLogModel);
         return xpExpenditureLogModel;
     }
 
-    function processIndividualExpenditure(expenditure, model) {
-        var displayText = '';
+    processIndividualExpenditure(expenditure, model) {
+        let displayText = '';
+        let result;
         switch (expenditure.type) {
             case 'TRAIT':
-                var result = ringService.findRingForTrait(expenditure.id, model).purchase(model, expenditure.id);
+                result = this.ringService.findRingForTrait(expenditure.id, model).purchase(model, expenditure.id);
                 displayText = 'Spent ' + result.cost + ' XP to raise trait ' + result.name + ' to ' + result.newValue;
                 break;
             case 'SKILL':
-                result = skillService[expenditure.id].purchase(model, expenditure.options, expenditure.cost);
+                result = this.skillService[expenditure.id].purchase(model, expenditure.options, expenditure.cost);
                 displayText = 'Spent ' + result.cost + ' XP to raise skill ' + result.name + ' to ' + result.newValue;
                 break;
             case 'EMPHASIS':
-                result = skillService[expenditure.skillId].purchaseEmphasis(model, expenditure.emphasis, expenditure.options);
+                result = this.skillService[expenditure.skillId].purchaseEmphasis(model, expenditure.emphasis, expenditure.options);
                 displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name + ' emphasis for the ' + result.skillName + ' skill';
                 break;
             case 'ADVANTAGE':
-                result = advantageService[expenditure.id].purchase(model, expenditure.options);
+                result = this.advantageService[expenditure.id].purchase(model, expenditure.options);
                 displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
                 break;
             case 'DISADVANTAGE':
-                result = disadvantageService[expenditure.id].purchase(model, expenditure.options);
+                result = this.disadvantageService[expenditure.id].purchase(model, expenditure.options);
                 displayText ='Gained ' + result.cost + ' XP from ' + result.name;
                 break;
             case 'KATA':
-                result = kataService[expenditure.id].purchase(model, expenditure.options);
+                result = this.kataService[expenditure.id].purchase(model, expenditure.options);
                 displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
                 break;
             case 'KIHO':
-                result = kihoService[expenditure.id].purchase(model, expenditure.options);
+                result = this.kihoService[expenditure.id].purchase(model, expenditure.options);
                 displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
                 break;
             case 'SPELL':
-                result = spellService[expenditure.id].purchase(model, expenditure.options);
+                result = this.spellService[expenditure.id].purchase(model, expenditure.options);
                 displayText = 'Spent ' + result.cost + ' XP to gain ' + result.name;
         }
 
-        var invalidReasons = [];
+        let invalidReasons = [];
         invalidReasons = invalidReasons.concat(result.invalidReasons);
         if (expenditure.comment) {
             displayText += ' (' + expenditure.comment + ')';
@@ -139,12 +157,12 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         return { displayText: displayText, invalidReasons: invalidReasons };
     }
 
-    function processCreationLogModel(logModel, model) {
-        var clan = clanService[logModel.clan];
-        var family = familyService[logModel.family];
-        var school = schoolService[logModel.school.id];
+    processCreationLogModel(logModel, model) {
+        const clan = this.clanService[logModel.clan];
+        const family = this.familyService[logModel.family];
+        const school = this.schoolService[logModel.school.id];
 
-        var recordItems = [
+        let recordItems = [
             {
                 displayText: 'Set initial xp to ' + logModel.initialXp
             }
@@ -160,32 +178,32 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             recordItems = recordItems.concat(school.visit(model, logModel.school.options));
         }
 
-        var n = 0;
-        _.forEach(logModel.mandatoryExpenditures, function (expenditure) {
+        let n = 0;
+        _.forEach(logModel.mandatoryExpenditures, (expenditure) => {
             recordItems.push({
                 id: n++,
-                displayText: processIndividualExpenditure(expenditure, model)
+                displayText: this.processIndividualExpenditure(expenditure, model)
             });
         });
 
-        return createLogView('Character Building - School and Family', logModel, recordItems);
+        return this.createLogView('Character Building - School and Family', logModel, recordItems);
     }
 
-    function processCharacterInfoLogModel(logModel, model) {
+    processCharacterInfoLogModel(logModel, model) {
         model.characterInfo.name = logModel.name;
         model.characterInfo.description = logModel.description;
 
-        return createLogView('Character Building - Basic Information', logModel, [{
+        return this.createLogView('Character Building - Basic Information', logModel, [{
             displayText: 'Set name to ' + logModel.name
         }]);
     }
 
-    function processXpExpenditureLogModel(logModel, model) {
-        var recordItems = [];
-        var invalidReasons = [];
-        var n = 0;
-        _.forEach(logModel.expenditures, function (expenditure) {
-            var results = processIndividualExpenditure(expenditure, model);
+    processXpExpenditureLogModel(logModel, model) {
+        const recordItems = [];
+        let invalidReasons = [];
+        let n = 0;
+        _.forEach(logModel.expenditures, (expenditure) => {
+            const results = this.processIndividualExpenditure(expenditure, model);
 
             recordItems.push({
                 id: n++,
@@ -195,15 +213,15 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             invalidReasons = invalidReasons.concat(results.invalidReasons);
         });
 
-        var log = createLogView(logModel.name, logModel, recordItems);
+        const log = this.createLogView(logModel.name, logModel, recordItems);
         if (!log.isHouseruled) {
             log.invalidReasons = invalidReasons;
         }
         return log;
     }
 
-    function handleCharInfoType(type, logModel, recordItems, model, displayMult) {
-        var reward = logModel[type + 'Reward'] || 0;
+    handleCharInfoType(type, logModel, recordItems, model, displayMult) {
+        const reward = logModel[type + 'Reward'] || 0;
         model.characterInfo[type] += reward;
 
         if (type === 'xp') {
@@ -217,54 +235,54 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
         }
     }
 
-    function processModuleCompletionLogModel(logModel, model) {
-        var recordItems = [];
-        var n = 0;
+    processModuleCompletionLogModel(logModel, model) {
+        const recordItems = [];
+        let n = 0;
 
-        handleCharInfoType('xp', logModel, recordItems, model, 1);
-        handleCharInfoType('status', logModel, recordItems, model, 0.1);
-        handleCharInfoType('glory', logModel, recordItems, model, 0.1);
-        handleCharInfoType('honor', logModel, recordItems, model, 0.1);
-        handleCharInfoType('taint', logModel, recordItems, model, 0.1);
-        handleCharInfoType('infamy', logModel, recordItems, model, 0.1);
+        this.handleCharInfoType('xp', logModel, recordItems, model, 1);
+        this.handleCharInfoType('status', logModel, recordItems, model, 0.1);
+        this.handleCharInfoType('glory', logModel, recordItems, model, 0.1);
+        this.handleCharInfoType('honor', logModel, recordItems, model, 0.1);
+        this.handleCharInfoType('taint', logModel, recordItems, model, 0.1);
+        this.handleCharInfoType('infamy', logModel, recordItems, model, 0.1);
 
-        _.forEach(logModel.gains, function (expenditure) {
-            var displayText = '';
+        _.forEach(logModel.gains, (expenditure) => {
+            let displayText = '';
             switch (expenditure.type) {
                 case 'TRAIT':
-                    var trait = ringService.findRingForTrait(expenditure.id, model).increaseTrait(model, expenditure.id);
+                    const trait = this.ringService.findRingForTrait(expenditure.id, model).increaseTrait(model, expenditure.id);
                     displayText = 'Spent 0 XP to raise trait ' + trait.name + ' to ' + trait.value;
                     break;
                 case 'SKILL':
-                    var skill = skillService[expenditure.id].increase(model, expenditure.options);
+                    let skill = this.skillService[expenditure.id].increase(model, expenditure.options);
                     displayText = 'Spent 0 XP to raise skill ' + skill.type.name + ' to ' + skill.rank;
                     break;
                 case 'EMPHASIS':
-                    skill = skillService[expenditure.skillId].addEmphasis(model, expenditure.emphasis, expenditure.options);
+                    skill = this.skillService[expenditure.skillId].addEmphasis(model, expenditure.emphasis, expenditure.options);
                     displayText = 'Spent 0 XP to gain ' + expenditure.emphasis + ' emphasis for the ' + skill.name + ' skill';
                     break;
                 case 'ADVANTAGE':
-                    var options = expenditure.options;
-                    var advantage = advantageService[expenditure.id].gain(model, options);
+                    let options = expenditure.options;
+                    const advantage = this.advantageService[expenditure.id].gain(model, options);
                     displayText = 'Spent 0 XP to gain ' + advantage.type.name;
                     displayText = (options && options.choosing) ? displayText + ': ' + options.choosing : displayText;
                     break;
                 case 'DISADVANTAGE':
                     options = expenditure.options;
-                    var disadvantage = disadvantageService[expenditure.id].gain(model, options);
+                    const disadvantage = this.disadvantageService[expenditure.id].gain(model, options);
                     displayText ='Gained 0 XP from ' + disadvantage.type.name;
                     displayText = (options && options.choosing) ? displayText + ': ' + options.choosing : displayText;
                     break;
                 case 'KATA':
-                    var kata = kataService[expenditure.id].purchase(model, expenditure.options);
+                    const kata = this.kataService[expenditure.id].purchase(model, expenditure.options);
                     displayText = 'Spent 0 XP to gain ' + kata.name;
                     break;
                 case 'KIHO':
-                    var kiho = kihoService[expenditure.id].purchase(model, expenditure.options);
+                    const kiho = this.kihoService[expenditure.id].purchase(model, expenditure.options);
                     displayText = 'Spent 0 XP to gain ' + kiho.name;
                     break;
                 case 'SPELL':
-                    var spell = spellService[expenditure.id].purchase(model, expenditure.options);
+                    const spell = this.spellService[expenditure.id].purchase(model, expenditure.options);
                     displayText = 'Spent 0 XP to gain ' + spell.name;
             }
 
@@ -277,39 +295,33 @@ angular.module('pocketIkoma').service('logService', function(_, advantageService
             });
         });
 
-        return createLogView('Completed Module: ' + logModel.name + (logModel.number ? ' (' + logModel.number + ')' : ''), logModel, recordItems);
+        return this.createLogView('Completed Module: ' + logModel.name + (logModel.number ? ' (' + logModel.number + ')' : ''), logModel, recordItems);
     }
 
-    var processLogsIntoModel = function(model, logModels) {
-        var logViews = [];
-        _.forEach(logModels, function (logModel) {
-            ensureLogModelHasId(logModel);
+    processLogsIntoModel(model, logModels) {
+        const logViews = [];
+        _.forEach(logModels, (logModel) => {
+            this.ensureLogModelHasId(logModel);
 
             switch (logModel.type) {
                 case 'CREATION':
-                    logViews.push(processCreationLogModel(logModel, model));
+                    logViews.push(this.processCreationLogModel(logModel, model));
                     break;
                 case 'CHARACTER_INFO':
-                    logViews.push(processCharacterInfoLogModel(logModel, model));
+                    logViews.push(this.processCharacterInfoLogModel(logModel, model));
                     break;
                 case 'XP_EXPENDITURE':
-                    logViews.push(processXpExpenditureLogModel(logModel, model));
+                    logViews.push(this.processXpExpenditureLogModel(logModel, model));
                     break;
                 case 'MODULE_COMPLETION':
-                    logViews.push(processModuleCompletionLogModel(logModel, model));
+                    logViews.push(this.processModuleCompletionLogModel(logModel, model));
             }
         });
 
-        insightService.calculate(model);
-        secondaryStatsService.calculate(model);
+        this.insightService.calculate(model);
+        this.secondaryStatsService.calculate(model);
         model.logViews = model.logViews.concat(logViews);
     };
+}
 
-    return {
-        makeCreationLogModel: makeCreationLogModel,
-        makeCharacterDetailsLogModel: makeCharacterDetailsLogModel,
-        makeModuleCompletionLogModel: makeModuleCompletionLogModel,
-        makeXpExpenditureLogModel: makeXpExpenditureLogModel,
-        processLogsIntoModel: processLogsIntoModel
-    };
-});
+export default LogService;

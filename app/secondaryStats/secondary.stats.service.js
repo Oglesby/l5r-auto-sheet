@@ -1,18 +1,23 @@
 'use strict';
 
-angular.module('pocketIkoma').service('secondaryStatsService', function(_) {
-    var calculate = function (model) {
-        var secondaryStats = model.secondaryStats;
+import _ from 'lodash';
+
+class SecondaryStatsService {
+    constructor() {
+    }
+
+    calculate(model) {
+        const secondaryStats = model.secondaryStats;
 
         // Calculate TN
-        var reflexes = model.rings.air.physicalTrait.value;
+        const reflexes = model.rings.air.physicalTrait.value;
         secondaryStats.tn = reflexes * 5 + 5 + secondaryStats.bonusTN;
 
         // Calculate Initiative
-        var totalRank = _.reduce(model.schools, function (accum, item) {
-            accum += item.rank;
-            return accum;
-        }, 0) + secondaryStats.bonusInitiative;
+        const totalRank = _.reduce(model.schools, function (accum, item) {
+                accum += item.rank;
+                return accum;
+            }, 0) + secondaryStats.bonusInitiative;
         secondaryStats.initiative = (totalRank + reflexes) + 'k' + reflexes;
 
         // Calculate Movement
@@ -20,9 +25,9 @@ angular.module('pocketIkoma').service('secondaryStatsService', function(_) {
 
         // Calculate Wound Table
         secondaryStats.woundRanks = [];
-        var firstRankWounds = 5 * model.rings.earth.getRank() + secondaryStats.bonusWoundsPerRank;
-        var rankWounds = 2 * model.rings.earth.getRank() + secondaryStats.bonusWoundsPerRank;
-        var penalties = secondaryStats.woundPenalties;
+        const firstRankWounds = 5 * model.rings.earth.getRank() + secondaryStats.bonusWoundsPerRank;
+        const rankWounds = 2 * model.rings.earth.getRank() + secondaryStats.bonusWoundsPerRank;
+        const penalties = secondaryStats.woundPenalties;
         secondaryStats.woundRanks.push({name: 'Healthy', penalty: penalties[0], wounds: firstRankWounds, totalWounds: firstRankWounds});
         secondaryStats.woundRanks.push({name: 'Nicked', penalty: penalties[1], wounds: rankWounds, totalWounds: secondaryStats.woundRanks[0].totalWounds + rankWounds});
         secondaryStats.woundRanks.push({name: 'Grazed', penalty: penalties[2], wounds: rankWounds, totalWounds: secondaryStats.woundRanks[1].totalWounds + rankWounds});
@@ -32,8 +37,6 @@ angular.module('pocketIkoma').service('secondaryStatsService', function(_) {
         secondaryStats.woundRanks.push({name: 'Down', penalty: penalties[6], wounds: rankWounds, totalWounds: secondaryStats.woundRanks[5].totalWounds + rankWounds});
         secondaryStats.woundRanks.push({name: 'Out', penalty: penalties[7], wounds: rankWounds, totalWounds: secondaryStats.woundRanks[6].totalWounds + rankWounds});
     };
+}
 
-    return {
-        calculate: calculate
-    };
-});
+export default SecondaryStatsService;

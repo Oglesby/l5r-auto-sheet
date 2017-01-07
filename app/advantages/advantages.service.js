@@ -1,17 +1,20 @@
 'use strict';
 
-angular.module('pocketIkoma').service('advantageService', function(_) {
-    var Advantage = function (id, name, description, xpFetcher) {
+import _ from 'lodash';
+
+class Advantage {
+    constructor(id, name, description, xpFetcher) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.xpFetcher = xpFetcher;
     };
-    Advantage.prototype.gain = function (model, options) {
+
+    gain(model, options) {
         options = options || {};
         model.advantages = model.advantages || [];
 
-        var advantage = {
+        let advantage = {
             type: this
         };
 
@@ -26,73 +29,115 @@ angular.module('pocketIkoma').service('advantageService', function(_) {
         model.advantages.push(advantage);
         return advantage;
     };
-    Advantage.prototype.purchase = function (model, options) {
-        var advantage = this.gain(model, options);
-        var xpCost = this.xpFetcher(model, options);
+
+    purchase(model, options) {
+        let advantage = this.gain(model, options);
+        let xpCost = this.xpFetcher(model, options);
 
         model.characterInfo.xp = model.characterInfo.xp - xpCost;
-        var description = advantage.type.name;
+        let description = advantage.type.name;
         if (options && options.choosing) {
             description += ': ' + options.choosing;
         }
 
-        var invalidReasons = [];
+        let invalidReasons = [];
         if (xpCost > model.characterInfo.xp) {
             invalidReasons.push('Insufficient XP to purchase ' + description + ' at this point.');
         }
 
         return {cost: xpCost, name: description, invalidReasons: invalidReasons};
     };
-    return {
+}
+
+class AdvantageService {
+    constructor() {
         // TODO: add a function that gets excuted on purchase
-        sevenFortunesBlessing: new Advantage('sevenFortunesBlessing', 'Seven Fortune\'s Blessing', '',
-            function(model, options) {
+        this.sevenFortunesBlessing = new Advantage('sevenFortunesBlessing', 'Seven Fortune\'s Blessing', '',
+            (model, options) => {
                 if (options.choosing === 'Bishamon\'s Blessing') {
                     return (model.characterInfo.clan === 'Lion' || model.characterInfo.clan === 'Crab') ? 4 : 5;
                 } else {
                     return 4;
                 }
-            }),
-        crabHands: new Advantage('crabHands', 'Crab Hands', '',
-            function(model, options) {
-                var isBushi = _.any(model.schools, function (school) {
+            });
+
+        this.crabHands = new Advantage('crabHands', 'Crab Hands', '',
+            (model, options) => {
+                const isBushi = _(model.schools).some((school) => {
                     return school.isBushi;
                 });
 
                 return (isBushi || model.characterInfo.clan === 'Crab') ? 2 : 3;
-            }),
-        greatPotential: new Advantage('greatPotential', 'Great Potential', '', function () { return 5; }),
-        large: new Advantage('large', 'Large', '',function(model, options) {
+            });
+
+        this.greatPotential = new Advantage('greatPotential', 'Great Potential', '', () => {
+            return 5;
+        });
+
+        this.large = new Advantage('large', 'Large', '', (model, options) => {
             return model.characterInfo.clan === 'Crab' ? 3 : 4;
-        }),
-        strengthOfEarth: new Advantage('strengthOfEarth', 'Strength of Earth', '', function(model, options) {
-            var isBushi = _.any(model.schools, function (school) {
+        });
+
+        this.strengthOfEarth = new Advantage('strengthOfEarth', 'Strength of Earth', '', (model, options) => {
+            const isBushi = _(model.schools).some((school) => {
                 return school.isBushi;
             });
 
             return isBushi ? 2 : 3;
-        }),
-        favor: new Advantage('favor', 'Favor', '', function(model, options) { return 0; }),
-        ally: new Advantage('ally', 'Ally', '', function(model, options) { return 0; }),
-        tactician: new Advantage('tactician', 'Tactician', '', function(model, options) { return 3; }),
-        elementalBlessing: new Advantage('elementalBlessing', 'Elemental Blessing', '', function(model, options) {
+        });
+
+        this.favor = new Advantage('favor', 'Favor', '', (model, options) => {
+            return 0;
+        });
+
+        this.ally = new Advantage('ally', 'Ally', '', (model, options) => {
+            return 0;
+        });
+
+        this.tactician = new Advantage('tactician', 'Tactician', '', (model, options) => {
+            return 3;
+        });
+
+        this.elementalBlessing = new Advantage('elementalBlessing', 'Elemental Blessing', '', (model, options) => {
             return (model.characterInfo.clan === 'Phoenix') ? 3 : 4;
-        }),
-        enlightened: new Advantage('enlightened', 'Enlightened', '', function(model, options) {
-            var isMonk = _.any(model.schools, function (school) {
+        });
+
+        this.enlightened = new Advantage('enlightened', 'Enlightened', '', (model, options) => {
+            const isMonk = _(model.schools).some((school) => {
                 return school.isMonk;
             });
 
             return (isMonk || model.characterInfo.clan === 'Dragon') ? 5 : 6;
-        }),
-        luck: new Advantage('luck', 'Luck', '', function(model, options) {
+        });
+
+        this.luck = new Advantage('luck', 'Luck', '', (model, options) => {
             return options.rank * 3;
-        }),
-        prodigy: new Advantage('prodigy', 'Prodigy', '', function(model, options) { return 12; }),
-        voice: new Advantage('voice', 'Voice', '', function(model, options) { return 3; }),
-        friendOfTheBrotherhood: new Advantage('friendOfTheBrotherhood', 'Friend of the Brotherhood', '', function(model, options) { return 5; }),
-        differentSchool: new Advantage('differentSchool', 'Different School', '', function(model, options) { return 5; }),
-        handsOfStone: new Advantage('handsOfStone', 'Hands of Stone', '', function(model, options) { return 5; }),
-        friendOfTheElements: new Advantage('friendOfTheElements', 'Friend of the Elements', '', function(model, options) { return 3; })
-    };
-});
+        });
+
+        this.prodigy = new Advantage('prodigy', 'Prodigy', '', (model, options) => {
+            return 12;
+        });
+
+        this.voice = new Advantage('voice', 'Voice', '', (model, options) => {
+            return 3;
+        });
+
+        this.friendOfTheBrotherhood = new Advantage('friendOfTheBrotherhood', 'Friend of the Brotherhood', '', (model, options) => {
+            return 5;
+        });
+
+        this.differentSchool = new Advantage('differentSchool', 'Different School', '', (model, options) => {
+            return 5;
+        });
+
+        this.handsOfStone = new Advantage('handsOfStone', 'Hands of Stone', '', (model, options) => {
+            return 5;
+        });
+
+        this.friendOfTheElements = new Advantage('friendOfTheElements', 'Friend of the Elements', '', (model, options) => {
+            return 3;
+        });
+    }
+}
+
+export default AdvantageService;

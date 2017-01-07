@@ -1,17 +1,17 @@
 <div class="ui segment">
     <h2 class="ui header">Welcome to Character Create Zone</h2>
-    <pi-add-edit-creation ng-if="inCreation()" on-save="onSaveCreation" on-cancel="onCancel"></pi-add-edit-creation>
-    <pi-view-creation ng-if="!inCreation()"></pi-view-creation>
+    <pi-add-edit-creation ng-if="$ctrl.inCreation()" on-save="$ctrl.onSaveCreation" on-cancel="$ctrl.onCancel"></pi-add-edit-creation>
+    <pi-view-creation ng-if="!$ctrl.inCreation()"></pi-view-creation>
 </div>
-<div class="ui segment" ng-if="!inCreation()">
-    <pi-add-edit-character-details ng-if="inDetails()" on-save="onSaveDetails" on-cancel="onCancel"></pi-add-edit-character-details>
-    <pi-view-character-details ng-if="!inDetails()"></pi-view-character-details>
+<div class="ui segment" ng-if="!$ctrl.inCreation()">
+    <pi-add-edit-character-details ng-if="$ctrl.inDetails()" on-save="$ctrl.onSaveDetails" on-cancel="$ctrl.onCancel"></pi-add-edit-character-details>
+    <pi-view-character-details ng-if="!$ctrl.inDetails()"></pi-view-character-details>
 </div>
-<div class="ui segment" ng-if="inConfirm()">
+<div class="ui segment" ng-if="$ctrl.inConfirm()">
     <div class="ui buttons">
-        <button class="ui button primary" type="submit" ng-click="onFinish()">Finish</button>
+        <button class="ui button primary" type="submit" ng-click="$ctrl.onFinish()">Finish</button>
         <div class="or"></div>
-        <button class="ui button" ng-click="onCancel()">Cancel</button>
+        <button class="ui button" ng-click="$ctrl.onCancel()">Cancel</button>
     </div>
 </div>
 <div class="ui grid">
@@ -22,16 +22,16 @@
     </div>
     <div class="row">
         <div class="ui segment six wide column">
-            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.earth"></pi-ring-line>
-            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.water"></pi-ring-line>
-            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.fire"></pi-ring-line>
-            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.air"></pi-ring-line>
-            <pi-ring-line class="ring-block sixteen wide column" ring="model.rings.void"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="$ctrl.model.rings.earth"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="$ctrl.model.rings.water"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="$ctrl.model.rings.fire"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="$ctrl.model.rings.air"></pi-ring-line>
+            <pi-ring-line class="ring-block sixteen wide column" ring="$ctrl.model.rings.void"></pi-ring-line>
         </div>
         <div class="two wide column">
         </div>
         <div class="ui segment six wide column">
-            <pi-skills-table model="model"></pi-skills-table>
+            <pi-skills-table model="$ctrl.model"></pi-skills-table>
         </div>
     </div>
 </div>

@@ -1,38 +1,38 @@
 <div>
-    <img class="ring-icon" ng-src="{{ring.icon}}" style="width:125px;">
+    <img class="ring-icon" ng-src="{{$ctrl.ring.icon}}" style="width:125px;">
     <div class="trait-block">
         <div class="ui huge form">
             <div class="inline field">
-                <label>{{ring.name}}</label> {{ring.getRank()}}
+                <label>{{$ctrl.ring.name}}</label> {{$ctrl.ring.getRank()}}
             </div>
         </div>
         <div class="ui large form normal-trait" ng-if="!ring.voidTrait">
             <div class="ui middle aligned grid">
                 <div class="ten wide column">
                     <div class="inline field">
-                        <label>{{ring.physicalTrait.name}}</label> {{ring.physicalTrait.value}}
+                        <label>{{$ctrl.ring.physicalTrait.name}}</label> {{$ctrl.ring.physicalTrait.value}}
                     </div>
                 </div>
                 <div class="two wide column">
-                    <span class="ui mini icon button" ng-if="isInSpendingMode()" ng-click="purchaseTrait(ring.physicalTrait.id)">
+                    <span class="ui mini icon button" ng-if="$ctrl.isInSpendingMode()" ng-click="$ctrl.purchaseTrait($ctrl.ring.physicalTrait.id)">
                         <i class="ui small icon plus"></i>
                     </span>
                 </div>
                 <div class="ten wide column">
                     <div class="inline field">
-                        <label>{{ring.spiritualTrait.name}}</label> {{ring.spiritualTrait.value}}
+                        <label>{{$ctrl.ring.spiritualTrait.name}}</label> {{$ctrl.ring.spiritualTrait.value}}
                     </div>
                 </div>
                 <div class="two wide column">
-                    <span class="ui mini icon button" ng-if="isInSpendingMode()" ng-click="purchaseTrait(ring.spiritualTrait.id)">
+                    <span class="ui mini icon button" ng-if="$ctrl.isInSpendingMode()" ng-click="$ctrl.purchaseTrait($ctrl.ring.spiritualTrait.id)">
                         <i class="ui small icon plus"></i>
                     </span>
                 </div>
             </div>
         </div>
-        <div class="ui large void-trait form" ng-if="ring.voidTrait">
+        <div class="ui large void-trait form" ng-if="$ctrl.ring.voidTrait">
             <div class="ui middle aligned grid">
-                <div class="ui icon button" ng-if="isInSpendingMode()" ng-click="purchaseTrait('void')">
+                <div class="ui icon button" ng-if="$ctrl.isInSpendingMode()" ng-click="$ctrl.purchaseTrait('void')">
                     <i class="ui small icon plus"></i>
                 </div>
             </div>

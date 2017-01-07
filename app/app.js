@@ -1,51 +1,53 @@
 'use strict';
 
-var pocketIkomaModule = angular.module('pocketIkoma', ['ui.router']);
-pocketIkomaModule.constant('_', window._);
-pocketIkomaModule.constant('$', window.$);
+import $ from 'jquery';
+import _ from 'lodash';
+import angular from 'angular';
+import 'angular-ui-router';
+import 'angular-animate';
+import 'semantic-ui/dist/semantic.min';
+import 'semantic-ui/dist/semantic.min.css';
 
-require('./formatViews/bootstrap');
-require('./basicInfo/bootstrap');
-require('./advantages/bootstrap');
-require('./disadvantages/bootstrap');
-require('./data/bootstrap');
-require('./katas/bootstrap');
-require('./skills/bootstrap');
-require('./rings/bootstrap');
-require('./log/bootstrap');
-require('./secondaryStats/bootstrap');
-require('./characters/bootstrap');
-require('./kiho/bootstrap');
-require('./spells/bootstrap');
-require('./nav/bootstrap');
-require('./common/bootstrap');
-require('./model/model.service');
+import './common';
+import './data';
+import './log';
+import './model';
+import './rings';
+import './advantages';
+import './disadvantages';
+import './skills';
+import './spells';
+import './katas';
+import './kiho';
+import './basicInfo';
+import './secondaryStats';
+import './formatViews';
+import './characters';
+import './nav';
 
-pocketIkomaModule.config(function($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/default');
+import './main.less'
 
-    $stateProvider.state('default', {
-        url: '/default',
-        templateUrl: 'formatViews/default.html',
-        controller: 'DefaultController',
-        controllerAs: 'defaultController',
-        params: {
-            characterId: null
-        }
-    }).state('default.logModule', {
-        url: '/log',
-        template: '<pi-add-edit-log-module></pi-add-edit-log-module>'
-    }).state('default.spendXp', {
-        url: '/spend',
-        template: '<pi-add-edit-xp-expenditure></pi-add-edit-xp-expenditure>',
-        controller: function($scope, modelService) {
-            modelService.startSpendingMode();
-        }
-    }).state('new', {
-        url: '/new',
-        templateUrl: 'formatViews/new.html',
-        controller: 'NewController'
+const requires = ['ui.router', 'pi.common', 'pi.log', 'pi.model', 'pi.rings', 'pi.data',  'pi.advantages',
+    'pi.disadvantages', 'pi.skills', 'pi.spells', 'pi.kata', 'pi.kiho', 'pi.basicInfo', 'pi.secondaryStats',
+    'pi.formatViews', 'pi.characters', 'pi.nav'];
+
+let pocketIkoma = angular.module('pocketIkoma', requires);
+// TODO: get rid of these
+pocketIkoma.constant('_', _);
+pocketIkoma.constant('$', $);
+
+pocketIkoma.run(function($trace) {
+    $trace.enable(1);
+});
+
+pocketIkoma.config(($stateProvider, $urlRouterProvider) => {
+    /* @ngInject */
+
+    $stateProvider.state('app', {
+        abstract: true,
+        template: '<pi-nav></pi-nav><ui-view class="ui main container"></ui-view>'
     });
+    $urlRouterProvider.otherwise('/default');
 });
 
 

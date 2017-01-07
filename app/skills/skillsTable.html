@@ -8,7 +8,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr ng-repeat="skill in model.skills">
+    <tr ng-repeat="skill in $ctrl.model.skills">
         <td>{{skill.type.name}}{{skill.choosing ? ': ' + skill.choosing : ''}}{{skill.schoolSkill ? '*' : ''}}</td>
         <td>{{getTraitForSkill(skill)}}</td>
         <td>{{skill.rank}}</td>

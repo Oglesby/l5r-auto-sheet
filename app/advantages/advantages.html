@@ -1,6 +1,6 @@
 <h2 class="ui header">Advantages</h2>
 <div class="ui segment list">
-    <div class="item" ng-repeat="advantage in model.advantages">
+    <div class="item" ng-repeat="advantage in $ctrl.model.advantages">
         {{advantage.type.name}}{{advantage.choosing ? ': ' +
         advantage.choosing : ''}}{{advantage.rank ? ' (Rank ' + advantage.rank + ')' : ''}}
         <br/>

@@ -1,50 +1,43 @@
 'use strict';
 
-angular.module('pocketIkoma').service('familyService', function(ringService) {
+let json = [{
+    id: 'none',
+    name: 'None',
+    bonusTrait: '',
+    description: ''
+}, {
+    id: 'hida',
+    name: 'Hida',
+    bonusTrait: 'Strength',
+    description: ''
+}, {
+    id: 'mirumoto',
+    name: 'Mirumoto',
+    bonusTrait: 'Agility',
+    description: ''
+}, {
+    id: 'hoshi',
+    name: 'Hoshi',
+    bonusTrait: 'Void',
+    description: ''
+}, {
+    id: 'doji',
+    name: 'Doji',
+    bonusTrait: 'Awareness',
+    description: ''
+}];
 
-    var json = [{
-            id: 'none',
-            name: 'None',
-            bonusTrait: '',
-            description: ''
-        },
-        {
-            id: 'hida',
-            name: 'Hida',
-            bonusTrait: 'Strength',
-            description: ''
-        },
-        {
-            id: 'mirumoto',
-            name: 'Mirumoto',
-            bonusTrait: 'Agility',
-            description: ''
-        },
-        {
-            id: 'hoshi',
-            name: 'Hoshi',
-            bonusTrait: 'Void',
-            description: ''
-        },
-        {
-            id: 'doji',
-            name: 'Doji',
-            bonusTrait: 'Awareness',
-            description: ''
-        }
-    ];
 
-    function processJson(jsonArray) {
-        var families = {};
-
-        jsonArray.forEach(function(familyJson) {
-            var family = familyJson;
+class FamilyService {
+    constructor(ringService) {
+        json.forEach((familyJson) => {
+            let family = familyJson;
             family.visit = function (model) {
-                var logEntries = [];
+                let logEntries = [];
 
                 logEntries.push({displayText: 'Assigned to the ' + this.name + ' family.'});
-                var trait = this.bonusTrait.toLowerCase();
-                var traitRing = ringService.findRingForTrait(trait, model);
+                let trait = this.bonusTrait.toLowerCase();
+                let traitRing = ringService.findRingForTrait(trait, model);
                 if (traitRing) {
                     traitRing.increaseTrait(model, trait);
                     logEntries.push({displayText: 'Spent 0 XP to increase ' + this.bonusTrait + ' to ' + traitRing.getTrait(trait).value});
@@ -53,11 +46,9 @@ angular.module('pocketIkoma').service('familyService', function(ringService) {
                 return logEntries;
             };
 
-            families[family.id] = family;
+            this[family.id] = family;
         });
-
-        return families;
     }
+}
 
-    return processJson(json);
-});
+export default FamilyService;

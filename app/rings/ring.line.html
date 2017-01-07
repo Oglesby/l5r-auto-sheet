@@ -1,16 +1,16 @@
 <div class="trait-block">
     <div class="ui huge form">
         <div class="inline field">
-            <label>{{ring.name}}</label> {{ring.getRank()}}
+            <label>{{$ctrl.ring.name}}</label> {{$ctrl.ring.getRank()}}
         </div>
     </div>
     <div class="ui large form" style="padding-top: 5px; margin-left: 10px;">
-        <div class="equal width inline fields" ng-if="!ring.voidTrait">
+        <div class="equal width inline fields" ng-if="!$ctrl.ring.voidTrait">
             <div class="field">
-                <label>{{ring.physicalTrait.name}}</label> {{ring.physicalTrait.value}}
+                <label>{{$ctrl.ring.physicalTrait.name}}</label> {{$ctrl.ring.physicalTrait.value}}
             </div>
             <div class="field">
-                <label>{{ring.spiritualTrait.name}}</label> {{ring.spiritualTrait.value}}
+                <label>{{$ctrl.ring.spiritualTrait.name}}</label> {{$ctrl.ring.spiritualTrait.value}}
             </div>
         </div>
     </div>

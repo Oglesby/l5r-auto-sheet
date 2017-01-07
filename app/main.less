@@ -1,0 +1,61 @@
+.main.container {
+  margin-top: 6em;
+}
+
+.no-js .top-bar {
+  display: none;
+}
+
+@media screen and (min-width: 40em) {
+  .no-js .top-bar {
+    display: block;
+  }
+
+  .no-js .title-bar {
+    display: none;
+  }
+}
+
+.ring-block {
+  padding-top: 5px;
+
+  .normal-trait {
+    padding-top: 20px;
+    padding-bottom: 15px;
+
+    .ui.grid {
+      .column {
+        padding-top: 0.5rem;
+        padding-bottom: 0.5rem
+      }
+    }
+  }
+}
+
+.void-trait {
+  padding-top: 45px;
+  padding-left: 60px;
+  padding-bottom: 15px;
+}
+
+.cards {
+  .log.card {
+    width: 100%;
+
+    .message {
+      -webkit-box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+      -moz-box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+      box-shadow: 0 0 0 1px rgba(34, 36, 38, 0.15) inset;
+    }
+
+    .content {
+      .header {
+        display: inline-block;
+      }
+
+      .meta {
+        display: inline-block;
+      }
+    }
+  }
+}

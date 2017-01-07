@@ -1,7 +1,7 @@
 <div class="ui simple dropdown item">
-    Characters <i class="dropdown icon"></i>
+    Characters <i dropdown class="dropdown icon"></i>
     <div class="menu">
-        <a class="item" ng-repeat="character in characters" ui-sref="default({characterId: character.id})">{{character.name}}</a>
+        <a class="item" ng-repeat="character in $ctrl.characters" ui-sref="default({characterId: character.id})">{{character.name}}</a>
         <a class="item" ui-sref="new"><i class="icon plus"></i> New Character</a>
     </div>
 </div>

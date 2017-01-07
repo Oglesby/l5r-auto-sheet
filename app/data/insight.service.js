@@ -1,10 +1,9 @@
 'use strict';
 
-angular.module('pocketIkoma').service('insightService', function(_) {
-
-    function calculateRank(insight) {
-        var difference = insight - 150;
-        var rank = 1;
+class InsightService {
+    calculateRank(insight) {
+        const difference = insight - 150;
+        let rank = 1;
 
         if (difference > 0) {
             rank += 1 + Math.floor(difference / 50);
@@ -13,8 +12,8 @@ angular.module('pocketIkoma').service('insightService', function(_) {
         return rank;
     }
 
-    var calculate = function(model) {
-        var insight = 0;
+    calculate(model) {
+        let insight = 0;
 
         // Traits
         _.forEach(model.rings, function (ring) {
@@ -36,10 +35,8 @@ angular.module('pocketIkoma').service('insightService', function(_) {
         }
 
         model.characterInfo.insight = insight;
-        model.characterInfo.insightRank = calculateRank(insight);
+        model.characterInfo.insightRank = this.calculateRank(insight);
     };
+}
 
-    return {
-        calculate: calculate
-    };
-});
+export default InsightService;
